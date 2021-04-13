@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bim_Service", "Bim_Service.csproj", "{FA1FFA94-6F63-46D0-BABD-6F403A6A1660}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA1FFA94-6F63-46D0-BABD-6F403A6A1660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA1FFA94-6F63-46D0-BABD-6F403A6A1660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA1FFA94-6F63-46D0-BABD-6F403A6A1660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA1FFA94-6F63-46D0-BABD-6F403A6A1660}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {386BB136-B3CD-4617-93BA-1BA276BCE1E5}
+	EndGlobalSection
+EndGlobal
