@@ -4,15 +4,10 @@ import { useStyles } from './Styles'
 import { withStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
-
-//иконки
-import {
-    Stage_Icon, Templates_Icon, Client_Icon, Template_Icon,
-    Plugin_Icon, Checking_Icon, Setting_Icon, Files_Icon, File_Icon
-} from '../Icons/Icons';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
-import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
+
+import { TreeIcons } from '../Constants/Constants'
 
 //стили
 const StyledTreeItem = withStyles(() => ({
@@ -68,16 +63,170 @@ const StyledTreeItem = withStyles(() => ({
     }
 }))((props) => <TreeItem {...props} />);
 
-const data = [{
-    id: '-1_Client',
+const data = {
+    id: '1_Client',
     name: 'Сбербанк',
-    children: [
+    children: [{
+        id: '2_Object',
+        name: 'ЦОД1',
+        children: [{
+            id: '3_Stage',
+            name: 'Проектная документация',
+            children: [{
+                id: 'StageId=3_Templates',
+                name: 'Шаблоны',
+                children: [{
+                    id: '4_Template',
+                    name: 'Шаблон1',
+                    children: [{
+                        id: '5_Plugin',
+                        name: 'Плагин1',
+                        children: [{
+                            id: 'PluginId=5_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=5_Checking',
+                            name: 'Проверки'
+                        }]
+                    },
+                    {
+                        id: '6_Plugin',
+                        name: 'Плагин2',
+                        children: [{
+                            id: 'PluginId=6_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=6_Checking',
+                            name: 'Проверки'
+                        }]
+                    }
+                    ]
+                },
+                {
+                    id: '7_Template',
+                    name: 'Шаблон2',
+                    children: [{
+                        id: '8_Plugin',
+                        name: 'Плагин1',
+                        children: [{
+                            id: 'PluginId=8_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=8_Checking',
+                            name: 'Проверки'
+                        }]
+                    },
+                    {
+                        id: '9_Plugin',
+                        name: 'Плагин2',
+                        children: [{
+                            id: 'PluginId=9_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=9_Checking',
+                            name: 'Проверки'
+                        }]
+                    }
+                    ]
+                }]
+            },
+            {
+                id: 'StageId=3_Files',
+                name: 'Файлы',
+                children: [{
+                    id: '11_File',
+                    name: 'Файл1.rvt'
+                },
+                {
+                    id: '12_File',
+                    name: 'Файл2.rvt'
+                }]
+            }]
+        },
         {
-            id: '1',
-            name: 'Child - 1',
-        }
-    ]
-}]
+            id: '13_Stage',
+            name: 'Рабочая документация',
+            children: [{
+                id: 'StageId=13_Templates',
+                name: 'Шаблоны',
+                children: [{
+                    id: '14_Template',
+                    name: 'Шаблон1',
+                    children: [{
+                        id: '15_Plugin',
+                        name: 'Плагин1',
+                        children: [{
+                            id: 'PluginId=15_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=15_Checking',
+                            name: 'Проверки'
+                        }]
+                    },
+                    {
+                        id: '16_Plugin',
+                        name: 'Плагин2',
+                        children: [{
+                            id: 'PluginId=16_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=16_Checking',
+                            name: 'Проверки'
+                        }]
+                    }
+                    ]
+                },
+                {
+                    id: '17_Template',
+                    name: 'Шаблон2',
+                    children: [{
+                        id: '18_Plugin',
+                        name: 'Плагин1',
+                        children: [{
+                            id: 'PluginId=18_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=18_Checking',
+                            name: 'Проверки'
+                        }]
+                    },
+                    {
+                        id: '19_Plugin',
+                        name: 'Плагин2',
+                        children: [{
+                            id: 'PluginId=19_Setting',
+                            name: 'Настройки'
+                        },
+                        {
+                            id: 'PluginId=19_Checking',
+                            name: 'Проверки'
+                        }]
+                    }
+                    ]
+                }]
+            },
+            {
+                id: 'StageId=13_Files',
+                name: 'Файлы',
+                children: [{
+                    id: '20_File',
+                    name: 'Файл1.rvt'
+                },
+                {
+                    id: '21_File',
+                    name: 'Файл2.rvt'
+                }]
+            }]
+        }]
+    }]
+}
 
 async function populateWeatherData1() {
     const response = await fetch("/api/TreeView/AllData?id=ллл");
@@ -88,116 +237,32 @@ async function populateWeatherData1() {
 export function NavTreeview() {
     const cls = useStyles()
 
-    populateWeatherData1()
+    const LabelConstructor = (label) => (
+        <div>
+            <label.icon />
+            <p>{label.name}</p>
+        </div>
+    )
+    function DataTree(nodes) {
+        const arr = nodes.id.split('_');
+        const nodeType = arr[1]
+        const label =
+            LabelConstructor({ icon: TreeIcons.get(nodeType), name: nodes.name })
+        return (
+            <StyledTreeItem key={nodes.id} nodeId={nodes.id} label={label} >
+                {Array.isArray(nodes.children) ?
+                    nodes.children.map((node) => DataTree(node)) : null}
+            </StyledTreeItem >)
+    }
 
     return (
         <div class={cls.NavTreeview}>
             <TreeView
-                defaultExpanded={['1']}
                 defaultCollapseIcon={<IndeterminateCheckBoxOutlinedIcon className="plus" />}
                 defaultExpandIcon={<AddBoxOutlinedIcon className="minus" />}
             >
-                <StyledTreeItem
-                    nodeId="1"
-                    label={
-                        <div>
-                            <Client_Icon />
-                            <p>Сбербанк</p>
-                        </div>
-                    }
-                >
-                    <StyledTreeItem
-                        nodeId="2"
-                        label={
-                            <div>
-                                <HomeWorkOutlinedIcon className='object' />
-                                <p>ЦОД1</p>
-                            </div>
-                        }
-                    >
-                        <StyledTreeItem
-                            nodeId="7"
-                            label={
-                                <div>
-                                    <Stage_Icon />
-                                    <p>П</p>
-                                </div>
-                            }
-                        >
-                            <StyledTreeItem
-                                nodeId="9"
-                                label={
-                                    <div>
-                                        <Templates_Icon />
-                                        <p>Шаблоны</p>
-                                    </div>
-                                }
-                            >
-                                <StyledTreeItem nodeId="10"
-                                    label={
-                                        <div>
-                                            <Template_Icon />
-                                            <p>Шаблон_1</p>
-                                        </div>
-                                    }
-                                >
-                                    <StyledTreeItem nodeId="101"
-                                        label={
-                                            <div>
-                                                <Plugin_Icon />
-                                                <p>Плагин_1</p>
-                                            </div>
-                                        }
-                                    >
-                                        <StyledTreeItem nodeId="103"
-                                            label={
-                                                <div>
-                                                    <Checking_Icon />
-                                                    <p>Проверка</p>
-                                                </div>
-                                            }
-                                        />
-                                        <StyledTreeItem nodeId="104"
-                                            label={
-                                                <div>
-                                                    <Setting_Icon />
-                                                    <p>Настройка</p>
-                                                </div>
-                                            }
-                                        />
-                                    </StyledTreeItem>
-                                </StyledTreeItem>
-                            </StyledTreeItem>
-                            <StyledTreeItem
-                                nodeId="92"
-                                label={
-                                    <div>
-                                        <Files_Icon />
-                                        <p>Файлы</p>
-                                    </div>
-                                }
-                            >
-                                <StyledTreeItem nodeId="107"
-                                    label={
-                                        <div>
-                                            <File_Icon />
-                                            <p>Файл_1.rvt</p>
-                                        </div>
-                                    }
-                                />
-                                <StyledTreeItem nodeId="108"
-                                    label={
-                                        <div>
-                                            <File_Icon />
-                                            <p>Файл_2.rvt</p>
-                                        </div>
-                                    }
-                                />
-                            </StyledTreeItem>
-                        </StyledTreeItem>
-                    </StyledTreeItem>
-                </StyledTreeItem>
+                {DataTree(data)}
             </TreeView>
-        </div >
-    );
+        </div>
+    )
 }
