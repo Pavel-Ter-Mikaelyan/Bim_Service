@@ -80,8 +80,8 @@ const data = [{
 }]
 
 async function populateWeatherData1() {
-    const response = await fetch('weatherforecast');
-    const data = await response.json();
+    const response = await fetch("/api/TreeView/AllData?id=ллл");
+    const data = await response.text();
     console.log(data)
 }
 

@@ -9,23 +9,21 @@ using System.Threading.Tasks;
 namespace Bim_Service.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class TreeViewDataController : ControllerBase
+    [Route("api/[controller]")]
+    public class TreeViewController : ControllerBase
     {
         private ApplicationContext db;
-        public TreeViewDataController(ApplicationContext context)
+        public TreeViewController(ApplicationContext context)
         {
             db = context;
-        }               
+        }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("AllData")]
+        public string Get()
         {
-       
 
 
-
-            return new List<string>();
+            return Request.Query.FirstOrDefault(p => p.Key == "id").Value;
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Bim_Service
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}");
             });
 
             app.UseSpa(spa =>

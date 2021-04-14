@@ -48,15 +48,13 @@ export function MainPanel() {
             2 * MainPanelMargin -
             SepPanel_W -
             NavPanel_W
-        if (SourcePanel_W > NavSourcePanel_MinW) {
-            console.log(1)
+        if (SourcePanel_W > NavSourcePanel_MinW) {           
             setSizes({
                 NavPanel_W: NavPanel_W + 'px',
                 SourcePanel_W: '1fr'
             })
         }
-        else {
-            console.log(2)
+        else {           
             setSizes({
                 NavPanel_W: '1fr',
                 SourcePanel_W: (NavSourcePanel_MinW + 1) + 'px'
