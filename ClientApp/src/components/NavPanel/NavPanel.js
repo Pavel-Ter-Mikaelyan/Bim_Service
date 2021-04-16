@@ -2,7 +2,7 @@
 import SearchIcon from '@material-ui/icons/Search';
 import NavTreeView from '../NavTreeView/NavTreeView'
 
-export function NavPanelComponent({ parent_cls }) {
+export function NavPanel({ parent_cls }) {
     return (
         <div class={parent_cls.NavPanel}>
             <SearchIcon/>

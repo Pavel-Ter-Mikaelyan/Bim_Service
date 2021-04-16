@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react'
-import NavPanel from '../NavPanel/NavPanel'
+import { NavPanel } from '../NavPanel/NavPanel'
 import { SourcePanel } from '../SourcePanel/SourcePanel'
 import { useStyles } from './Styles'
 import {
