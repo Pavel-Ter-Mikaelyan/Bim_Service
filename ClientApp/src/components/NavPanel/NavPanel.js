@@ -1,14 +1,15 @@
 ﻿import React, { useState, useEffect } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import { NavTreeview } from '../NavTreeview/NavTreeview'
+import NavTreeView from '../NavTreeView/NavTreeView'
 
-export function NavPanel({ parent_cls }) {
+export function NavPanelComponent({ parent_cls }) {
     return (
         <div class={parent_cls.NavPanel}>
-            <SearchIcon />
-            <NavTreeview /> 
+            <SearchIcon/>
+            <NavTreeView />
         </div>
     );
 }
+
 
 

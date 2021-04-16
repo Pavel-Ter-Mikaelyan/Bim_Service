@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Bim_Service.Model
 {
@@ -10,7 +7,7 @@ namespace Bim_Service.Model
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public DB_Client DB_Client { get; set; }        
+        public DB_Client DB_Client { get; set; }
         public List<DB_Stage> DB_Stages { get; set; }
     }
 }

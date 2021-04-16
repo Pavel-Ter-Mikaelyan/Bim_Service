@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Bim_Service.Model
 {
@@ -13,8 +14,8 @@ namespace Bim_Service.Model
         public string CheckingData { get; set; }
         public string SettingData { get; set; }
 
-        public DB_Plugin_const DB_Plugin_const { get; set; }
-        public DB_Template DB_Template { get; set; }
+        public DB_Plugin_const DB_Plugin_const { get; set; }       
+        public DB_Template DB_Template { get; set; }       
         public DB_Stage DB_Stage { get; set; }
     }
 }

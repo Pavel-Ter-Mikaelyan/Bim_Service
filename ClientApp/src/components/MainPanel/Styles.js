@@ -4,7 +4,7 @@ import {
     MainPanelMargin,
     SepPanel_W,
     Window_minW
-} from '../Constants/Constants'
+} from '../../constants/Constants'
 
 let NavAndSource = {
     display: 'grid',

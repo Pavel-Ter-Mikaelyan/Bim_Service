@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react'
-import { NavPanel } from '../NavPanel/NavPanel'
+import NavPanel from '../NavPanel/NavPanel'
 import { SourcePanel } from '../SourcePanel/SourcePanel'
 import { useStyles } from './Styles'
 import {
@@ -7,7 +7,7 @@ import {
     MainPanelMargin,
     NavPanel_StartW,
     SepPanel_W
-} from '../Constants/Constants'
+} from '../../constants/Constants'
 
 export function MainPanel() {
     //размеры панелей по умолчанию
@@ -48,13 +48,13 @@ export function MainPanel() {
             2 * MainPanelMargin -
             SepPanel_W -
             NavPanel_W
-        if (SourcePanel_W > NavSourcePanel_MinW) {           
+        if (SourcePanel_W > NavSourcePanel_MinW) {
             setSizes({
                 NavPanel_W: NavPanel_W + 'px',
                 SourcePanel_W: '1fr'
             })
         }
-        else {           
+        else {
             setSizes({
                 NavPanel_W: '1fr',
                 SourcePanel_W: (NavSourcePanel_MinW + 1) + 'px'

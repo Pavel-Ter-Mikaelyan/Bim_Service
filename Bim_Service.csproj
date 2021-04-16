@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -22,24 +23,16 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\src\components\SharedStyles\**" />
-    <Compile Remove="ClientApp\src\Новая папка\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\src\components\SharedStyles\**" />
-    <Content Remove="ClientApp\src\Новая папка\**" />
     <EmbeddedResource Remove="ClientApp\src\components\SharedStyles\**" />
-    <EmbeddedResource Remove="ClientApp\src\Новая папка\**" />
     <None Remove="$(SpaRoot)**" />
     <None Remove="ClientApp\src\components\SharedStyles\**" />
-    <None Remove="ClientApp\src\Новая папка\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\src\App.test.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\src\reducers\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

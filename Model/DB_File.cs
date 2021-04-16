@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Bim_Service.Model
+﻿namespace Bim_Service.Model
 {
     public class DB_File
     {

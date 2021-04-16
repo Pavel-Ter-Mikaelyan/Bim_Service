@@ -1,5 +1,5 @@
 ﻿import { createUseStyles } from 'react-jss';
-import { HeadBlockHeight, Window_minW, MainPanelMargin  } from '../Constants/Constants'
+import { HeadBlockHeight, Window_minW, MainPanelMargin  } from '../../constants/Constants'
 
 export const useStyles = createUseStyles({
     HeadBlock: {

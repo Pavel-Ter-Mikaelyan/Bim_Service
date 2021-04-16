@@ -26,6 +26,7 @@
     "react-smooth-scrollbar": "^8.0.6",
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "rimraf": "^2.6.2",
     "smooth-scrollbar": "^8.6.1",
     "styled-jss": "^2.2.3"
