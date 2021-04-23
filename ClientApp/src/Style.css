@@ -1,11 +1,14 @@
-﻿body {
+﻿* {
     outline: 0;
     padding: 0;
     margin: 0;
     border: 0;
+}
+body {   
     font-family: 'Roboto';
-    color: rgb(30, 30, 30);
+    color: rgb(40, 40, 40);
     background-color: burlywood;
+    overflow: hidden
 }
 .scrollbar-track-y, .scrollbar-track-x {
     border-radius: 4px;

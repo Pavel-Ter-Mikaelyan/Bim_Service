@@ -4,8 +4,6 @@ import { HeadBlockHeight, Window_minW, MainPanelMargin  } from '../../constants/
 export const useStyles = createUseStyles({
     HeadBlock: {
         height: HeadBlockHeight,
-        padding: 0,
-        margin: 0,
         display: 'flex',
         alignItems: 'center',
         minWidth: Window_minW + MainPanelMargin,
@@ -15,10 +13,10 @@ export const useStyles = createUseStyles({
                 
         userSelect: 'none',
 
-        '& h2, span': {                       
+        '& >h2, >span': {                       
             margin: '0 0 0 5px'
         },
-        '& span': {
+        '& >span': {
             fontSize: 36
         },
     }

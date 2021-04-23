@@ -1,10 +1,12 @@
-﻿const TreeNodesAction = TreeNodes => ({
+﻿const LoadTreeNodesData_Action = (TreeNodesData, SelectedId) => ({
     type: 'LOAD_TREENODES',
-    TreeNodes: TreeNodes
+    Data: TreeNodesData,
+    SelectedId: SelectedId
 })
 
-export async function LoadTreeNodes(dispatch) {
+export async function LoadTreeNodesData(dispatch, SelectedId) {
     const response = await fetch("/api/TreeView/GetNodes");
-    const TreeNodes = await response.json();
-    dispatch(TreeNodesAction(TreeNodes))
+    const TreeNodesData = await response.json();
+    dispatch(LoadTreeNodesData_Action(TreeNodesData, SelectedId))
 }
+

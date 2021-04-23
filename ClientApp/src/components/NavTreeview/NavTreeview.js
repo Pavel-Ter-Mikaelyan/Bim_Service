@@ -8,8 +8,7 @@ import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
 
 import { TreeIcons } from '../../constants/Constants'
-import { LoadTreeNodes } from '../../actions/Index'
-import { useStyles } from './Styles'
+import { LoadTreeNodesData } from '../../actions/Index'
 
 //стили для TreeItem
 const StyledTreeItem = withStyles(() => ({
@@ -60,22 +59,16 @@ const StyledTreeItem = withStyles(() => ({
         },
         '& .object': {
             fontSize: '1.5em'
-        },
-        '& p': { margin: 0 }
+        } 
     }
 }))((props) => <TreeItem {...props} />);
-//получение состояния
-export default connect(
-    state => ({ TreeNodes: state.TreeNodes }),
-    dispatch => ({ Dispatch: dispatch })
-)(NavTreeView)
 
-function NavTreeView({ TreeNodes, Dispatch }) {
-    const cls = useStyles()
+//компонент
+function NavTreeView({ TreeNodesData, LoadData }) {
 
     useEffect(() => {
         //начальная загрузка TreeNodes
-        LoadTreeNodes(Dispatch)
+        LoadData()
     }, [])
 
     //создание лейбла
@@ -89,7 +82,9 @@ function NavTreeView({ TreeNodes, Dispatch }) {
     }
     //рекурсивно строится дерево
     const TreeConstructor = (TreeNodes) => {
-        if (TreeNodes === null) return null
+        if (TreeNodes === null || TreeNodes === undefined) {
+            return <p>Загрузка...</p>
+        }
         //получить, например, 'Stage' из '12345_Stage'
         const arr = TreeNodes.id.split('_');
         const nodeType = arr[1]
@@ -107,15 +102,27 @@ function NavTreeView({ TreeNodes, Dispatch }) {
                     TreeNodes.children.map((node) => TreeConstructor(node)) : null}
             </StyledTreeItem >)
     }
+    //событие выделения узла
+    const onNodeSelect = (event, nodeId) => {
+        //загрузка дерева и передача Id выделенного узла
+        LoadData(nodeId)
+    }
 
     return (
-        <div class={cls.NavTreeView}>
-            <TreeView
-                defaultCollapseIcon={<IndeterminateCheckBoxOutlinedIcon className="plus" />}
-                defaultExpandIcon={<AddBoxOutlinedIcon className="minus" />}
-            >
-                {TreeConstructor(TreeNodes)}
-            </TreeView>
-        </div>
+        <TreeView
+            defaultCollapseIcon={<IndeterminateCheckBoxOutlinedIcon className="plus" />}
+            defaultExpandIcon={<AddBoxOutlinedIcon className="minus" />}
+            onNodeSelect={onNodeSelect}
+        >
+            {TreeConstructor(TreeNodesData)}
+        </TreeView>
     )
 }
+
+//присоединение состояния к компоненту
+export default connect(
+    state => ({ TreeNodesData: state.TreeNodes.Data }),
+    dispatch => ({
+        LoadData: (SelectedId) => LoadTreeNodesData(dispatch, SelectedId)
+    }))
+    (NavTreeView)

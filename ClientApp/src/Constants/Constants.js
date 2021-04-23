@@ -4,11 +4,16 @@ import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 //настройки стилей
 export const HeadBlockHeight = '3em'
 export const MainPanelMargin = 10
-export const NavPanel_StartW = 200
+export const NavPanel_StartW = 250
 export const SepPanel_W = 10
-export const NavSourcePanel_MinW = 100
+export const SourcePanel_MinW = 250
+export const NavPanel_MinW = 150
 export const Window_minW = 400
 
+//svg иконка 'Фокус' (над деревом)
+export const Focus_Icon = () => {
+    return (<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m276 199.320312v-43.183593h-40v43.183593c-17.085938 6.058594-30.628906 19.648438-36.628906 36.757813h-43.3125v40h43.449218c6.070313 16.925781 19.542969 30.347656 36.492188 36.359375v43.585938h40v-43.585938c16.953125-6.011719 30.421875-19.433594 36.492188-36.359375h43.449218v-40h-43.3125c-6-17.109375-19.542968-30.699219-36.628906-36.757813zm-20 76.558594c-11.027344 0-20-8.972656-20-20s8.972656-20 20-20 20 8.972656 20 20-8.972656 20-20 20zm-196-275.878906h81v40h-81c-11.027344 0-20 8.972656-20 20v80h-40v-80c0-33.085938 26.914062-60 60-60zm452 60v80h-40v-80c0-11.027344-8.972656-20-20-20h-81v-40h81c33.085938 0 60 26.914062 60 60zm-452 412h81v40h-81c-33.085938 0-60-26.914062-60-60v-80h40v80c0 11.027344 8.972656 20 20 20zm412-100h40v80c0 33.085938-26.914062 60-60 60h-81v-40h81c11.027344 0 20-8.972656 20-20zm0 0" /></svg>)
+}
 //svg иконки для дерева
 const Stage_Icon = () => {
     return (
@@ -182,3 +187,16 @@ TreeIcons.set("Checking", Checking_Icon)
 TreeIcons.set("Setting", Setting_Icon)
 TreeIcons.set("Files", Files_Icon)
 TreeIcons.set("File", File_Icon)
+
+export const TreeDictionary = new Map();
+TreeDictionary.set("Clients", "Заказчики")
+TreeDictionary.set("Client", "Заказчик")
+TreeDictionary.set("Object", "Объект")
+TreeDictionary.set("Stage", "Стадия")
+TreeDictionary.set("Templates", "Шаблоны")
+TreeDictionary.set("Template", "Шаблон")
+TreeDictionary.set("Plugin", "Плагин")
+TreeDictionary.set("Checking", "Проверки")
+TreeDictionary.set("Setting", "Настройки")
+TreeDictionary.set("Files", "Файлы")
+TreeDictionary.set("File", "Файл")
