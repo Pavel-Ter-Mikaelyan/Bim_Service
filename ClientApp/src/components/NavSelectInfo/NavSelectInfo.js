@@ -7,17 +7,18 @@ import { TreeDictionary, Focus_Icon } from '../../constants/Constants'
 const useStyles = createUseStyles({
     NavSelectInfo: {
         display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden',
+        alignItems: 'end',
+        overflow: 'hidden',        
         background: 'rgba(0, 0, 0, 0)',
         '& svg': {
+            margin: '0 0 6px 0',
             width: 15,
             height: 15,
             minWidth: 15,
-            minHeight: 15,
+            minHeight: 15
         },
         '& p': {
-            margin: '0 0 0 5px',
+            margin: '0 0 4px 5px',
             fontSize: '1em',
             //fontWeight: 'bold',
             whiteSpace: 'nowrap '           
