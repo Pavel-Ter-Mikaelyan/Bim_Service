@@ -4,9 +4,7 @@ import { Tabs } from  '../Tabs/Tabs'
 
 const useStyles = createUseStyles({
     SourceBorder: {
-       // borderBottom: '1px solid rgba(109, 109, 109, 0.8)',
-       // borderLeft: '1px solid rgba(109, 109, 109, 0.8)',
-       // borderRight: '1px solid rgba(109, 109, 109, 0.8)',
+       
     }
 })
 

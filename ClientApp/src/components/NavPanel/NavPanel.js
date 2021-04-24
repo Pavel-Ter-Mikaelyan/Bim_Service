@@ -3,12 +3,13 @@ import { createUseStyles } from 'react-jss';
 
 import NavTreeView from '../NavTreeView/NavTreeView'
 import NavSelectInfo from '../NavSelectInfo/NavSelectInfo'
+import { LineStyle } from '../../constants/Constants'
 
 const useStyles = createUseStyles({
     PanelWindow: {
         overflow: 'auto',
         padding: '5px 0 0 5px',
-        borderTop: '1px solid rgba(109, 109, 109, 0.8)'
+        borderTop: LineStyle
     }
 })
 

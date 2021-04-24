@@ -13,27 +13,20 @@ let NavAndSource = {
     padding: '0 12px 12px 12px ',
 
     border: '0.1vh solid rgba(109, 109, 109, 0.8)',
-    borderRadius: 4,
+    borderRadius: 12,
     background: 'rgba(200, 200, 200, 0.3)',
     boxShadow: '2px 2px 4px 2px rgba(0, 0, 0, 0.4)',
 
     overflow: 'hidden'
 }
 
-const AddUnits = (val) => {
-    if (val !== '1fr') {
-        return val + 'px'
-    }
-    return val
-}
-
 export const useStyles = createUseStyles({
-    MainPanel: data => ({
+    MainPanel: NavPanel_W => ({
         display: 'grid',
         gridTemplateColumns:
-            AddUnits(data.NavPanel_W) + ' ' +
-            AddUnits(SepPanel_W) + ' ' +
-            AddUnits(data.SourcePanel_W),
+            NavPanel_W + 'px ' +
+            SepPanel_W + 'px ' +
+            '1fr',
         gridTemplateRows: '1fr',
         margin: MainPanelMargin,
         height: 'calc(100vh - ' +

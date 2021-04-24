@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss';
 
 import { TreeDictionary, Focus_Icon } from '../../constants/Constants'
 
+//стили
 const useStyles = createUseStyles({
     NavSelectInfo: {
         display: 'flex',
@@ -19,13 +20,13 @@ const useStyles = createUseStyles({
         },
         '& p': {
             margin: '0 0 4px 5px',
-            fontSize: '1em',
-            //fontWeight: 'bold',
+            fontSize: '1em',            
             whiteSpace: 'nowrap '           
         }
     }
 })
 
+//компонент 'панель сверху дерева'
 const NavSelectInfo = ({ TreeNodesSelectedId }) => {
     //получить, например, 'Stage' из '12345_Stage'
     const arr = TreeNodesSelectedId.split('_');

@@ -13,11 +13,8 @@ import {
 export function MainPanel() {
     //проверочная ширина NavPanel
     const [ValidNavPanel_W, SetValidNavPanel_W] = useState()
-    //размеры панелей по умолчанию
-    const [sizes, setSizes] = useState({
-        NavPanel_W: NavPanel_StartW,
-        SourcePanel_W: '1fr'
-    })
+    //ширина панели NavPanel
+    const [NavPanel_W, setNavPanel_W] = useState(NavPanel_StartW)
     //состояние нажатия кнопки мыши
     const [MD, setMD] = useState(false)
     //ширина окна браузера
@@ -25,7 +22,7 @@ export function MainPanel() {
         useState(document.documentElement.clientWidth)
 
     //стили
-    const cls = useStyles(sizes);
+    const cls = useStyles(NavPanel_W);
 
     //Изменение размера панелей по событию мыши
     let h_move = e => {
@@ -39,10 +36,7 @@ export function MainPanel() {
         //установка размера панелей
         if (ValidNavPanel_W > NavPanel_MinW &&
             ValidSourcePanel_W > SourcePanel_MinW) {
-            setSizes({
-                NavPanel_W: ValidNavPanel_W,
-                SourcePanel_W: '1fr'
-            })
+            setNavPanel_W(ValidNavPanel_W)
         }
     }
     let h_up = () => { setMD(false) }
@@ -54,26 +48,21 @@ export function MainPanel() {
         //найти проверочную ширину панели SourcePanel
         const ValidSourcePanel_W = WindowWidth -
             2 * MainPanelMargin -
-            sizes.NavPanel_W -
+            NavPanel_W -
             SepPanel_W
-        if (ValidSourcePanel_W < SourcePanel_MinW) {
-            //величина уменьшения ширины панели NavPanel
-            const delta = SourcePanel_MinW - ValidSourcePanel_W
-            setSizes({
-                NavPanel_W: sizes.NavPanel_W - delta,
-                SourcePanel_W: '1fr'
-            })
-        }
+        //величина уменьшения ширины панели NavPanel
+        const delta = SourcePanel_MinW - ValidSourcePanel_W
+        if (delta > 0) { setNavPanel_W(NavPanel_W - delta) }
     }
 
     //подписка на события мыши и изменение размеров окна 
     useEffect(() => {
-        window.addEventListener(`resize`, h_resize);       
+        window.addEventListener(`resize`, h_resize);
         if (MD) {
             window.addEventListener('mousemove', h_move)
-            window.addEventListener('mouseup', h_up)           
+            window.addEventListener('mouseup', h_up)
         }
-        return () => {           
+        return () => {
             window.removeEventListener('mousemove', h_move)
             window.removeEventListener('mouseup', h_up)
             window.removeEventListener(`resize`, h_resize);
@@ -85,7 +74,7 @@ export function MainPanel() {
         SetWindowWidth(document.documentElement.clientWidth)
         setMD(!MD)//мышь нажата
         //установить проверочную ширину NavPanel
-        SetValidNavPanel_W(sizes.NavPanel_W)
+        SetValidNavPanel_W(NavPanel_W)
     }
 
     return (

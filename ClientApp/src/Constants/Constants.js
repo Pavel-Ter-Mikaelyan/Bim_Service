@@ -2,13 +2,15 @@
 import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 
 //настройки стилей
-export const HeadBlockHeight = '3em'
-export const MainPanelMargin = 10
-export const NavPanel_StartW = 250
-export const SepPanel_W = 10
-export const SourcePanel_MinW = 250
-export const NavPanel_MinW = 150
-export const Window_minW = 400
+export const HeadBlockHeight = '3em' //высота верхней заголовочной панели
+export const MainPanelMargin = 10 //отступ панели MainPanel от окна брауз.
+export const NavPanel_StartW = 250 //стартовая ширина NavPanel
+export const SepPanel_W = 10 //ширина SepPanel
+export const SourcePanel_MinW = 250 //минимальная ширина SourcePanel
+export const NavPanel_MinW = 150 //минимальная ширина NavPanel
+export const Window_minW = 400 //минимальная ширина окна браузера
+//линии
+export const LineStyle = '1px solid rgba(109, 109, 109, 0.8)'
 
 //svg иконка 'Фокус' (над деревом)
 export const Focus_Icon = () => {
