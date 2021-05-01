@@ -3,13 +3,11 @@
     padding: 0;
     margin: 0;
     border: 0;
-}
-body {   
     font-family: 'Roboto';
     color: rgb(40, 40, 40);
+}
+body { 
     background-color: burlywood;
     overflow: hidden
 }
-.scrollbar-track-y, .scrollbar-track-x {
-    border-radius: 4px;
-}
+

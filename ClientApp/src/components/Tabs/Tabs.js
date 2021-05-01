@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { LineStyle } from '../../constants/Constants'
+import { SimpleLineStyle, SelectColor2 } from '../../constants/Constants'
 
 //стили
 const useStyles = createUseStyles({
@@ -13,19 +13,19 @@ const useStyles = createUseStyles({
         '& >div:not([class*=\'end\']):not([class*=\'start\'])': {
             padding: '2px 10px 2px 10px',
             '&:hover': {
-                background: 'rgba(150, 150, 150, 0.2)',
+                background: SelectColor2,
                 cursor: 'pointer'
             }
         },
-        '& >.active': {            
-            borderTop: LineStyle,
-            borderLeft: LineStyle,
-            borderRight: LineStyle,
+        '& >.active': {
+            borderTop: SimpleLineStyle,
+            borderLeft: SimpleLineStyle,
+            borderRight: SimpleLineStyle,
             borderTopLeftRadius: '8px',
             borderTopRightRadius: '8px'
         },
         '& >.notActive': {
-            borderBottom: LineStyle,
+            borderBottom: SimpleLineStyle,
             borderTopLeftRadius: '8px',
             borderTopRightRadius: '8px',
         },
@@ -33,7 +33,7 @@ const useStyles = createUseStyles({
             flexBasis: '100%'
         },
         '& >.start': {
-            flexBasis: '8px',            
+            flexBasis: '8px',
         }
     }
 })
@@ -41,18 +41,19 @@ const useStyles = createUseStyles({
 //компонент 'вкладка'
 const Tab = ({ active, text, onClick, end, start }) => {
     let className = active ? 'active' : 'notActive'
-    if (end) {className += ' end' }
+    if (end) { className += ' end' }
     if (start) { className += ' start' }
     return (<div class={className} onClick={onClick}>{text}</div>)
 }
 
 //компонент 'вкладки'
 export const Tabs = ({ startItem, arr, onActivateItem }) => {
-    const [currItem, setCurrItem] = useState(startItem);
+    const deffaultStartItem = startItem === undefined ? 0 : startItem 
+    const [currItem, setCurrItem] = useState(deffaultStartItem);
 
     const Activate = (i) => {
         setCurrItem(i)
-        onActivateItem(i)
+        if (onActivateItem !== undefined) { onActivateItem(i) }
     }
 
     return (

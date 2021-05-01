@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
+import { createUseStyles } from 'react-jss';
 
 import { withStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
@@ -7,7 +8,7 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
 
-import { TreeIcons } from '../../constants/Constants'
+import { TreeIcons, SimpleLineStyle } from '../../constants/Constants'
 import { LoadTreeNodesData } from '../../actions/Index'
 
 //стили для TreeItem
@@ -59,7 +60,7 @@ const StyledTreeItem = withStyles(() => ({
         },
         '& .object': {
             fontSize: '1.5em'
-        } 
+        }
     }
 }))((props) => <TreeItem {...props} />);
 
@@ -108,14 +109,25 @@ function NavTreeView({ TreeNodesData, LoadData }) {
         LoadData(nodeId)
     }
 
+    //стиль контейнера
+    const containerStyles = createUseStyles({
+        container: {
+            overflow: 'auto',
+            padding: '5px 0 0 5px',
+            borderTop: SimpleLineStyle
+        }
+    })
+
     return (
-        <TreeView
-            defaultCollapseIcon={<IndeterminateCheckBoxOutlinedIcon className="plus" />}
-            defaultExpandIcon={<AddBoxOutlinedIcon className="minus" />}
-            onNodeSelect={onNodeSelect}
-        >
-            {TreeConstructor(TreeNodesData)}
-        </TreeView>
+        <div class={containerStyles().container} >
+            <TreeView
+                defaultCollapseIcon={<IndeterminateCheckBoxOutlinedIcon className="plus" />}
+                defaultExpandIcon={<AddBoxOutlinedIcon className="minus" />}
+                onNodeSelect={onNodeSelect}
+            >
+                {TreeConstructor(TreeNodesData)}
+            </TreeView>
+        </div>
     )
 }
 

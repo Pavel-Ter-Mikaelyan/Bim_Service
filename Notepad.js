@@ -1,109 +1,94 @@
-﻿return (
-    <div class={cls.NavTreeview}>
-        <TreeView
-            defaultCollapseIcon={<IndeterminateCheckBoxOutlinedIcon className="plus" />}
-            defaultExpandIcon={<AddBoxOutlinedIcon className="minus" />}
-        >
-            <StyledTreeItem
-                nodeId="1"
-                label={
-                    <div>
-                        <Client_Icon />
-                        <p>Сбербанк</p>
-                    </div>
-                }
-            >
-                <StyledTreeItem
-                    nodeId="2"
-                    label={
-                        <div>
-                            <HomeWorkOutlinedIcon className='object' />
-                            <p>ЦОД1</p>
-                        </div>
-                    }
-                >
-                    <StyledTreeItem
-                        nodeId="7"
-                        label={
-                            <div>
-                                <Stage_Icon />
-                                <p>П</p>
-                            </div>
-                        }
-                    >
-                        <StyledTreeItem
-                            nodeId="9"
-                            label={
-                                <div>
-                                    <Templates_Icon />
-                                    <p>Шаблоны</p>
-                                </div>
-                            }
-                        >
-                            <StyledTreeItem nodeId="10"
-                                label={
-                                    <div>
-                                        <Template_Icon />
-                                        <p>Шаблон_1</p>
-                                    </div>
-                                }
-                            >
-                                <StyledTreeItem nodeId="101"
-                                    label={
-                                        <div>
-                                            <Plugin_Icon />
-                                            <p>Плагин_1</p>
-                                        </div>
-                                    }
-                                >
-                                    <StyledTreeItem nodeId="103"
-                                        label={
-                                            <div>
-                                                <Checking_Icon />
-                                                <p>Проверка</p>
-                                            </div>
-                                        }
-                                    />
-                                    <StyledTreeItem nodeId="104"
-                                        label={
-                                            <div>
-                                                <Setting_Icon />
-                                                <p>Настройка</p>
-                                            </div>
-                                        }
-                                    />
-                                </StyledTreeItem>
-                            </StyledTreeItem>
-                        </StyledTreeItem>
-                        <StyledTreeItem
-                            nodeId="92"
-                            label={
-                                <div>
-                                    <Files_Icon />
-                                    <p>Файлы</p>
-                                </div>
-                            }
-                        >
-                            <StyledTreeItem nodeId="107"
-                                label={
-                                    <div>
-                                        <File_Icon />
-                                        <p>Файл_1.rvt</p>
-                                    </div>
-                                }
-                            />
-                            <StyledTreeItem nodeId="108"
-                                label={
-                                    <div>
-                                        <File_Icon />
-                                        <p>Файл_2.rvt</p>
-                                    </div>
-                                }
-                            />
-                        </StyledTreeItem>
-                    </StyledTreeItem>
-                </StyledTreeItem>
-            </StyledTreeItem>
-        </TreeView>
-    </div >
-);
+﻿import React, { useState, useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
+
+import Select from 'react-select';
+
+import {
+    BoldLineColor,
+    SelectColor1,
+    SelectColor2,
+    TransparentColor
+} from '../../../constants/Constants'
+
+//стили
+const ComboboxStyles = {
+    //стиль общего контейнера
+    container: (provided, state) => ({
+        ...provided,
+        width: '100%'
+    }),
+    valueContainer: (provided, state) => ({
+        ...provided,
+        padding: 0
+    }),
+    //стиль одного пункта выпадающего меню
+    option: (provided, state) => ({
+        ...provided,
+        cursor: 'pointer',
+        padding: '2px 4px 2px 4px',
+        background: state.isSelected ? SelectColor1 :
+            state.isFocused ? SelectColor2 : TransparentColor
+    }),
+    //стиль контролла
+    control: (provided, state) => ({
+        display: 'flex',
+        userSelect: 'none',
+        cursor: 'pointer'
+    }),
+    //стиль контейнера выпадающего меню
+    menuList: (provided, state) => ({
+        ...provided,
+        maxHeight: 200
+    }),
+    //стиль стрелки справа
+    indicatorsContainer: (provided, state) => ({
+        ...provided,
+        '& svg': { fill: BoldLineColor }
+    }),
+    //стиль палочки справа
+    indicatorSeparator: (provided, state) => ({
+        ...provided,
+        backgroundColor: BoldLineColor
+    })
+}
+
+export const Combobox = ({ ComponentData }) => {
+
+    //трансформация в объект, принимаемый компонентом Select
+    const defaultValue = {
+        value: ComponentData.valueObj.value,
+        label: ComponentData.valueObj.value
+    }
+    //трансформация в объект, принимаемый компонентом Select
+    const Options =
+        ComponentData.comboboxData.map(q => ({ value: q, label: q }))
+    //изменить текущее значение в объекте valueObj
+    const onChange = (e) => {
+        if (e !== undefined) {
+            ComponentData.valueObj.value = e.value
+        }
+    }
+
+    //return (
+    //    <Select
+    //        defaultValue={defaultValue}
+    //        onChange={onChange}
+    //        options={Options}
+    //        styles={ComboboxStyles}
+    //        isDisabled={ComponentData.disabled}
+    //    />
+    //)
+    return (
+        <select style={{
+            width: '100%',
+            cursor: 'pointer'
+        }}>
+            {ComponentData.comboboxData.map(value =>
+                ComponentData.valueObj.value == value ?
+                    (<option selected>{value}</option>) :
+                    (<option>{value}</option>)
+            )
+            }
+        </select>
+    )
+}

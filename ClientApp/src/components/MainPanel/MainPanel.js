@@ -79,9 +79,9 @@ export function MainPanel() {
 
     return (
         <div class={cls.MainPanel}>
-            <NavPanel parent_cls={cls} />
-            <div class={cls.SepPanel} onMouseDown={onMouseDown} />
-            <SourcePanel parent_cls={cls} />
+            <NavPanel/>
+            <div class='SepPanel' onMouseDown={onMouseDown} />
+            <SourcePanel/>
         </div>
     );
 }

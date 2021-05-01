@@ -1,35 +1,16 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
-import { Tabs } from  '../Tabs/Tabs'
 
-const useStyles = createUseStyles({
-    SourceBorder: {
-       
-    }
-})
+import { TablePanel } from '../TablePanel/TablePanel'
+import { Tabs } from '../Tabs/Tabs'
 
 //компонент
-export function SourcePanel({ parent_cls }) {
-
-    const onActivateItem = (currItem) => {
-
-    }
-
+export function SourcePanel() {
     return (
-        <div class={parent_cls.SourcePanel}>
-            <Tabs startItem={0}
-                arr={["Просмотр", "Редактирование"]}
-                onActivateItem={onActivateItem}
-            />
-            <div class={useStyles().SourceBorder }>
-
-            </div>
-        </div>
+        <div class='SourcePanel'>
+            <Tabs arr={["Редактирование"]} />
+            <TablePanel />
+        </div >
     );
 }
-
-
-
-
-
 
