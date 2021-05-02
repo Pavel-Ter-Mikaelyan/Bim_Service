@@ -6,7 +6,20 @@ import {
     SimpleLineColor,
 } from '../../../constants/Constants'
 
+const ComboboxStyles = createUseStyles({
+    Combobox: {
+        margin: '0 0 0 4px',
+        width: '100%',
+        height: '100%',
+        fontSize: '1em',
+        cursor: 'pointer',
+        textOverflow: 'ellipsis',
+        color: disabled => disabled ? SimpleLineColor : BoldLineColor
+    }
+})
+
 export const Combobox = ({ ComponentData }) => {
+    const cls = ComboboxStyles(ComponentData.disabled)
 
     //изменить текущее значение в объекте valueObj
     const onChange = (e) => {
@@ -16,11 +29,7 @@ export const Combobox = ({ ComponentData }) => {
     }
 
     return (
-        <select
-            style={{
-                color: ComponentData.disabled ?
-                    SimpleLineColor : BoldLineColor
-            }}
+        <select class={cls.Combobox}
             onChange={onChange}
             disabled={ComponentData.disabled}
         >

@@ -12,7 +12,11 @@ export const Textbox = ({ ComponentData }) => {
         <input
             style={{
                 color: ComponentData.disabled ?
-                    SimpleLineColor : BoldLineColor
+                    SimpleLineColor : BoldLineColor,
+                margin: '0 4px 0 4px',
+                width: '100%',
+                fontSize: '1em',
+                textOverflow: 'ellipsis'
             }}
             type='text'
             value={ComponentData.valueObj.value}

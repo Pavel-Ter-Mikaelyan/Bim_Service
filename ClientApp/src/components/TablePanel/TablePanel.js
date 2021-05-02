@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 import { TableManagerContainer } from './TableManagerContainer'
 import { TableNewRowContainer } from './TableNewRowContainer'
-import { TableContainer } from './TableContainer'
+import { Table } from './Table'
 
 //стили
 const TablePanelStyles = createUseStyles({
@@ -11,19 +11,15 @@ const TablePanelStyles = createUseStyles({
         '& *': { background: 'none' },
         display: 'flex',
         flexFlow: 'column nowrap',
-        overflow: 'auto',
-        '& >div.TableManagerContainer': {
+        overflow: 'hidden',
+        '& >.TableManagerContainer': {
             display: 'flex',
             alignItems: 'center',
             minHeight: 40,
         },
-        '& >div.TableNewRowContainer': {
+        '& >.TableNewRowContainer': {
             minHeight: 40
-        },
-        '& >div.TableContainer': {
-            overflow: 'auto', 
-            height:'100%'
-        }
+        },       
     }
 })
 
@@ -34,7 +30,7 @@ export const TablePanel = () => {
         <div class={cls.TablePanel} >
             <TableManagerContainer />
             <TableNewRowContainer />
-            <TableContainer />
+            <Table />
         </div>
     )
 }

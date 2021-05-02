@@ -11,10 +11,18 @@ export const Checkbox = ({ ComponentData }) => {
     //стили
     const CheckBoxStyle = createUseStyles({
         CheckBox: {
-            fill: ComponentData.disabled ?
-                SimpleLineColor : BoldLineColor,
-            width: 20,
-            height: 20
+            display: 'flex',
+            alignItems: 'center', //по центру по вертикали 
+            justifyContent: 'center', //по центру по горизонтали  
+            height: '100%',
+            width: '100%',
+            cursor: 'pointer',
+            '& svg': {
+                fill: ComponentData.disabled ?
+                    SimpleLineColor : BoldLineColor,
+                width: 20,
+                height: 20
+            }
         }
     })
     //изменить текущее значение в объекте valueObj
@@ -26,11 +34,14 @@ export const Checkbox = ({ ComponentData }) => {
 
     const icon =
         checked ?
-            <CheckBoxOutlineBlankOutlinedIcon class={CheckBoxStyle().CheckBox} /> :
-            <CheckBoxOutlinedIcon class={CheckBoxStyle().CheckBox} />
+            <CheckBoxOutlineBlankOutlinedIcon  /> :
+            <CheckBoxOutlinedIcon  />
 
     return (
-        <div onClick={onClick}>
+        <div
+            class={CheckBoxStyle().CheckBox}
+            onClick={onClick}
+        >
             {icon}
         </div>
     )

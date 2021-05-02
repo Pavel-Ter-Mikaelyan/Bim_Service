@@ -75,8 +75,7 @@ const TableColumnStyles = createUseStyles({
             width: 3,
             height: '100%',
             cursor: 'col-resize',
-            background: 'rgba(156,117,114,0.8)',
-            //border: '1px solid rgba(156,117,114,0.8)'
+            background: 'rgba(156,117,114,0.8)',            
         }
     }
 })

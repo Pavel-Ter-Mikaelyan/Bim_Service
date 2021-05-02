@@ -11,7 +11,13 @@ export const NavPanel_MinW = 150 //минимальная ширина NavPanel
 export const Window_minW = 400 //минимальная ширина окна браузера
 //настройки стилей таблицы
 export const MinTableCellWidth = 50 //минимальная ширина ячейки
-export const StartTableWidth = 200//стартовая ширина ячеек
+export const StartTableWidth = 200//стартовая ширина ячеек по умолчанию
+export const TableStartWidths = new Map([//стартовые ширины ячеек таблицы
+    ['prop1', 150],
+    ['prop2', 200],
+    ['prop3', 300]
+])
+
 //цвета линий
 export const SimpleLineColor = 'rgba(109, 109, 109, 0.8)'
 export const SimpleLineStyle = '1px solid ' + SimpleLineColor
