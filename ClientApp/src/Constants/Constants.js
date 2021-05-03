@@ -10,9 +10,9 @@ export const SourcePanel_MinW = 250 //минимальная ширина Source
 export const NavPanel_MinW = 150 //минимальная ширина NavPanel
 export const Window_minW = 400 //минимальная ширина окна браузера
 //настройки стилей таблицы
-export const MinTableCellWidth = 50 //минимальная ширина ячейки
-export const StartTableWidth = 200//стартовая ширина ячеек по умолчанию
-export const TableStartWidths = new Map([//стартовые ширины ячеек таблицы
+export const MinTableCellWidth = 50 //минимальная ширина столбца
+export const StartTableWidth = 200//стартовая ширина столбцов по умолчанию
+export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop1', 150],
     ['prop2', 200],
     ['prop3', 300]

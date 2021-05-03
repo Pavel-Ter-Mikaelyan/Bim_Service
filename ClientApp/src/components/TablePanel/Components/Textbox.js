@@ -4,9 +4,11 @@ import { createUseStyles } from 'react-jss';
 import { BoldLineColor, SimpleLineColor } from '../../../constants/Constants'
 
 export const Textbox = ({ ComponentData }) => {
+    const [text, setText] = useState(ComponentData.valueObj.value)
     //изменить текущее значение в объекте valueObj
     const onChange = (e) => {
         ComponentData.valueObj.value = e.target.value
+        setText(e.target.value)
     }
     return (
         <input
@@ -19,7 +21,7 @@ export const Textbox = ({ ComponentData }) => {
                 textOverflow: 'ellipsis'
             }}
             type='text'
-            value={ComponentData.valueObj.value}
+            value={text}
             disabled={ComponentData.disabled}
             onChange={onChange}
         />
