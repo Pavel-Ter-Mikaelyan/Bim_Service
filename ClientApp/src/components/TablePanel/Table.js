@@ -10,6 +10,7 @@ import { Textbox } from './Components/Textbox';
 import {
     TableStartWidths,
     StartTableWidth,
+    MinTableCellWidth,
     BoldLineStyle
 } from '../../constants/Constants'
 
@@ -69,18 +70,17 @@ const TableStyle = createUseStyles({
             alignItems: 'flex-start',
             height: '100%',
             border: BoldLineStyle,
-            borderRadius: 12,           
+            borderRadius: 12,
             overflowX: 'auto',
             overflowY: 'hidden',
             '& >.BodyHead': {
                 display: 'flex',
                 '& >.BodyCell': {
                     display: 'flex',
-                    '& >.CellContent': { 
+                    '& >.CellContent': {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: 200,
                         borderBottom: BoldLineStyle,
                         //текст заголовка столбцов
                         '& >p': {
@@ -102,7 +102,6 @@ const TableStyle = createUseStyles({
                         '& >.CellContent': {
                             display: 'flex',
                             alignItems: 'center',
-                            width: 200,
                             height: 25,
                             borderBottom: BoldLineStyle,
                         }
@@ -121,7 +120,7 @@ const TableStyle = createUseStyles({
     }
 })
 
-const TableHead = ({ TableData, disabled }) => {
+const TableHead = ({ TableData }) => {
 
     return (
         <div class='TableHead'>
@@ -223,6 +222,14 @@ const BodyCell = ({
     disabled,
     bHeadCell }) => {
 
+    let currr_W = ColumnSize.get(columnInfo.headerPropName)
+
+    //состояние нажатия кнопки мыши
+    const [MD, setMD] = useState(false)
+    //координаты мыши
+    const [oldClientX, setOldClientX] = useState(0)
+    const [newClientX, setNewClientX] = useState(0)
+
     let ContentComponent = null
     //если данный компонент - ячейка заголовка
     if (bHeadCell) {
@@ -232,12 +239,44 @@ const BodyCell = ({
         ContentComponent = CellComponent(columnInfo, valueIndex, disabled)
     }
 
+    //Изменение размера ячейки по событию мыши
+    let h_move = e => {
+        setNewClientX(e.clientX)
+    }
+    let h_up = () => {
+        setMD(false)
+        const newWidth =
+            Math.max(currr_W + newClientX - oldClientX, MinTableCellWidth) 
+        let newColumnSize = new Map(ColumnSize)  
+        newColumnSize.set(columnInfo.headerPropName, newWidth)
+        setColumnSize(newColumnSize)       
+        document.body.style.cursor = 'default'
+    }
+    //подписка на события мыши и изменение размеров окна 
+    useEffect(() => {
+        if (MD) {
+            window.addEventListener('mousemove', h_move)
+            window.addEventListener('mouseup', h_up)
+        }
+        return () => {
+            window.removeEventListener('mousemove', h_move)
+            window.removeEventListener('mouseup', h_up)
+        }
+    })
+    const onMouseDown = (e) => {
+        setMD(!MD)//мышь нажата
+        //установить координаты мыши
+        setOldClientX(e.clientX)
+        setNewClientX(e.clientX)
+        document.body.style.cursor = 'col-resize'
+    }
+
     return (
         <div class='BodyCell'>
-            <div class='CellContent' >
+            <div class='CellContent' style={{ width: currr_W }} >
                 {ContentComponent}
             </div >
-            <div class='CellSepar' />
+            <div class='CellSepar' onMouseDown={onMouseDown} />
         </div>
     )
 }
@@ -276,7 +315,7 @@ export const Table = () => {
     TableData.columnData.forEach(q => {
         let column_w = StartTableWidth
         if (TableStartWidths.has(q.headerPropName)) {
-            column_w = TableStartWidths[q.headerPropName]
+            column_w = TableStartWidths.get(q.headerPropName)
         }
         DefaultColumnSize.set(q.headerPropName, column_w)
     })
@@ -284,9 +323,15 @@ export const Table = () => {
     const [ColumnSize, setColumnSize] = useState(DefaultColumnSize)
 
     return (
-        <div class={cls.Table}>
-            <TableHead TableData={TableData} disabled={disabled} />
-            <BodyContainer TableData={TableData} disabled={disabled} />
+        <div class={cls.Table} >
+
+            <TableHead TableData={TableData} />
+            <BodyContainer
+                ColumnSize={ColumnSize}
+                setColumnSize={setColumnSize}
+                TableData={TableData}
+                disabled={disabled}
+            />
         </div>
     )
 }
