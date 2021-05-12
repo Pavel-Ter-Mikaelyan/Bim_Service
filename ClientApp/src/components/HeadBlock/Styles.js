@@ -1,5 +1,5 @@
 ﻿import { createUseStyles } from 'react-jss';
-import { HeadBlockHeight, Window_minW, MainPanelMargin  } from '../../constants/Constants'
+import { HeadBlockHeight, Window_minW, MainPanelMargin, ThemeColor2  } from '../../constants/Constants'
 
 export const useStyles = createUseStyles({
     HeadBlock: {
@@ -8,7 +8,7 @@ export const useStyles = createUseStyles({
         alignItems: 'center',
         minWidth: Window_minW + MainPanelMargin,
 
-        background: 'rgba(200, 200, 200, 0.3)',
+        background: ThemeColor2,
         boxShadow: '1px 1px 3px 1px rgba(0, 0, 0, 0.3)',
                 
         userSelect: 'none',

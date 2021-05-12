@@ -8,10 +8,14 @@ import { Combobox } from './Components/Combobox';
 import { Textbox } from './Components/Textbox';
 
 import {
+    ThemeColor1,
+    ThemeColor2,
+    ThemeColor3,
     TableStartWidths,
     StartTableWidth,
     MinTableCellWidth,
-    BoldLineStyle
+    BoldLineStyle,
+    SimpleLineStyle
 } from '../../constants/Constants'
 
 const TableData = {
@@ -19,19 +23,19 @@ const TableData = {
     rowIs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     columnData: [
         {
+            type: '0',
+            headerName: 'Столбец 2',
+            headerPropName: 'prop2',
+            defVal: 'знач. по умолч.',
+            rowVals: [{ value: 'знач1rgieonr;oirtnh;trdhn;dfthnft;ohidnfthoin;hiodtf' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач2' }, { value: 'знач3' }]
+        },
+        {
             type: 1,
             headerName: 'Столбец 1 Столбец 1 Столбец 1',
             headerPropName: 'prop1',
             defVal: 5,
             comboboxData: [1, 2, 3, 4, 5, 6, 7, 8, 9, '9ykygklhlhlufyklfuhluglguluhlugl'],
             rowVals: [{ value: '9ykygklhlhlufyklfuhluglguluhlugl' }, { value: '9' }, { value: '9' }, { value: '9' }, { value: '9' }, { value: '9' }, { value: '9' }, { value: '9' }, { value: '1' }, { value: '3' }]
-        },
-        {
-            type: '0',
-            headerName: 'Столбец 2',
-            headerPropName: 'prop2',
-            defVal: 'знач. по умолч.',
-            rowVals: [{ value: 'знач1rgieonr;oirtnh;trdhn;dfthnft;ohidnfthoin;hiodtf' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач1' }, { value: 'знач2' }, { value: 'знач3' }]
         },
         {
             type: 2,
@@ -65,23 +69,25 @@ const TableStyle = createUseStyles({
             },
         },
         '& >.BodyContainer': {
+            position: 'relative',
             display: 'flex',
             flexFlow: 'column nowrap',
             alignItems: 'flex-start',
             height: '100%',
-            border: BoldLineStyle,
-            borderRadius: 12,
-            overflowX: 'auto',
+            background: ThemeColor2,              
+            border: SimpleLineStyle,
+            borderRadius: 6,
             overflowY: 'hidden',
             '& >.BodyHead': {
                 display: 'flex',
                 '& >.BodyCell': {
                     display: 'flex',
+                    background: ThemeColor3,
                     '& >.CellContent': {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderBottom: BoldLineStyle,
+                        borderBottom: SimpleLineStyle,
                         //текст заголовка столбцов
                         '& >p': {
                             margin: 5,
@@ -99,33 +105,41 @@ const TableStyle = createUseStyles({
                     display: 'flex',
                     '& >.BodyCell': {
                         display: 'flex',
+                        background: ThemeColor3,
                         '& >.CellContent': {
                             display: 'flex',
                             alignItems: 'center',
                             height: 25,
-                            borderBottom: BoldLineStyle,
-                        }
+                            borderBottom: SimpleLineStyle,
+                        },
                     },
                     '&:hover': {
-                        boxShadow: '0 0 3px 2px rgba(156,117,114,0.8)'
+                        boxShadow: '0 0 2px 2px ' + ThemeColor1,
                     }
                 }
+            },
+            '& >.SeparIndicator': {
+                position: 'absolute',
+                width: 3,
+                height: '100%',
+                cursor: 'col-resize',               
+                background: ThemeColor1
             }
         },
         '& .CellSepar': {
             width: 3,
-            cursor: 'col-resize',
-            background: 'rgba(156,117,114,0.8)',
+            cursor: 'col-resize',        
+            background: ThemeColor1
         }
     }
 })
 
-const TableHead = ({ TableData }) => {
+const TableHead = (TableInfo) => {
 
     return (
         <div class='TableHead'>
             <div class='HeadText'>
-                <p>{TableData.tableName}</p>
+                <p>{TableInfo.TableState.TableData.tableName}</p>
             </div>
             <div class='HeadMenu'>
                 <CheckBoxOutlinedIcon />
@@ -134,123 +148,116 @@ const TableHead = ({ TableData }) => {
         </div>
     )
 }
-
-const BodyContainer = ({ ColumnSize, setColumnSize, TableData, disabled }) => {
+const SeparIndicator = (SeparIndicator_W, SeparIndicatorDisplay) => {
     return (
-        <div class='BodyContainer'>
-            <BodyHead
-                ColumnSize={ColumnSize}
-                setColumnSize={setColumnSize}
-                TableData={TableData}
-                disabled={disabled}
-            />
-            <TableBody
-                TableData={TableData}
-                disabled={disabled}
-                ColumnSize={ColumnSize}
-                setColumnSize={setColumnSize}
-            />
-        </div>
+        <div class='SeparIndicator'
+            style={{
+                left: SeparIndicator_W,
+                display: SeparIndicatorDisplay
+            }}
+        />
     )
 }
-const BodyHead = ({ ColumnSize, setColumnSize, TableData, disabled }) => {
-
-    const HeadCollection =
-        TableData.columnData.map(columnInfo =>
-            BodyCell({
-                ColumnSize: ColumnSize,
-                setColumnSize: setColumnSize,
-                columnInfo: columnInfo,
-                disabled: disabled,
-                bHeadCell: true
-            })
+const SeparIndicators = (TableInfo) => {
+    return (
+        TableInfo.TableState.ColumnSizeData.map(SizeData =>
+            SeparIndicator(SizeData.SeparIndicator_W, SizeData.SeparIndicatorDisplay)
         )
-
-    return (
-        <div class='BodyHead'>
-            {HeadCollection}
-        </div>
     )
 }
-
-const TableBody = ({ ColumnSize, setColumnSize, TableData, disabled }) => {
-
-    const BodyRows = new Set();
-    for (let i = 0; i < TableData.rowIs.length; i++) {
-        BodyRows.add(
-            BodyRow({
-                ColumnSize: ColumnSize,
-                setColumnSize: setColumnSize,
-                columnData: TableData.columnData,
-                valueIndex: i,
-                disabled: disabled
-            }))
+const BodyContainer = (TableInfo) => {
+    let overflowX
+    if (TableInfo.TableState.BodyContainerOverflowX) {
+        overflowX = 'auto'
+    } else {
+        overflowX = 'hidden'
     }
 
+    return (
+        <div class='BodyContainer' style={{ overflowX: overflowX }}>
+            {SeparIndicators(TableInfo)}
+            {BodyHead(TableInfo)}
+            {TableBody(TableInfo)}
+        </div>
+    )
+}
+const BodyHead = (TableInfo) => {
+    let HeadCollections = []
+    TableInfo.TableState.TableData.columnData.forEach((value, ColumnIndex) =>
+        HeadCollections.push(BodyCell(TableInfo, ColumnIndex, true))
+    )
+    return (
+        <div class='BodyHead'>
+            {HeadCollections}
+        </div>
+    )
+}
+const TableBody = (TableInfo) => {
+    let BodyRows = [];
+    TableInfo.TableState.TableData.rowIs.forEach((val, RowIndex) => {
+        BodyRows.push(BodyRow(TableInfo, RowIndex))
+    })
     return (
         <div class='TableBody'>
             {BodyRows}
         </div>
     )
 }
-const BodyRow = ({ ColumnSize, setColumnSize,
-    columnData, valueIndex, disabled }) => {
-
-    const BodyCells =
-        columnData.map(columnInfo =>
-            BodyCell({
-                ColumnSize: ColumnSize,
-                setColumnSize: setColumnSize,
-                columnInfo: columnInfo,
-                valueIndex: valueIndex,
-                disabled: disabled,
-                bHeadCell: false
-            })
-        )
-
+const BodyRow = (TableInfo, RowIndex) => {
+    let BodyCells = []
+    TableInfo.TableState.TableData.columnData.forEach((value, ColumnIndex) =>
+        BodyCells.push(BodyCell(TableInfo, ColumnIndex, false, RowIndex)))
     return (
         <div class='BodyRow'>
             {BodyCells}
         </div>
     )
 }
-const BodyCell = ({
-    ColumnSize,
-    setColumnSize,
-    columnInfo,
-    valueIndex,
-    disabled,
-    bHeadCell }) => {
+const BodyCell = (TableInfo, ColumnIndex, bHeadCell, RowIndex) => {
 
-    let currr_W = ColumnSize.get(columnInfo.headerPropName)
+    //ширина столбца для текущей ячейки
+    let currr_W = TableInfo.TableState.ColumnSizeData[ColumnIndex].column_w
 
     //состояние нажатия кнопки мыши
     const [MD, setMD] = useState(false)
     //координаты мыши
     const [oldClientX, setOldClientX] = useState(0)
     const [newClientX, setNewClientX] = useState(0)
+    //стартовое смещение сепаратора
+    const [startSeparIndicator_W, setStartSeparIndicator_W] = useState(0)
 
     let ContentComponent = null
     //если данный компонент - ячейка заголовка
     if (bHeadCell) {
-        ContentComponent = <p> {columnInfo.headerName}</p>
+        ContentComponent =
+            <p> {TableInfo.TableState.TableData.columnData[ColumnIndex].headerName}</p>
     }
     else {//если данный компонент - основная ячейка
-        ContentComponent = CellComponent(columnInfo, valueIndex, disabled)
+        ContentComponent =
+            CellComponent(TableInfo, ColumnIndex, RowIndex)
     }
 
     //Изменение размера ячейки по событию мыши
     let h_move = e => {
         setNewClientX(e.clientX)
+        //сместить сепаратор
+        let newSeparIndicator_W = startSeparIndicator_W + newClientX - oldClientX
+        TableInfo.TableState.ColumnSizeData[ColumnIndex].SeparIndicator_W = newSeparIndicator_W
+        TableInfo.setTableState({ ...TableInfo.TableState })
     }
     let h_up = () => {
+        //скрыть сепаратор 
+        addSeparIndicatorInfo(TableInfo.TableState.ColumnSizeData, false)
+        //отобразить полосу прокрутки
+        TableInfo.TableState.BodyContainerOverflowX = true
+        //изменение ширины столбца
         setMD(false)
         const newWidth =
-            Math.max(currr_W + newClientX - oldClientX, MinTableCellWidth) 
-        let newColumnSize = new Map(ColumnSize)  
-        newColumnSize.set(columnInfo.headerPropName, newWidth)
-        setColumnSize(newColumnSize)       
+            Math.max(currr_W + newClientX - oldClientX, MinTableCellWidth)
+        TableInfo.TableState.ColumnSizeData[ColumnIndex].column_w = newWidth
         document.body.style.cursor = 'default'
+        //применить изменения
+        TableInfo.setTableState({ ...TableInfo.TableState })
     }
     //подписка на события мыши и изменение размеров окна 
     useEffect(() => {
@@ -269,20 +276,31 @@ const BodyCell = ({
         setOldClientX(e.clientX)
         setNewClientX(e.clientX)
         document.body.style.cursor = 'col-resize'
+        //установить смещение сепаратора в соответствии с текущей шириной столбцов
+        //и видимость сепаратора
+        addSeparIndicatorInfo(TableInfo.TableState.ColumnSizeData, true, ColumnIndex)
+        //скрыть полосу прокрутки на момент перемещения сепаратора
+        //ПОКА НЕ ИСПОЛЬЗУЮ, ПОЭТОМУ true 
+        TableInfo.TableState.BodyContainerOverflowX = true
+        //применить изменения
+        TableInfo.setTableState({ ...TableInfo.TableState })
+        //установить стартовое смещение сепаратора
+        setStartSeparIndicator_W(TableInfo.TableState.ColumnSizeData[ColumnIndex].SeparIndicator_W)
     }
-
     return (
         <div class='BodyCell'>
             <div class='CellContent' style={{ width: currr_W }} >
                 {ContentComponent}
             </div >
-            <div class='CellSepar' onMouseDown={onMouseDown} />
+            <div class='CellSepar' onMouseDown={onMouseDown} >
+            </div>
         </div>
     )
 }
-const CellComponent = (columnInfo, valueIndex, disabled) => {
+const CellComponent = (TableInfo, ColumnIndex, RowIndex) => {
     let component = null;
     let comboboxData = null;
+    let columnInfo = TableInfo.TableState.TableData.columnData[ColumnIndex]
 
     //если тип ячейки 'Textbox'
     if (columnInfo.type == 0) {
@@ -299,39 +317,70 @@ const CellComponent = (columnInfo, valueIndex, disabled) => {
     }
 
     const ComponentData = {};
-    ComponentData.valueObj = columnInfo.rowVals[valueIndex]
-    ComponentData.disabled = disabled
+    ComponentData.valueObj = columnInfo.rowVals[RowIndex]
+    ComponentData.disabled = TableInfo.TableState.disabled
     ComponentData.comboboxData = comboboxData
 
     return component({ ComponentData: ComponentData })
+}
+const addSeparIndicatorInfo = (ColumnSizeData, showSeparIndicator, ColumnIndex) => {
+
+    let SeparIndicator_W = 0
+    ColumnSizeData.forEach((SizeData, i) => {
+        //определение смещения сепаратора
+        if (SeparIndicator_W != 0) SeparIndicator_W += 3
+        SeparIndicator_W += SizeData.column_w
+        SizeData.SeparIndicator_W = SeparIndicator_W
+        //видимость сепаратора       
+        if (showSeparIndicator && ColumnIndex == i) {
+            SizeData.SeparIndicatorDisplay = 'block'
+        }
+        else {
+            SizeData.SeparIndicatorDisplay = 'none'
+        }
+    })
 }
 
 export const Table = () => {
     const cls = TableStyle()
     const disabled = false
 
-    //определение ширин столбцов по умолчанию
-    let DefaultColumnSize = new Map()
+    //данные ширин столбцов
+    let DefaultColumnSizeData = []
     TableData.columnData.forEach(q => {
+        //общая ширина всех столбцов по умолчанию
         let column_w = StartTableWidth
         if (TableStartWidths.has(q.headerPropName)) {
+            //ширина столбца из коллекции
             column_w = TableStartWidths.get(q.headerPropName)
         }
-        DefaultColumnSize.set(q.headerPropName, column_w)
+        //создание объекта с настройками столбцов
+        let SizeData = {}
+        SizeData.headerPropName = q.headerPropName//имя столбца
+        SizeData.column_w = column_w//ширина столбца
+        DefaultColumnSizeData.push(SizeData)
     })
-    //ширина столбцов
-    const [ColumnSize, setColumnSize] = useState(DefaultColumnSize)
+    addSeparIndicatorInfo(DefaultColumnSizeData, false)
+
+    //объект для передачи в подкомпоненты
+    let defTableState = {
+        ColumnSizeData: DefaultColumnSizeData,
+        TableData: TableData,
+        disabled: disabled,
+        BodyContainerOverflowX: true
+    }
+
+    //данные ширин столбцов и данные сепаратора
+    const [TableState, setTableState] = useState(defTableState)
+    const TableInfo = {
+        TableState: TableState,
+        setTableState: setTableState
+    }
 
     return (
         <div class={cls.Table} >
-
-            <TableHead TableData={TableData} />
-            <BodyContainer
-                ColumnSize={ColumnSize}
-                setColumnSize={setColumnSize}
-                TableData={TableData}
-                disabled={disabled}
-            />
+            {TableHead(TableInfo)}
+            {BodyContainer(TableInfo)}
         </div>
     )
 }

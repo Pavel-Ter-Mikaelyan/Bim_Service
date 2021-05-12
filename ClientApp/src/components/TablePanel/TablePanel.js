@@ -7,8 +7,7 @@ import { Table } from './Table'
 
 //стили
 const TablePanelStyles = createUseStyles({
-    TablePanel: {
-        '& *': { background: 'none' },
+    TablePanel: {        
         display: 'flex',
         flexFlow: 'column nowrap',
         overflow: 'hidden',

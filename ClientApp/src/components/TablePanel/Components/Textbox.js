@@ -17,6 +17,7 @@ export const Textbox = ({ ComponentData }) => {
                     SimpleLineColor : BoldLineColor,
                 margin: '0 4px 0 4px',
                 width: '100%',
+                background: 'none',
                 fontSize: '1em',
                 textOverflow: 'ellipsis'
             }}

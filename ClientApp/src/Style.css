@@ -4,10 +4,9 @@
     margin: 0;
     border: 0;
     font-family: 'Roboto';
-    color: rgb(40, 40, 40);
-}
-body { 
-    background-color: burlywood;
-    overflow: hidden
-}
+    color: rgb(40, 40, 40);   
+} 
 
+body {
+    overflow: hidden;  
+}

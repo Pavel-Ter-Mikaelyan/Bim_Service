@@ -8,8 +8,7 @@ import { Provider } from 'react-redux'
 
 import { rootReducer } from './reducers/Index'
 import './Style.css';
-import { MainPanel } from './components/MainPanel/MainPanel';
-import { HeadBlock } from './components/HeadBlock/HeadBlock';
+import { MainComponent } from './components/MainComponent/MainComponent';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -19,8 +18,7 @@ const store = createStore(rootReducer)
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter basename={baseUrl}>
-            <HeadBlock />
-            <MainPanel />
+            <MainComponent />          
             {/*<Switch>
             <Route exact path='/' component={Counter} />
             <Route exact path='/counter' component={Counter} />

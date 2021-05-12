@@ -11,6 +11,7 @@ const ComboboxStyles = createUseStyles({
         margin: '0 0 0 4px',
         width: '100%',
         height: '100%',
+        background: 'none',
         fontSize: '1em',
         cursor: 'pointer',
         textOverflow: 'ellipsis',

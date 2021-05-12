@@ -10,7 +10,7 @@ export const SourcePanel_MinW = 250 //минимальная ширина Source
 export const NavPanel_MinW = 150 //минимальная ширина NavPanel
 export const Window_minW = 400 //минимальная ширина окна браузера
 //настройки стилей таблицы
-export const MinTableCellWidth = 50 //минимальная ширина столбца
+export const MinTableCellWidth = 100 //минимальная ширина столбца
 export const StartTableWidth = 200//стартовая ширина столбцов по умолчанию
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop1', 150],
@@ -18,13 +18,29 @@ export const TableStartWidths = new Map([//стартовые ширины ст�
     ['prop3', 300]
 ])
 
+//цвет темы и производные цвета
+export const ThemeColor1 = 'hsl(120, 25%, 65%)'
+const arr = ThemeColor1.split(/\(|\,|%/)
+let theme_h = +arr[1].trim()
+let theme_l = +arr[2].trim()
+let theme_s = +arr[4].trim()
+export const ThemeColor2 =
+    'hsl(' + theme_h + ',' + Math.round(theme_l * 0.8) +
+    '%,' + Math.round(theme_s * 1.08) + '%)'
+export const ThemeColor3 =
+    'hsl(' + theme_h + ',' + Math.round(theme_l * 0.63) +
+    '%,' + Math.round(theme_s * 1.15) + '%)'
+export const scrollbarCollor1 =
+    'hsl(' + theme_h + ',' + theme_l +
+    '%,' + Math.round(theme_s * 0.92) + '%)'
+export const scrollbarCollor2 = ThemeColor2
+
 //цвета линий
 export const SimpleLineColor = 'rgba(109, 109, 109, 0.8)'
 export const SimpleLineStyle = '1px solid ' + SimpleLineColor
 export const BoldLineColor = 'rgb(40, 40, 40)'
 export const BoldLineStyle = '1px solid ' + BoldLineColor
 //цвета выделений
-export const SelectColor1 = 'rgba(109, 109, 150, 1)'
 export const SelectColor2 = 'rgba(109, 109, 150, 0.2)'
 
 //svg иконка 'Фокус' (над деревом)

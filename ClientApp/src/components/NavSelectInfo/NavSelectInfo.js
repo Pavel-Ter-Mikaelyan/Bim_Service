@@ -8,7 +8,7 @@ import { TreeDictionary, Focus_Icon } from '../../constants/Constants'
 const useStyles = createUseStyles({
     NavSelectInfo: {
         display: 'flex',
-        alignItems: 'end',
+        alignItems: 'flex-end',
         overflow: 'hidden',        
         background: 'rgba(0, 0, 0, 0)',
         '& svg': {

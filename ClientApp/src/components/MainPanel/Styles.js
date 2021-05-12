@@ -4,7 +4,8 @@ import {
     MainPanelMargin,
     SepPanel_W,
     Window_minW,
-    SimpleLineStyle
+    SimpleLineStyle,
+    ThemeColor2
 } from '../../constants/Constants'
 
 let NavAndSource = {
@@ -15,7 +16,7 @@ let NavAndSource = {
 
     border: SimpleLineStyle,
     borderRadius: 12,
-    background: 'rgba(200, 200, 200, 0.3)',
+    background: ThemeColor2,
     boxShadow: '2px 2px 4px 2px rgba(0, 0, 0, 0.4)',
 
     overflow: 'hidden'
