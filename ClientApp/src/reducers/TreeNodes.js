@@ -1,4 +1,6 @@
-﻿export const TreeNodes =
+﻿import { NodeIdConstructor } from '../components/NavTreeView/NodeIdConstructor'
+
+export const TreeNodes =
     (state = { Data: null, SelectedId: '-1' }, action) => {
         switch (action.type) {
             case 'LOAD_TREENODES':
@@ -21,7 +23,9 @@
 const ValidSelectId = (Data, SelectedId) => {
     if (SelectedId === null ||
         SelectedId === undefined) { return false }
-    if (Data.id === SelectedId) { return true }
+    //идентификатор узла
+    let currId = NodeIdConstructor(Data);
+    if (currId === SelectedId) { return true }
 
     return Data.children
         .some(childrenData =>

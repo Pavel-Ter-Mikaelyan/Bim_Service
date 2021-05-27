@@ -8,9 +8,7 @@ export const TableManagerContainer = () => {
 
     return (
         <div class='TableManagerContainer'>
-            <CheckBoxOutlineBlankOutlinedIcon />
-            <CheckBoxOutlinedIcon />
-            <CheckBoxOutlinedIcon />
-        </div>
+            вкл режима редактирования и кнопки отправки в базу
+         </div>
     )
 }

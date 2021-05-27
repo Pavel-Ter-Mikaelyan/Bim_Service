@@ -8,5 +8,10 @@ namespace Bim_Service.Model
         public string Name { get; set; }
 
         public List<DB_Object> DB_Objects { get; set; }
+
+        public TreeViewNodeDB GetNode()
+        {
+            return new TreeViewNodeDB(Id, Name, "Client");
+        }
     }
 }

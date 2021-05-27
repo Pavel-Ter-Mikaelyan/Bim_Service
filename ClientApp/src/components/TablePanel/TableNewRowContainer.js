@@ -5,8 +5,7 @@ export const TableNewRowContainer = () => {
 
     return (
         <div class='TableNewRowContainer'>
-
-            r
+         здесь будет шаблон строки для добавления в таблицу
         </div>
     )
 }

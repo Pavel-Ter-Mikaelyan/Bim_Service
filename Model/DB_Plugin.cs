@@ -17,5 +17,10 @@ namespace Bim_Service.Model
         public DB_Plugin_const DB_Plugin_const { get; set; }       
         public DB_Template DB_Template { get; set; }       
         public DB_Stage DB_Stage { get; set; }
+
+        public TreeViewNodeDB GetNode()
+        {
+            return new TreeViewNodeDB(Id, DB_Plugin_const.Name, "Plugin");
+        }
     }
 }

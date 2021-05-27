@@ -9,5 +9,10 @@ namespace Bim_Service.Model
 
         public DB_Client DB_Client { get; set; }
         public List<DB_Stage> DB_Stages { get; set; }
+              
+        public TreeViewNode GetNode()
+        {
+            return new TreeViewNodeDB(Id, Name, "Object");
+        }
     }
 }

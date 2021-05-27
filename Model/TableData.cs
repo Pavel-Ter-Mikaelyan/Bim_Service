@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bim_Service.Model
 {  
+    //МОДУЛЬ В РАЗРАБОТКЕ
     public class TableData
     {
         public string tableName { get; set; } = "";       

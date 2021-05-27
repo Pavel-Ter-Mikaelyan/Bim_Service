@@ -8,5 +8,10 @@
 
         public DB_Stage DB_Stage { get; set; }
         public DB_Template DB_Template { get; set; }
+
+        public TreeViewNodeDB GetNode()
+        {
+            return new TreeViewNodeDB(Id, FileName, "File");
+        }
     }
 }
