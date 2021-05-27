@@ -10,7 +10,6 @@ import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateC
 
 import { TreeIcons, SimpleLineStyle } from '../../constants/Constants'
 import { LoadTreeNodesData } from '../../actions/Index'
-import { NodeIdConstructor } from './NodeIdConstructor'
 
 //стили для TreeItem
 const StyledTreeItem = withStyles(() => ({
@@ -88,10 +87,7 @@ function NavTreeView({ TreeNodesData, LoadData }) {
             return <p>Загрузка...</p>
         }
         //получить systemName, например, 'Stage'
-        const nodeType = TreeNodes.systemName
-              
-        //идентификатор узла
-        let currId = NodeIdConstructor(TreeNodes);
+        const nodeType = TreeNodes.systemName                     
         
         //создание лейбла
         const label =
@@ -102,7 +98,7 @@ function NavTreeView({ TreeNodesData, LoadData }) {
             })
 
         return (
-            <StyledTreeItem key={currId} nodeId={currId} label={label} >
+            <StyledTreeItem key={TreeNodes.NodeId} nodeId={TreeNodes.NodeId} label={label} >
                 {Array.isArray(TreeNodes.children) ?
                     TreeNodes.children.map((node) => TreeConstructor(node)) : null}
             </StyledTreeItem >)
