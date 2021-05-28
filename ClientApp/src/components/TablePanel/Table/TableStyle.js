@@ -4,6 +4,7 @@ import {
     ThemeColor1,
     ThemeColor2,
     ThemeColor3,
+    SelectColor2,
     SimpleLineStyle
 } from '../../../constants/Constants'
 
@@ -18,14 +19,14 @@ export const TableStyle = createUseStyles({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            height: 40,
             '& >.HeadText': {
                 display: 'flex',
                 alignItems: 'center',
                 userSelect: 'none',
             },
-            '& >.HeadMenu': {
-                display: 'flex',
-                alignItems: 'center'
+            '& >.HeadMenuContainer': {
+                                
             },
         },
         '& >.BodyContainer': {
@@ -33,7 +34,7 @@ export const TableStyle = createUseStyles({
             display: 'flex',
             flexFlow: 'column nowrap',
             alignItems: 'flex-start',
-            height: '100%',
+            height: '100%',          
             background: ThemeColor2,
             border: SimpleLineStyle,
             borderRadius: 6,
@@ -63,9 +64,9 @@ export const TableStyle = createUseStyles({
                 height: '100%',
                 '& >.BodyRow': {
                     display: 'flex',
+                    background: ThemeColor3,
                     '& >.BodyCell': {
                         display: 'flex',
-                        background: ThemeColor3,
                         '& >.CellContent': {
                             display: 'flex',
                             alignItems: 'center',
@@ -74,7 +75,7 @@ export const TableStyle = createUseStyles({
                         },
                     },
                     '&:hover': {
-                        boxShadow: '0 0 2px 2px ' + ThemeColor1,
+                        background: SelectColor2,
                     }
                 }
             },

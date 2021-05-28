@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+
+import { HeadMenu } from './HeadMenu'
 
 export const TableHead = (TableInfo) => {
     return (
@@ -7,8 +8,8 @@ export const TableHead = (TableInfo) => {
             <div class='HeadText'>
                 <p>{TableInfo.TableState.TableData.tableName}</p>
             </div>
-            <div class='HeadMenu'>               
-                <p>здесь доп. инструменты </p>
+            <div class='HeadMenuContainer'>
+                <HeadMenu />
             </div>
         </div>
     )
