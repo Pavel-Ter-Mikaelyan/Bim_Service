@@ -2,14 +2,14 @@
 
 import { HeadMenu } from './HeadMenu'
 
-export const TableHead = (TableInfo) => {
+export const TableHead = ({ TableInfo }) => {
     return (
         <div class='TableHead'>
             <div class='HeadText'>
                 <p>{TableInfo.TableState.TableData.tableName}</p>
             </div>
             <div class='HeadMenuContainer'>
-                <HeadMenu />
+                <HeadMenu TableInfo={TableInfo}/>
             </div>
         </div>
     )

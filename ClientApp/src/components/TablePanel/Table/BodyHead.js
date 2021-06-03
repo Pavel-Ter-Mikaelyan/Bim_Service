@@ -2,10 +2,15 @@
 
 import { BodyCell } from './BodyCell'
 
-export const BodyHead = (TableInfo) => {
+export const BodyHead = ({ TableInfo }) => {
     let HeadCollections = []
     TableInfo.TableState.TableData.columnData.forEach((value, ColumnIndex) =>
-        HeadCollections.push(BodyCell(TableInfo, ColumnIndex, true))
+        HeadCollections.push(
+            <BodyCell
+                TableInfo={TableInfo}
+                ColumnIndex={ColumnIndex}
+                bHeadCell={true} />
+        )
     )
     return (
         <div class='BodyHead'>

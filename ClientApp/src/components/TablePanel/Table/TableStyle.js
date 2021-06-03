@@ -4,8 +4,11 @@ import {
     ThemeColor1,
     ThemeColor2,
     ThemeColor3,
+    SelectColor1,
     SelectColor2,
-    SimpleLineStyle
+    SimpleLineStyle,
+    BoldLineColor,
+    SimpleLineColor,
 } from '../../../constants/Constants'
 
 //стили
@@ -24,9 +27,13 @@ export const TableStyle = createUseStyles({
                 display: 'flex',
                 alignItems: 'center',
                 userSelect: 'none',
+                '& p': {
+                    color: Data => Data.disabled ?
+                        SimpleLineColor : BoldLineColor
+                }
             },
             '& >.HeadMenuContainer': {
-                                
+
             },
         },
         '& >.BodyContainer': {
@@ -34,7 +41,7 @@ export const TableStyle = createUseStyles({
             display: 'flex',
             flexFlow: 'column nowrap',
             alignItems: 'flex-start',
-            height: '100%',          
+            height: '100%',
             background: ThemeColor2,
             border: SimpleLineStyle,
             borderRadius: 6,
@@ -53,7 +60,9 @@ export const TableStyle = createUseStyles({
                         '& >p': {
                             margin: 5,
                             textAlign: 'center',
-                            userSelect: 'none'
+                            userSelect: 'none',
+                            color: Data => Data.disabled ?
+                                SimpleLineColor : BoldLineColor
                         }
                     }
                 }
@@ -75,7 +84,8 @@ export const TableStyle = createUseStyles({
                         },
                     },
                     '&:hover': {
-                        background: SelectColor2,
+                        background: Data => Data.deleteMode ?
+                            SelectColor1 : SelectColor2,
                     }
                 }
             },

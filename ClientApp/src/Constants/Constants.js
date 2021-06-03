@@ -10,13 +10,15 @@ export const SourcePanel_MinW = 250 //минимальная ширина Source
 export const NavPanel_MinW = 150 //минимальная ширина NavPanel
 export const Window_minW = 400 //минимальная ширина окна браузера
 //настройки стилей таблицы
-export const MinTableCellWidth = 100 //минимальная ширина столбца
+export const MinTableCellWidth = 80 //минимальная ширина столбца
 export const StartTableWidth = 200//стартовая ширина столбцов по умолчанию
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
+    ['prop0', 80],
     ['prop1', 150],
     ['prop2', 200],
     ['prop3', 300]
 ])
+export const SelectColor1 = 'hsl(0, 25%, 65%)'//удаление в табл.
 
 //цвет темы и производные цвета
 export const ThemeColor1 = 'hsl(120, 25%, 65%)'
@@ -40,8 +42,9 @@ export const SimpleLineColor = 'rgba(109, 109, 109, 0.8)'
 export const SimpleLineStyle = '1px solid ' + SimpleLineColor
 export const BoldLineColor = 'rgb(40, 40, 40)'
 export const BoldLineStyle = '1px solid ' + BoldLineColor
+
 //цвета выделений
-export const SelectColor2 = 'rgba(109, 109, 150, 0.2)'
+export const SelectColor2 = 'rgba(109, 109, 150, 0.2)'//обычное
 
 //svg иконка 'Фокус' (над деревом)
 export const Focus_Icon = () => {

@@ -4,7 +4,7 @@ import { SeparIndicators } from './SeparIndicators'
 import { BodyHead } from './BodyHead'
 import { TableBody } from './TableBody'
 
-export const BodyContainer = (TableInfo) => {
+export const BodyContainer = ({ TableInfo }) => {
     let overflowX
     if (TableInfo.TableState.BodyContainerOverflowX) {
         overflowX = 'auto'
@@ -14,9 +14,9 @@ export const BodyContainer = (TableInfo) => {
 
     return (
         <div class='BodyContainer' style={{ overflowX: overflowX }}>
-            {SeparIndicators(TableInfo)}
-            {BodyHead(TableInfo)}
-            {TableBody(TableInfo)}
+            <SeparIndicators TableInfo={TableInfo} />
+            <BodyHead TableInfo={TableInfo} />
+            <TableBody TableInfo={TableInfo} />
         </div>
     )
 }

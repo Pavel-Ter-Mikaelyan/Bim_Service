@@ -4,7 +4,7 @@ import { addSeparIndicatorInfo } from './addSeparIndicatorInfo'
 import { CellComponent } from './CellComponent'
 import { MinTableCellWidth } from '../../../constants/Constants'
 
-export const BodyCell = (TableInfo, ColumnIndex, bHeadCell, RowIndex) => {
+export const BodyCell = ({ TableInfo, ColumnIndex, bHeadCell, RowIndex }) => {
 
     //ширина столбца для текущей ячейки
     let currr_W = TableInfo.TableState.ColumnSizeData[ColumnIndex].column_w
@@ -25,7 +25,11 @@ export const BodyCell = (TableInfo, ColumnIndex, bHeadCell, RowIndex) => {
     }
     else {//если данный компонент - основная ячейка
         ContentComponent =
-            CellComponent(TableInfo, ColumnIndex, RowIndex)
+            < CellComponent
+                TableInfo={TableInfo}
+                ColumnIndex={ColumnIndex}
+                RowIndex={RowIndex}
+            />
     }
 
     //Изменение размера ячейки по событию мыши

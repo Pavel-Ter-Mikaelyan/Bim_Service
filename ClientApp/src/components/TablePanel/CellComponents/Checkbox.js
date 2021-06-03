@@ -6,40 +6,39 @@ import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 
 import { BoldLineColor, SimpleLineColor } from '../../../constants/Constants'
 
-export const Checkbox = ({ ComponentData }) => {
-    const [checked, setChecked] = useState(ComponentData.valueObj.value)
-    //стили
-    const CheckBoxStyle = createUseStyles({
-        CheckBox: {
-            display: 'flex',
-            alignItems: 'center', //по центру по вертикали 
-            justifyContent: 'center', //по центру по горизонтали  
-            height: '100%',
-            width: '100%',
-            cursor: 'pointer',
-            '& svg': {
-                fill: ComponentData.disabled ?
-                    SimpleLineColor : BoldLineColor,
-                width: 20,
-                height: 20
-            }
+//стили
+const CheckBoxStyle = createUseStyles({
+    CheckBox: {
+        display: 'flex',
+        alignItems: 'center', //по центру по вертикали 
+        justifyContent: 'center', //по центру по горизонтали  
+        height: '100%',
+        width: '100%',
+        cursor: 'pointer',
+        '& svg': {
+            fill: disabled => disabled ?
+                SimpleLineColor : BoldLineColor,
+            width: 20,
+            height: 20
         }
-    })
-    //изменить текущее значение в объекте valueObj
-    const onClick = () => {
-        if (ComponentData.disabled) return;
-        setChecked(!checked)
-        ComponentData.valueObj.value = !ComponentData.valueObj.value
     }
+})
 
+export const Checkbox = ({ ComponentData }) => {
+   
+    const cls = CheckBoxStyle(ComponentData.disabled)       
     const icon =
-        checked ?
-            <CheckBoxOutlineBlankOutlinedIcon  /> :
-            <CheckBoxOutlinedIcon  />
+        ComponentData.valueObj.value ?
+            <CheckBoxOutlinedIcon /> :
+            <CheckBoxOutlineBlankOutlinedIcon />
+
+    const onClick = (e) => {
+        ComponentData.onChange(e, 'Checkbox')
+    }
 
     return (
         <div
-            class={CheckBoxStyle().CheckBox}
+            class={cls.CheckBox}
             onClick={onClick}
         >
             {icon}

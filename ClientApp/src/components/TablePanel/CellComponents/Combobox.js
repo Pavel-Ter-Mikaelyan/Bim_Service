@@ -22,11 +22,8 @@ const ComboboxStyles = createUseStyles({
 export const Combobox = ({ ComponentData }) => {
     const cls = ComboboxStyles(ComponentData.disabled)
 
-    //изменить текущее значение в объекте valueObj
     const onChange = (e) => {
-        if (e !== undefined) {
-            ComponentData.valueObj.value = e.target.value
-        }
+        ComponentData.onChange(e, 'Combobox')
     }
 
     return (

@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect } from 'react'; 
+﻿import React, { useState, useEffect } from 'react';
 
-const SeparIndicator = (SeparIndicator_W, SeparIndicatorDisplay) => {
+const SeparIndicator = ({ SeparIndicator_W, SeparIndicatorDisplay }) => {
     return (
         <div class='SeparIndicator'
             style={{
@@ -11,11 +11,13 @@ const SeparIndicator = (SeparIndicator_W, SeparIndicatorDisplay) => {
     )
 }
 
-export const SeparIndicators = (TableInfo) => {
+export const SeparIndicators = ({ TableInfo }) => {
     return (
         TableInfo.TableState.ColumnSizeData.map(SizeData =>
-            SeparIndicator(SizeData.SeparIndicator_W,
-                SizeData.SeparIndicatorDisplay)
+            <SeparIndicator
+                SeparIndicator_W={SizeData.SeparIndicator_W}
+                SeparIndicatorDisplay={SizeData.SeparIndicatorDisplay}
+            />
         )
     )
 }

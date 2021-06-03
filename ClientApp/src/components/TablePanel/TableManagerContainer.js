@@ -8,7 +8,7 @@ export const TableManagerContainer = () => {
 
     return (
         <div class='TableManagerContainer'>
-            вкл режима редактирования и кнопки отправки в базу
+           Здесь будет вкл режима редактирования и кнопки отправки в базу
          </div>
     )
 }

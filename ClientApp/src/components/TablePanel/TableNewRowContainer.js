@@ -5,7 +5,7 @@ export const TableNewRowContainer = () => {
 
     return (
         <div class='TableNewRowContainer'>
-         здесь будет шаблон строки для добавления в таблицу
+         Здесь будет шаблон строки для добавления в таблицу
         </div>
     )
 }

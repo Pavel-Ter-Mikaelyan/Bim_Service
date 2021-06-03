@@ -8,7 +8,7 @@ import { Tabs } from '../Tabs/Tabs'
 export function SourcePanel() {
     return (
         <div class='SourcePanel'>
-            <Tabs arr={["Редактирование", "Вкладка"]}/>
+            <Tabs arr={["Редактирование"]}/>
             <TablePanel />
         </div >
     );
