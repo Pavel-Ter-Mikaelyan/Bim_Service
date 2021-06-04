@@ -31,21 +31,18 @@ export const TableStyle = createUseStyles({
                     color: Data => Data.disabled ?
                         SimpleLineColor : BoldLineColor
                 }
-            },
-            '& >.HeadMenuContainer': {
-
-            },
+            },            
         },
         '& >.BodyContainer': {
             position: 'relative',
             display: 'flex',
             flexFlow: 'column nowrap',
-            alignItems: 'flex-start',
-            height: '100%',
+            alignItems: 'flex-start',            
             background: ThemeColor2,
             border: SimpleLineStyle,
             borderRadius: 6,
             overflowY: 'hidden',
+            overflowX: 'auto', 
             '& >.BodyHead': {
                 display: 'flex',
                 '& >.BodyCell': {

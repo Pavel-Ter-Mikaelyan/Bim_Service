@@ -6,7 +6,7 @@ import { Textbox } from '../CellComponents/Textbox';
 
 export const CellComponent = ({ TableInfo, ColumnIndex, RowIndex }) => {
 
-    const columnInfo = TableInfo.TableState.TableData.columnData[ColumnIndex]
+    const columnInfo = TableInfo.TableState.MainTableData.TableData.columnData[ColumnIndex]
     const ComponentData = {};
     ComponentData.valueObj = columnInfo.rowVals[RowIndex]
     ComponentData.disabled = TableInfo.TableState.disabled

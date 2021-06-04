@@ -5,15 +5,8 @@ import { BodyHead } from './BodyHead'
 import { TableBody } from './TableBody'
 
 export const BodyContainer = ({ TableInfo }) => {
-    let overflowX
-    if (TableInfo.TableState.BodyContainerOverflowX) {
-        overflowX = 'auto'
-    } else {
-        overflowX = 'hidden'
-    }
-
     return (
-        <div class='BodyContainer' style={{ overflowX: overflowX }}>
+        <div class='BodyContainer'>
             <SeparIndicators TableInfo={TableInfo} />
             <BodyHead TableInfo={TableInfo} />
             <TableBody TableInfo={TableInfo} />

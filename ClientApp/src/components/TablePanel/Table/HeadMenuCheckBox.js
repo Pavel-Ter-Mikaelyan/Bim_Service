@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 
-import { changeColumnForDelete } from './changeColumnForDelete';
+import { changeColumnForDelete } from './SharedMethods/changeColumnForDelete';
 import { CheckBox } from '../Components/CheckBox';
 
 export const HeadMenuCheckBox = ({ TableInfo }) => {       

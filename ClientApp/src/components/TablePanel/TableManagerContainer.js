@@ -1,13 +1,16 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+export const TableManagerContainer = ({ TableInfo }) => {
 
-export const TableManagerContainer = () => {
+    const onClick = () => {
+        TableInfo.TableState.disabled = !TableInfo.TableState.disabled
+        //применить изменения      
+        TableInfo.setTableState({ ...TableInfo.TableState })
+    }
 
     return (
-        <div class='TableManagerContainer'>
+        <div class='TableManagerContainer' onClick={onClick}>
            Здесь будет вкл режима редактирования и кнопки отправки в базу
          </div>
     )

@@ -10,23 +10,23 @@ export const HeadMenuButton = ({ TableInfo }) => {
     //удалить строки в таблице
     const DeleteClick = () => {
         if (deleteMode == false) { return }
-        TableInfo.TableState.TableData
+        TableInfo.TableState.MainTableData.TableData
             .columnData[0].rowVals.forEach((rowVal, i) => {
                 if (rowVal.value == true) {
-                    delete TableInfo.TableState.TableData.rowIds[i]
-                    TableInfo.TableState.TableData
+                    delete TableInfo.TableState.MainTableData.TableData.rowIds[i]
+                    TableInfo.TableState.MainTableData.TableData
                         .columnData.forEach(columnData => {
                             delete columnData.rowVals[i]                            
                         })
                 }
             })
-        TableInfo.TableState.TableData
+        TableInfo.TableState.MainTableData.TableData
             .columnData.forEach(columnData => {
                 columnData.rowVals =
                     columnData.rowVals.filter(rowVal => rowVal != undefined)
             })
-        TableInfo.TableState.TableData.rowIds =
-            TableInfo.TableState.TableData.rowIds
+        TableInfo.TableState.MainTableData.TableData.rowIds =
+            TableInfo.TableState.MainTableData.TableData.rowIds
                 .filter(rowId => rowId != undefined)
         //применить изменения
         TableInfo.setTableState({ ...TableInfo.TableState })

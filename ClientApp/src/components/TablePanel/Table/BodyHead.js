@@ -4,7 +4,7 @@ import { BodyCell } from './BodyCell'
 
 export const BodyHead = ({ TableInfo }) => {
     let HeadCollections = []
-    TableInfo.TableState.TableData.columnData.forEach((value, ColumnIndex) =>
+    TableInfo.TableState.MainTableData.TableData.columnData.forEach((value, ColumnIndex) =>
         HeadCollections.push(
             <BodyCell
                 TableInfo={TableInfo}

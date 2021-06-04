@@ -4,7 +4,7 @@ import { BodyRow } from './BodyRow'
 
 export const TableBody = ({ TableInfo }) => {
     let BodyRows = [];
-    TableInfo.TableState.TableData.rowIds.forEach((val, RowIndex) => {
+    TableInfo.TableState.MainTableData.TableData.rowIds.forEach((val, RowIndex) => {
         BodyRows.push(
             <BodyRow
                 TableInfo={TableInfo}

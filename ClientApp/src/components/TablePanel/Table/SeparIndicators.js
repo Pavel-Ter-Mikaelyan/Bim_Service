@@ -13,7 +13,7 @@ const SeparIndicator = ({ SeparIndicator_W, SeparIndicatorDisplay }) => {
 
 export const SeparIndicators = ({ TableInfo }) => {
     return (
-        TableInfo.TableState.ColumnSizeData.map(SizeData =>
+        TableInfo.TableState.MainTableData.ColumnSizeData.map(SizeData =>
             <SeparIndicator
                 SeparIndicator_W={SizeData.SeparIndicator_W}
                 SeparIndicatorDisplay={SizeData.SeparIndicatorDisplay}
