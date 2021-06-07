@@ -17,9 +17,11 @@ const TablePanelStyles = createUseStyles({
         overflow: 'hidden',
         '& >.TableManagerContainer': {
             display: 'flex',
-            alignItems: 'center',
-            minHeight: 40,
-        },
+            alignItems: 'start', 
+            '& >div': {
+                margin: '12px 0 0 0'                 
+            }
+        },        
     }
 })
 

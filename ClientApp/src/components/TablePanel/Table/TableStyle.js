@@ -17,11 +17,12 @@ export const TableStyle = createUseStyles({
         display: Data => Data.newRowMode ? 'block' : 'flex',
         flexFlow: Data => Data.newRowMode ? null : 'column nowrap',
         overflow: Data => Data.newRowMode ? null : 'hidden',
+        margin: '5px 0 0 0',
         '& >.TableHead': {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            minHeight: 40,
+            minHeight: 35,
             '& >.HeadText': {
                 display: 'flex',
                 alignItems: 'center',
