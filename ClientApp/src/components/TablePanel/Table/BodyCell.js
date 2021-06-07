@@ -6,8 +6,12 @@ import { MinTableCellWidth } from '../../../constants/Constants'
 
 export const BodyCell = ({ TableInfo, ColumnIndex, bHeadCell, RowIndex }) => {
 
+    const TableData =
+        TableInfo.newRowMode ?
+            TableInfo.TableState.NewRowTableData :
+            TableInfo.TableState.MainTableData
     //ширина столбца для текущей ячейки
-    let currr_W = TableInfo.TableState.MainTableData.ColumnSizeData[ColumnIndex].column_w
+    let currr_W = TableData.ColumnSizeData[ColumnIndex].column_w
 
     //состояние нажатия кнопки мыши
     const [MD, setMD] = useState(false)
@@ -21,7 +25,7 @@ export const BodyCell = ({ TableInfo, ColumnIndex, bHeadCell, RowIndex }) => {
     //если данный компонент - ячейка заголовка
     if (bHeadCell) {
         ContentComponent =
-            <p> {TableInfo.TableState.MainTableData.TableData.columnData[ColumnIndex].headerName}</p>
+            <p> {TableData.TableData.columnData[ColumnIndex].headerName}</p>
     }
     else {//если данный компонент - основная ячейка
         ContentComponent =
@@ -37,17 +41,18 @@ export const BodyCell = ({ TableInfo, ColumnIndex, bHeadCell, RowIndex }) => {
         setNewClientX(e.clientX)
         //сместить сепаратор
         let newSeparIndicator_W = startSeparIndicator_W + newClientX - oldClientX
-        TableInfo.TableState.MainTableData.ColumnSizeData[ColumnIndex].SeparIndicator_W = newSeparIndicator_W
+        TableData.ColumnSizeData[ColumnIndex].SeparIndicator_W = newSeparIndicator_W
+         //применить изменения
         TableInfo.setTableState({ ...TableInfo.TableState })
     }
     let h_up = () => {
         //скрыть сепаратор 
-        addSeparIndicatorInfo(TableInfo.TableState.MainTableData.ColumnSizeData, false)
+        addSeparIndicatorInfo(TableData.ColumnSizeData, false)
         //изменение ширины столбца
         setMD(false)
         const newWidth =
             Math.max(currr_W + newClientX - oldClientX, MinTableCellWidth)
-        TableInfo.TableState.MainTableData.ColumnSizeData[ColumnIndex].column_w = newWidth
+        TableData.ColumnSizeData[ColumnIndex].column_w = newWidth
         document.body.style.cursor = 'default'
         //применить изменения
         TableInfo.setTableState({ ...TableInfo.TableState })
@@ -71,11 +76,11 @@ export const BodyCell = ({ TableInfo, ColumnIndex, bHeadCell, RowIndex }) => {
         document.body.style.cursor = 'col-resize'
         //установить смещение сепаратора в соответствии с текущей шириной столбцов
         //и видимость сепаратора
-        addSeparIndicatorInfo(TableInfo.TableState.MainTableData.ColumnSizeData, true, ColumnIndex)
+        addSeparIndicatorInfo(TableData.ColumnSizeData, true, ColumnIndex)
         //применить изменения
         TableInfo.setTableState({ ...TableInfo.TableState })
         //установить стартовое смещение сепаратора
-        setStartSeparIndicator_W(TableInfo.TableState.MainTableData.ColumnSizeData[ColumnIndex].SeparIndicator_W)
+        setStartSeparIndicator_W(TableData.ColumnSizeData[ColumnIndex].SeparIndicator_W)
     }
     return (
         <div class='BodyCell'>

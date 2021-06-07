@@ -4,7 +4,10 @@ import { BodyCell } from './BodyCell'
 
 export const BodyHead = ({ TableInfo }) => {
     let HeadCollections = []
-    TableInfo.TableState.MainTableData.TableData.columnData.forEach((value, ColumnIndex) =>
+    const array = TableInfo.newRowMode ?
+        TableInfo.TableState.NewRowTableData.TableData.columnData :
+        TableInfo.TableState.MainTableData.TableData.columnData
+    array.forEach((value, ColumnIndex) =>
         HeadCollections.push(
             <BodyCell
                 TableInfo={TableInfo}

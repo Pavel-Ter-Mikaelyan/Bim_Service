@@ -3,13 +3,19 @@
 import { HeadMenu } from './HeadMenu'
 
 export const TableHead = ({ TableInfo }) => {
+
+    const TableData =
+        TableInfo.newRowMode ?
+            TableInfo.TableState.NewRowTableData.TableData :
+            TableInfo.TableState.MainTableData.TableData
+    
     return (
         <div class='TableHead'>
             <div class='HeadText'>
-                <p>{TableInfo.TableState.MainTableData.TableData.tableName}</p>
+                <p>{TableData.tableName}</p>
             </div>
             <div class='HeadMenuContainer'>
-                <HeadMenu TableInfo={TableInfo}/>
+                <HeadMenu TableInfo={TableInfo} />               
             </div>
         </div>
     )

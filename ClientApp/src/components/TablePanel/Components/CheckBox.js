@@ -32,13 +32,11 @@ const CheckBoxStyle = createUseStyles({
     }
 })
 
-export const CheckBox = ({ Id, bChecked, text, Click, disabled }) => {
+export const CheckBox = ({ Id, Checked, text, Click, disabled }) => {
     const cls = CheckBoxStyle(disabled)
-    const [Checked, SetChecked] = useState(bChecked);
 
     const onClick = () => {
-        if (disabled) { return }
-        SetChecked(!Checked)
+        if (disabled) { return }       
         Click({ Id: Id, Checked: Checked })
     }
 

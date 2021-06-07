@@ -10,7 +10,8 @@ export const Table = ({ TableInfo }) => {
     const cls = TableStyle(
         {
             deleteMode: TableInfo.TableState.deleteMode,
-            disabled: TableInfo.TableState.disabled
+            disabled: TableInfo.TableState.disabled,
+            newRowMode: TableInfo.newRowMode
         })
 
     return (

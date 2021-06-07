@@ -4,11 +4,15 @@ import { BodyRow } from './BodyRow'
 
 export const TableBody = ({ TableInfo }) => {
     let BodyRows = [];
-    TableInfo.TableState.MainTableData.TableData.rowIds.forEach((val, RowIndex) => {
+    const array = TableInfo.newRowMode ?
+        TableInfo.TableState.NewRowTableData.TableData.rowIds :
+        TableInfo.TableState.MainTableData.TableData.rowIds
+
+    array.forEach((val, RowIndex) => {
         BodyRows.push(
             <BodyRow
                 TableInfo={TableInfo}
-                RowIndex={RowIndex}/>
+                RowIndex={RowIndex} />
         )
     })
     return (

@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import {
+    BoldLineColor,
+    SimpleLineColor,
     SelectColor2
 } from '../../../constants/Constants'
 
@@ -15,16 +17,26 @@ const ButtonStyle = createUseStyles({
             cursor: 'pointer',
             borderRadius: 6,
         },
-        '&:active': {            
-            transform: 'translateY(2px)'
+        '&:active': {
+            transform: disabled => disabled ?
+                null : 'translateY(2px)'
+        },
+        '& svg': {
+            fill: disabled => disabled ?
+                SimpleLineColor : BoldLineColor,
+        },
+        '& p': {
+            color: disabled => disabled ?
+                SimpleLineColor : BoldLineColor,
         }
     }
 })
 
-export const Button = ({ Id, Icon, text, Click }) => {
-    const cls = ButtonStyle()
+export const Button = ({ Id, Icon, text, Click, disabled }) => {
+    const cls = ButtonStyle(disabled)
 
     const onClick = () => {
+        if (disabled) { return }  
         Click(Id)
     }
 

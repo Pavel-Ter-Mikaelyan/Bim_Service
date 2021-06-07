@@ -14,15 +14,14 @@ import {
 //стили
 export const TableStyle = createUseStyles({
     Table: {
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        overflow: 'hidden',
-        height: '100%',
+        display: Data => Data.newRowMode ? 'block' : 'flex',
+        flexFlow: Data => Data.newRowMode ? null : 'column nowrap',
+        overflow: Data => Data.newRowMode ? null : 'hidden',
         '& >.TableHead': {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            height: 40,
+            minHeight: 40,
             '& >.HeadText': {
                 display: 'flex',
                 alignItems: 'center',
@@ -31,18 +30,21 @@ export const TableStyle = createUseStyles({
                     color: Data => Data.disabled ?
                         SimpleLineColor : BoldLineColor
                 }
-            },            
+            },
+            '& >.HeadMenuContainer': {
+
+            },
         },
         '& >.BodyContainer': {
             position: 'relative',
             display: 'flex',
             flexFlow: 'column nowrap',
-            alignItems: 'flex-start',            
+            alignItems: 'flex-start',
             background: ThemeColor2,
             border: SimpleLineStyle,
             borderRadius: 6,
             overflowY: 'hidden',
-            overflowX: 'auto', 
+            overflowX: 'auto',
             '& >.BodyHead': {
                 display: 'flex',
                 '& >.BodyCell': {
@@ -81,7 +83,8 @@ export const TableStyle = createUseStyles({
                         },
                     },
                     '&:hover': {
-                        background: Data => Data.deleteMode ?
+                        background: Data =>
+                            Data.deleteMode && Data.newRowMode == false ?
                             SelectColor1 : SelectColor2,
                     }
                 }

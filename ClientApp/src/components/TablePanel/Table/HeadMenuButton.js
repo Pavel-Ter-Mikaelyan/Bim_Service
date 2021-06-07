@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 
-import DeleteIcon from '@material-ui/icons/Delete';
+import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
 import { Button } from '../Components/Button';
 
 export const HeadMenuButton = ({ TableInfo }) => {
@@ -16,7 +16,7 @@ export const HeadMenuButton = ({ TableInfo }) => {
                     delete TableInfo.TableState.MainTableData.TableData.rowIds[i]
                     TableInfo.TableState.MainTableData.TableData
                         .columnData.forEach(columnData => {
-                            delete columnData.rowVals[i]                            
+                            delete columnData.rowVals[i]
                         })
                 }
             })
@@ -32,12 +32,13 @@ export const HeadMenuButton = ({ TableInfo }) => {
         TableInfo.setTableState({ ...TableInfo.TableState })
     }
 
-    if (deleteMode) {
+    if (deleteMode && TableInfo.newRowMode == false) {
         return (
             < Button
-                Icon={< DeleteIcon size="small" />}
+                Icon={<IndeterminateCheckBoxOutlinedIcon size="small" />}
                 text='Удалить'
                 Click={DeleteClick}
+                disabled={TableInfo.TableState.disabled}
             />
         )
     } else {

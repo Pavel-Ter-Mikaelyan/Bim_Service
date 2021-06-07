@@ -90,9 +90,9 @@ export const TablePanel = () => {
         let newTableData = { ...TableData }
         newTableData.tableName = 'Добавить новую строку'
         newTableData.rowIds = [-1]
-        newTableData.columnData = [{ ...newTableData.columnData }]
+        newTableData.columnData =
+            TableData.columnData.map(columnData => ({ ...columnData }))
         newTableData.columnData.forEach((columnData) => {
-            columnData = { ...columnData }
             columnData.rowVals = [{ value: columnData.defVal }]
         })
         //сформировать данные таблицы новых строк
@@ -126,7 +126,7 @@ export const TablePanel = () => {
     let NewRowTableInfo = { ...TableInfo }
     MainTableInfo.newRowMode = false
     NewRowTableInfo.newRowMode = true
-
+   
     //стили
     const cls = TablePanelStyles();
 

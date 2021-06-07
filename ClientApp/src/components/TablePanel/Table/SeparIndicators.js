@@ -12,8 +12,12 @@ const SeparIndicator = ({ SeparIndicator_W, SeparIndicatorDisplay }) => {
 }
 
 export const SeparIndicators = ({ TableInfo }) => {
+    const array = TableInfo.newRowMode ?
+        TableInfo.TableState.NewRowTableData.ColumnSizeData :
+        TableInfo.TableState.MainTableData.ColumnSizeData
+
     return (
-        TableInfo.TableState.MainTableData.ColumnSizeData.map(SizeData =>
+        array.map(SizeData =>
             <SeparIndicator
                 SeparIndicator_W={SizeData.SeparIndicator_W}
                 SeparIndicatorDisplay={SizeData.SeparIndicatorDisplay}

@@ -6,7 +6,9 @@ import { Textbox } from '../CellComponents/Textbox';
 
 export const CellComponent = ({ TableInfo, ColumnIndex, RowIndex }) => {
 
-    const columnInfo = TableInfo.TableState.MainTableData.TableData.columnData[ColumnIndex]
+    const columnInfo = TableInfo.newRowMode ?
+        TableInfo.TableState.NewRowTableData.TableData.columnData[ColumnIndex] :
+        TableInfo.TableState.MainTableData.TableData.columnData[ColumnIndex]
     const ComponentData = {};
     ComponentData.valueObj = columnInfo.rowVals[RowIndex]
     ComponentData.disabled = TableInfo.TableState.disabled
@@ -21,11 +23,11 @@ export const CellComponent = ({ TableInfo, ColumnIndex, RowIndex }) => {
             if (e !== undefined) {
                 ComponentData.valueObj.value = e.target.value
             }
-        }       
+        }
         //применить изменения
         TableInfo.setTableState({ ...TableInfo.TableState })
     }
-   
+
     //если тип ячейки 'Textbox'
     if (columnInfo.type == 0) {
         return <Textbox ComponentData={ComponentData} />
