@@ -1,6 +1,9 @@
-﻿namespace Bim_Service.Model
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Bim_Service.Model
 {
-    public class DB_File
+    public class DB_File : ITreeView
     {
         public int Id { get; set; }
         public string FilePath { get; set; }
@@ -12,6 +15,10 @@
         public TreeViewNodeDB GetNode()
         {
             return new TreeViewNodeDB(Id, FileName, "File", false);
+        }
+        public List<ITreeView> GetTreeViewNodes()
+        {
+            return new List<ITreeView>();
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿import { NodeIdConstructor } from '../constants/NodeIdConstructor'
+import { NodeIdDeconstructor } from '../constants/NodeIdDeconstructor'
 
+//-----------------------------------------------------------------------
 //конструктор для загрузки дерева
 const LoadTreeNodesData_Action =
     (TreeNodesData, SelectedId, SelectedNode, TreeDictionary) => ({
-    type: 'LOAD_TREENODES',
-    Data: TreeNodesData,
-    TreeDictionary: TreeDictionary,
-    SelectedId: SelectedId,
-    SelectedNode: SelectedNode
-})
+        type: 'LOAD_TREENODES',
+        Data: TreeNodesData,
+        TreeDictionary: TreeDictionary,
+        SelectedId: SelectedId,
+        SelectedNode: SelectedNode
+    })
 
 //загрузить данные узлов дерева из базы
 export async function LoadTreeNodesData(dispatch, SelectedId) {
@@ -17,12 +19,12 @@ export async function LoadTreeNodesData(dispatch, SelectedId) {
     const response2 = await fetch("/api/TreeView/GetTreeDictionary");
     const TreeDictionary = await response2.json();
     SetNodeId(TreeNodesData)
-  
+    let SelectedNode = NodeIdDeconstructor(SelectedId)
     dispatch(LoadTreeNodesData_Action(
         TreeNodesData,
         SelectedId,
-        NodeIdDeconstructor(SelectedId),
-        TreeDictionary,       
+        SelectedNode,
+        TreeDictionary
     ))
 }
 
@@ -36,10 +38,11 @@ const SetNodeId = (NodesData) => {
             SetNodeId(childrenData))
 }
 
+//-----------------------------------------------------------------------
 //конструктор для загрузки данных таблицы
 const LoadTableData_Action = (TableData) => ({
     type: 'LOAD_TABLEDATA',
-    TableData: TableData,  
+    TableData: TableData,
 })
 
 //загрузка данных таблицы

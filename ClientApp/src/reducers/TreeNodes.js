@@ -2,12 +2,12 @@
     (state = {
         Data: null,
         TreeDictionary: null,
-        SelectedId: '-1',
+        SelectedId: null,
         SelectedNode: null
     }, action) => {
         switch (action.type) {
             case 'LOAD_TREENODES':
-                let SelectedId = '-1'
+                let SelectedId = null
                 if (ValidSelectId(action.Data, action.SelectedId)) {
                     SelectedId = action.SelectedId
                 }
@@ -26,8 +26,7 @@
     }
 
 const ValidSelectId = (Data, SelectedId) => {
-    if (SelectedId === null ||
-        SelectedId === undefined) { return false }
+    if (SelectedId == null) { return false }
     //идентификатор узла  
     if (Data.NodeId === SelectedId) { return true }
 

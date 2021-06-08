@@ -27,14 +27,11 @@ const useStyles = createUseStyles({
 })
 
 //компонент 'панель сверху дерева'
-const NavSelectInfo = ({ TreeNodesSelectedId, TreeDictionary }) => {
-    //получить, например, 'Stage'
-    const arr = TreeNodesSelectedId.split('_');
-    const systemNodeName = arr[0]
-    const selectedName =
-        TreeNodesSelectedId !== '-1' ?
-            TreeDictionary.find(Node =>
-                Node.systemNodeName == systemNodeName).nodeName : '...'
+const NavSelectInfo = ({ nodeName }) => {
+
+    const selectedName = '...'
+    if (nodeName != null) selectedName = nodeName
+
     return (
         <div class={useStyles().NavSelectInfo}>
             <Focus_Icon />
@@ -42,13 +39,15 @@ const NavSelectInfo = ({ TreeNodesSelectedId, TreeDictionary }) => {
         </div>
     )
 }
-
-export default connect(
-    state => {
-        state.TreeNodes.SelectedNode.systemName
-        state.TreeNodes.TreeDictionary
-
-        TreeNodesSelectedId: state.TreeNodes.SelectedId,
-        TreeDictionary: state.TreeNodes.TreeDictionary
-    }
-)(NavSelectInfo)
+//присоединить состояние
+export default connect(mapStateToProps)(NavSelectInfo)
+const mapStateToProps = (state) => ({ nodeName: GetNodeName(state) })
+//получить имя узла
+const GetNodeName = (state) => {
+    let SelectedId = state.TreeNodes.SelectedId
+    if (SelectedId == null) return null
+    let systemName = state.TreeNodes.SelectedNode.systemName
+    let TreeDictionary = state.TreeNodes.TreeDictionary
+    return TreeDictionary.find(Node =>
+        Node.systemNodeName == systemName).nodeName
+}

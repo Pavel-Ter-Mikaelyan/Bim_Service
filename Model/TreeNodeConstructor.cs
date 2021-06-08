@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
@@ -12,63 +13,58 @@ namespace Bim_Service.Model
         {
             this.db = db;
         }
+        //рекурсивное добавление узлов дерева
+        public void AddTreeViewNodes(TreeViewNode MainNode,
+                                     List<ITreeView> Nodes)
+        {
+            TreeViewNodeInfo StageNodeInfo =
+                   TreeViewNodeNames[TreeViewNodeType.Stage];
+            TreeViewNodeInfo PluginNodeInfo =
+              TreeViewNodeNames[TreeViewNodeType.Plugin];
+
+            foreach (ITreeView Node in Nodes)
+            {
+                TreeViewNodeDB ChildNode = Node.GetNode();
+                //добавление узла
+                MainNode.AddChildren(ChildNode);
+                //для узла 'Стадия'
+                if (ChildNode.systemName == StageNodeInfo.systemNodeName)
+                {
+                    DB_Stage Stage = (DB_Stage)Node;
+                    //добавление стандартных узлов
+                    var TemplatesNode = //"Шаблоны"
+                        ChildNode.AddStandartChildren(TreeViewNodeType.Templates);
+                    var FilesNode =//"Файлы"
+                        ChildNode.AddStandartChildren(TreeViewNodeType.Files);
+                    //добавление подузлов в узел "Шаблоны"
+                    AddTreeViewNodes(TemplatesNode, Stage.GetTemplatesTreeViewNodes());
+                    //добавление подузловв узел "Файлы"
+                    AddTreeViewNodes(FilesNode, Stage.GetFilesTreeViewNodes());
+                }
+                //для узла 'Плагин'
+                else if (ChildNode.systemName == PluginNodeInfo.systemNodeName)
+                {
+                    //добавление стандартных узлов
+                    ChildNode.AddStandartChildren(TreeViewNodeType.Checking);
+                    ChildNode.AddStandartChildren(TreeViewNodeType.Setting);
+                }
+                else //для остальных узлов
+                {
+                    //добавление подузлов
+                    AddTreeViewNodes(ChildNode, Node.GetTreeViewNodes());
+                }
+            }
+        }
+        //получить все узлы дерева
         public TreeViewNode GetTreeViewNode()
         {
             //корневой узел
-            var ClientsNode = Constants.GetTreeViewClients();
+            var ClientsNode = GetTreeViewClients();
 
-            //заполнение всех узлов дерева
-            foreach (DB_Client Client in db.DB_Clients)
-            {
-                var ClientNode = Client.GetNode();
-                ClientsNode.AddChildren(ClientNode);
-
-                foreach (DB_Object Object in Client.DB_Objects)
-                {
-                    var ObjectNode = Object.GetNode();
-                    ClientNode.AddChildren(ObjectNode);
-
-                    foreach (DB_Stage Stage in Object.DB_Stages)
-                    {
-                        var StageNode = Stage.GetNode();
-                        ObjectNode.AddChildren(StageNode);
-
-                        //добавление стандартных узлов
-                        var TemplatesNode =
-                            StageNode.AddStandartChildren(Constants.TreeViewNodeType.Templates);
-                        var FilesNode =
-                            StageNode.AddStandartChildren(Constants.TreeViewNodeType.Files);
-
-                        if (FilesNode != null)
-                        {
-                            foreach (DB_File File in Stage.DB_Files)
-                            {
-                                var FileNode = File.GetNode();
-                                FilesNode.AddChildren(FileNode);
-                            }
-                        }
-
-                        if (TemplatesNode != null)
-                        {
-                            foreach (DB_Template Template in Stage.DB_Templates)
-                            {
-                                var TemplateNode = Template.GetNode();
-                                TemplatesNode.AddChildren(TemplateNode);
-
-                                foreach (DB_Plugin Plugin in Template.DB_Plugins)
-                                {
-                                    var PluginNode = Plugin.GetNode();
-                                    TemplateNode.AddChildren(PluginNode);
-
-                                    //добавление стандартных узлов
-                                    PluginNode.AddStandartChildren(Constants.TreeViewNodeType.Checking);
-                                    PluginNode.AddStandartChildren(Constants.TreeViewNodeType.Setting);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //рекурсивное добавление подузлов
+            AddTreeViewNodes(ClientsNode,
+                db.DB_Clients.Cast<ITreeView>().ToList());
+                        
             return ClientsNode;
         }
     }

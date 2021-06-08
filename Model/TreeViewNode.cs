@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
@@ -27,25 +28,6 @@ namespace Bim_Service.Model
         {
             //добавить узел в коллекцию
             children.Add(child);
-        }
-        //добавить стандартный узел
-        public TreeViewNodeStandart AddStandartChildren(Constants.TreeViewNodeType NT)
-        {
-            //информация по добавляемому стандартному узлу
-            TreeViewNodeInfo NI =
-                Constants.TreeViewNodeNames[NT];
-            var currNode = this as TreeViewNodeDB;
-            if (currNode == null) return null;
-            //создать стандартный узел
-            var NS = 
-                new TreeViewNodeStandart(NI.nodeName,
-                                         NI.systemNodeName,
-                                         currNode.id,
-                                         systemName,
-                                         true);
-            //добавить стандартный узел в коллекцию
-            children.Add(NS);
-            return NS;
-        }
+        }        
     }
 }

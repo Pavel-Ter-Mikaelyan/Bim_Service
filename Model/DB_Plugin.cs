@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Bim_Service.Model
 {
-    public class DB_Plugin
+    public class DB_Plugin : ITreeView
     {
         public int Id { get; set; }
         public bool NeedChecking { get; set; }
@@ -22,6 +22,10 @@ namespace Bim_Service.Model
         public TreeViewNodeDB GetNode()
         {
             return new TreeViewNodeDB(Id, DB_Plugin_const.Name, "Plugin", false);
+        }
+        public List<ITreeView> GetTreeViewNodes()
+        {
+            return new List<ITreeView>();
         }
     }
 }

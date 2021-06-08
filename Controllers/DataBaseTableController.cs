@@ -33,7 +33,7 @@ namespace Bim_Service.Controllers
             TreeNodeConstructor TNC = new TreeNodeConstructor(db);
             TreeViewNode TVN = TNC.GetTreeViewNode();
 
-            TVN.
+           
 
 
             return null;
