@@ -1,5 +1,5 @@
 ﻿
-export const NodeIdDeconstructor = (NodeId) => {
+export const NodeIdDeconstructor = (NodeId) => {    
     const arr = NodeId.split('_')
     let TreeNode = {
         systemName: arr[0],

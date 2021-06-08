@@ -29,7 +29,7 @@ const useStyles = createUseStyles({
 //компонент 'панель сверху дерева'
 const NavSelectInfo = ({ nodeName }) => {
 
-    const selectedName = '...'
+    let selectedName = '...'
     if (nodeName != null) selectedName = nodeName
 
     return (
@@ -39,9 +39,10 @@ const NavSelectInfo = ({ nodeName }) => {
         </div>
     )
 }
+
 //присоединить состояние
-export default connect(mapStateToProps)(NavSelectInfo)
 const mapStateToProps = (state) => ({ nodeName: GetNodeName(state) })
+export default connect(mapStateToProps)(NavSelectInfo)
 //получить имя узла
 const GetNodeName = (state) => {
     let SelectedId = state.TreeNodes.SelectedId

@@ -69,7 +69,7 @@ function NavTreeView({ TreeNodesData, LoadData }) {
 
     useEffect(() => {
         //начальная загрузка TreeNodes
-        LoadData()
+        LoadData(null)
     }, [])
 
     //создание лейбла

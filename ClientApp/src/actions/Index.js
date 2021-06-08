@@ -19,7 +19,8 @@ export async function LoadTreeNodesData(dispatch, SelectedId) {
     const response2 = await fetch("/api/TreeView/GetTreeDictionary");
     const TreeDictionary = await response2.json();
     SetNodeId(TreeNodesData)
-    let SelectedNode = NodeIdDeconstructor(SelectedId)
+    let SelectedNode = SelectedId != null ?
+        NodeIdDeconstructor(SelectedId) : null
     dispatch(LoadTreeNodesData_Action(
         TreeNodesData,
         SelectedId,
