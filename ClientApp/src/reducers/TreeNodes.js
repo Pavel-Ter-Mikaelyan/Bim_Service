@@ -1,8 +1,13 @@
 ﻿export const TreeNodes =
-    (state = { Data: null, SelectedId: '-1' }, action) => {
+    (state = {
+        Data: null,
+        TreeDictionary: null,
+        SelectedId: '-1',
+        SelectedNode: null
+    }, action) => {
         switch (action.type) {
             case 'LOAD_TREENODES':
-                let SelectedId = '-1'                
+                let SelectedId = '-1'
                 if (ValidSelectId(action.Data, action.SelectedId)) {
                     SelectedId = action.SelectedId
                 }
@@ -11,7 +16,9 @@
                 }
                 return ({
                     Data: action.Data,
-                    SelectedId: SelectedId
+                    SelectedId: SelectedId,
+                    SelectedNode: action.SelectedNode,
+                    TreeDictionary: action.TreeDictionary
                 })
             default:
                 return state

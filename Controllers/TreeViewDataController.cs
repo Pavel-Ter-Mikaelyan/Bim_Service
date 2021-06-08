@@ -28,10 +28,16 @@ namespace Bim_Service.Controllers
 
         //получить все узлы дерева
         [HttpGet("GetNodes")]
-        public object Get()
+        public object Get1()
         {
             TreeNodeConstructor TNC = new TreeNodeConstructor(db);
             return TNC.GetTreeViewNode();
+        }
+        //получить словарь узлов
+        [HttpGet("GetTreeDictionary")]
+        public object Get2()
+        {           
+            return Constants.TreeViewNodeNames.Values;
         }
     }
 }

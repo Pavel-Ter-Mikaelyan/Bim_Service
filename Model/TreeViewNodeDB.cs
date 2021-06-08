@@ -12,8 +12,9 @@ namespace Bim_Service.Model
 
         public TreeViewNodeDB(int id,
                               string name,
-                              string systemName) :
-            base(name, systemName)
+                              string systemName,
+                              bool standartNode) :
+            base(name, systemName, standartNode)
         {
             this.id = id;
         }        

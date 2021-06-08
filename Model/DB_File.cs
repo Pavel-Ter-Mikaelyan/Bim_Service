@@ -11,7 +11,7 @@
 
         public TreeViewNodeDB GetNode()
         {
-            return new TreeViewNodeDB(Id, FileName, "File");
+            return new TreeViewNodeDB(Id, FileName, "File", false);
         }
     }
 }

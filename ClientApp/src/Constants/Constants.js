@@ -202,16 +202,3 @@ TreeIcons.set("Setting", Setting_Icon)
 TreeIcons.set("Files", Files_Icon)
 TreeIcons.set("File", File_Icon)
 
-export const TreeDictionary = new Map();
-TreeDictionary.set("Clients", "Заказчики")
-TreeDictionary.set("Client", "Заказчик")
-TreeDictionary.set("Object", "Объект")
-TreeDictionary.set("Stage", "Стадия")
-TreeDictionary.set("Templates", "Шаблоны")
-TreeDictionary.set("Template", "Шаблон")
-TreeDictionary.set("Plugin", "Плагин")
-TreeDictionary.set("Checking", "Проверки")
-TreeDictionary.set("Setting", "Настройки")
-TreeDictionary.set("Files", "Файлы")
-TreeDictionary.set("File", "Файл")
-

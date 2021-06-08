@@ -13,6 +13,7 @@ namespace Bim_Service.Model
         public bool NeedSetting { get; set; }
         public string CheckingData { get; set; }
         public string SettingData { get; set; }
+        public string PluginVersion { get; set; }
 
         public DB_Plugin_const DB_Plugin_const { get; set; }       
         public DB_Template DB_Template { get; set; }       
@@ -20,7 +21,7 @@ namespace Bim_Service.Model
 
         public TreeViewNodeDB GetNode()
         {
-            return new TreeViewNodeDB(Id, DB_Plugin_const.Name, "Plugin");
+            return new TreeViewNodeDB(Id, DB_Plugin_const.Name, "Plugin", false);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Bim_Service.Model
               
         public TreeViewNode GetNode()
         {
-            return new TreeViewNodeDB(Id, Name, "Object");
+            return new TreeViewNodeDB(Id, Name, "Object", false);
         }
     }
 }

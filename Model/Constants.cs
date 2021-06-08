@@ -7,41 +7,60 @@ namespace Bim_Service.Model
 {
     public static class Constants
     {
-        //Типы стандартных узлов
+        //Типы узлов
         public enum TreeViewNodeType
         {
+            Client,
             Clients,
+            Object,
+            Stage,
+            Template,
             Templates,
+            Plugin,
             Files,
+            File,
             Checking,
-            Setting,
+            Setting, 
         }
-        //словарь стандартных узлов
-        public static Dictionary<TreeViewNodeType, TreeViewNodeStandartInfo>
+        //словарь узлов
+        public static Dictionary<TreeViewNodeType, TreeViewNodeInfo>
             TreeViewNodeNames =
-            new Dictionary<TreeViewNodeType, TreeViewNodeStandartInfo>() {
+            new Dictionary<TreeViewNodeType, TreeViewNodeInfo>() {
                 {TreeViewNodeType.Clients,
-                  new TreeViewNodeStandartInfo("Clients","Заказчики")},
+                  new TreeViewNodeInfo("Clients","Заказчики")},
+                { TreeViewNodeType.Client,
+                  new TreeViewNodeInfo("Client","Заказчик")},
+                 { TreeViewNodeType.Object,
+                  new TreeViewNodeInfo("Object","Объект")},
+                  { TreeViewNodeType.Stage,
+                  new TreeViewNodeInfo("Stage","Стадия")},
                 {TreeViewNodeType.Templates,
-                  new TreeViewNodeStandartInfo("Templates","Шаблоны")},
+                  new TreeViewNodeInfo("Templates","Шаблоны")},
+                {TreeViewNodeType.Template,
+                  new TreeViewNodeInfo("Template","Шаблон")},
                 {TreeViewNodeType.Files,
-                  new TreeViewNodeStandartInfo("Files","Файлы")},
+                  new TreeViewNodeInfo("Files","Файлы")},
+                {TreeViewNodeType.File,
+                  new TreeViewNodeInfo("File","Файл")},
+                 {TreeViewNodeType.Plugin,
+                  new TreeViewNodeInfo("Plugin","Плагин")},
                 {TreeViewNodeType.Checking,
-                  new TreeViewNodeStandartInfo("Checking","Проверки")},
+                  new TreeViewNodeInfo("Checking","Проверки")},
                 {TreeViewNodeType.Setting,
-                  new TreeViewNodeStandartInfo("Setting","Настройки")},
+                  new TreeViewNodeInfo("Setting","Настройки")},
             };
         //получить корневой узел
         public static TreeViewNodeStandart GetTreeViewClients()
         {
             //информация по корневому узлу
-            TreeViewNodeStandartInfo NI =
+            TreeViewNodeInfo NI =
                 TreeViewNodeNames[TreeViewNodeType.Clients];
             //создать корневой узел
             return new TreeViewNodeStandart(NI.nodeName,
                                             NI.systemNodeName,
                                             0,
-                                            null);
+                                            "root",
+                                            true);
         }
     }
 }

@@ -2,14 +2,14 @@
 import { connect } from 'react-redux'
 import { createUseStyles } from 'react-jss';
 
-import { TreeDictionary, Focus_Icon } from '../../constants/Constants'
+import { Focus_Icon } from '../../constants/Constants'
 
 //стили
 const useStyles = createUseStyles({
     NavSelectInfo: {
         display: 'flex',
         alignItems: 'flex-end',
-        overflow: 'hidden',        
+        overflow: 'hidden',
         background: 'rgba(0, 0, 0, 0)',
         '& svg': {
             margin: '0 0 6px 0',
@@ -20,27 +20,35 @@ const useStyles = createUseStyles({
         },
         '& p': {
             margin: '0 0 4px 5px',
-            fontSize: '1em',            
-            whiteSpace: 'nowrap '           
+            fontSize: '1em',
+            whiteSpace: 'nowrap '
         }
     }
 })
 
 //компонент 'панель сверху дерева'
-const NavSelectInfo = ({ TreeNodesSelectedId }) => {
-    //получить, например, 'Stage' из '12345_Stage'
+const NavSelectInfo = ({ TreeNodesSelectedId, TreeDictionary }) => {
+    //получить, например, 'Stage'
     const arr = TreeNodesSelectedId.split('_');
-    const SelectedName =
+    const systemNodeName = arr[0]
+    const selectedName =
         TreeNodesSelectedId !== '-1' ?
-            TreeDictionary.get(arr[1]) : '...'
+            TreeDictionary.find(Node =>
+                Node.systemNodeName == systemNodeName).nodeName : '...'
     return (
         <div class={useStyles().NavSelectInfo}>
             <Focus_Icon />
-            <p> {'[ ' + SelectedName + ' ]'}</p>
+            <p> {'[ ' + selectedName + ' ]'}</p>
         </div>
     )
 }
 
 export default connect(
-    state => ({ TreeNodesSelectedId: state.TreeNodes.SelectedId })
+    state => {
+        state.TreeNodes.SelectedNode.systemName
+        state.TreeNodes.TreeDictionary
+
+        TreeNodesSelectedId: state.TreeNodes.SelectedId,
+        TreeDictionary: state.TreeNodes.TreeDictionary
+    }
 )(NavSelectInfo)

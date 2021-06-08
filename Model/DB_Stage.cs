@@ -15,7 +15,7 @@ namespace Bim_Service.Model
 
         public TreeViewNodeDB GetNode()
         {
-            return new TreeViewNodeDB(Id, DB_Stage_const.Name, "Stage");
+            return new TreeViewNodeDB(Id, DB_Stage_const.Name, "Stage", false);
         }
     }
 }

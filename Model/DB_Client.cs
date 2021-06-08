@@ -11,7 +11,7 @@ namespace Bim_Service.Model
 
         public TreeViewNodeDB GetNode()
         {
-            return new TreeViewNodeDB(Id, Name, "Client");
+            return new TreeViewNodeDB(Id, Name, "Client", false);
         }
     }
 }

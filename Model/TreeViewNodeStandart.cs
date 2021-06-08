@@ -14,8 +14,9 @@ namespace Bim_Service.Model
         public TreeViewNodeStandart(string name,
                                     string systemName,
                                     int parentId,
-                                    string parentSystemName) :
-            base(name, systemName)
+                                    string parentSystemName,
+                                    bool standartNode) :
+            base(name, systemName, standartNode)
         {
             this.parentId = parentId;
             this.parentSystemName = parentSystemName;

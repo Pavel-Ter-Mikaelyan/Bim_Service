@@ -1,8 +1,11 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
+import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
+
 import { changeColumnForDelete } from './Table/SharedMethods/changeColumnForDelete';
 import { CheckBox } from './Components/CheckBox';
+import { Button } from './Components/Button';
 
 export const TableManagerContainer = ({ TableInfo }) => {
 
@@ -16,6 +19,10 @@ export const TableManagerContainer = ({ TableInfo }) => {
         //применить изменения      
         TableInfo.setTableState({ ...TableInfo.TableState })
     }
+    //сохранить изменения в базе
+    const Save = () => {
+        onClick()
+    }
 
     return (
         <div class='TableManagerContainer'>
@@ -24,7 +31,13 @@ export const TableManagerContainer = ({ TableInfo }) => {
                 text='Режим редактирования'
                 Click={onClick}
                 disabled={false}
-            />            
+            />   
+            < Button
+                Icon={<SaveOutlinedIcon size="small"/>}
+                text='Сохранить'
+                Click={Save}
+                disabled={TableInfo.TableState.disabled}
+            />
         </div>
     )
 }
