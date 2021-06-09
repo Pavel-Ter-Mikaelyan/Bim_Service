@@ -17,18 +17,13 @@ namespace Bim_Service.Model
         public void AddTreeViewNodes(TreeViewNode MainNode,
                                      List<ITreeView> Nodes)
         {
-            TreeViewNodeInfo StageNodeInfo =
-                   TreeViewNodeNames[TreeViewNodeType.Stage];
-            TreeViewNodeInfo PluginNodeInfo =
-              TreeViewNodeNames[TreeViewNodeType.Plugin];
-
             foreach (ITreeView Node in Nodes)
             {
                 TreeViewNodeDB ChildNode = Node.GetNode();
                 //добавление узла
                 MainNode.AddChildren(ChildNode);
                 //для узла 'Стадия'
-                if (ChildNode.systemName == StageNodeInfo.systemNodeName)
+                if (Node is DB_Stage)
                 {
                     DB_Stage Stage = (DB_Stage)Node;
                     //добавление стандартных узлов
@@ -42,7 +37,7 @@ namespace Bim_Service.Model
                     AddTreeViewNodes(FilesNode, Stage.GetFilesTreeViewNodes());
                 }
                 //для узла 'Плагин'
-                else if (ChildNode.systemName == PluginNodeInfo.systemNodeName)
+                else if (Node is DB_Plugin)
                 {
                     //добавление стандартных узлов
                     ChildNode.AddStandartChildren(TreeViewNodeType.Checking);
