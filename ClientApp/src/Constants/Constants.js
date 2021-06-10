@@ -14,7 +14,7 @@ export const MinTableCellWidth = 80 //минимальная ширина сто
 export const StartTableWidth = 100//стартовая ширина столбцов по умолчанию
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop0', 80],
-    ['name', 200],
+    ['name', 400],
     ['prop2', 200],
     ['prop3', 300]
 ])
@@ -202,3 +202,11 @@ TreeIcons.set("Setting", Setting_Icon)
 TreeIcons.set("Files", Files_Icon)
 TreeIcons.set("File", File_Icon)
 
+export const NullUndefValid = (array) => {
+    array.forEach(q => {
+        if (q == undefined || q == null) {
+            return false
+        }
+    })
+    return true
+}

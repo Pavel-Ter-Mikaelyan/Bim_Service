@@ -7,6 +7,7 @@ namespace Bim_Service.Model
 {      
     public class TableData
     {
+        public string selectNodeInfo { get; set; } = "";
         public string tableName { get; set; } = "";       
         public List<int> rowIds { get; set; } = new List<int>();
         public List<ColumnData> columnData { get; set; } =

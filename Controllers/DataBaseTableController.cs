@@ -35,11 +35,11 @@ namespace Bim_Service.Controllers
             )
         {
             TableDataConstructor TDC =
-                new TableDataConstructor(db,
+                new TableDataConstructor(db,                                         
                                          systemName,
                                          parentSystemName,
                                          parentId);
-            TableData TD = TDC.GetTableData();
+            TableData TD = TDC.GetAllTableData();
             return TD;
         }
         [HttpGet("GetTableData/{systemName}/false/{id:int}")]
@@ -49,7 +49,7 @@ namespace Bim_Service.Controllers
                 new TableDataConstructor(db,
                                          systemName,
                                          id);
-            TableData TD = TDC.GetTableData();
+            TableData TD = TDC.GetAllTableData();
             return TD;
         }
 

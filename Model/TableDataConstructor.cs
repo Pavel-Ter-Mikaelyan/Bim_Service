@@ -14,6 +14,7 @@ namespace Bim_Service.Model
         int id { get; set; }
         string parentSystemName { get; set; } = null;
         int parentId { get; set; }
+        string selectNodeInfo;
         //------------------------------------------------------------
         ApplicationContext db { get; set; }
 
@@ -27,6 +28,8 @@ namespace Bim_Service.Model
             this.systemName = systemName;
             this.parentSystemName = parentSystemName;
             this.parentId = parentId;
+            selectNodeInfo = systemName + "/true/" +
+                parentSystemName + "/" + parentId;
         }
         //если в дереве был выбран узел, соответствующий таблице БД
         public TableDataConstructor(ApplicationContext db,
@@ -36,11 +39,13 @@ namespace Bim_Service.Model
             this.db = db;
             this.systemName = systemName;
             this.id = id;
+            selectNodeInfo = systemName + "/false/" + id;
         }
 
-        //получить данные для таблиц
-        public TableData GetTableData()
+        //получить данные для таблицы выбранного узла
+        public TableData GetAllTableData()
         {
+            //получить общую информацию о выбранном узле
             var CurrNodeInfos =
                 TreeViewNodeInfos.FirstOrDefault(q =>
                                                  q.Value
@@ -51,53 +56,72 @@ namespace Bim_Service.Model
             TreeViewNodeInfo CurrNodeInfo = CurrNodeInfos.Value;
             if (CurrNodeInfo.hasTableData == false) return null;
 
-            TableData TD = null;
+            return GetAllTableData(CurrNodeInfo, CurrNodeType);
+        }
+        //получить данные для таблицы выбранного узла
+        TableData GetAllTableData(TreeViewNodeInfo CurrNodeInfo,
+                                  TreeViewNodeType CurrNodeType)
+        {
+            TableData TD = new TableData();
+            TD.tableName = CurrNodeInfo.TableName;
+            TD.selectNodeInfo = selectNodeInfo;
+                       
             //если выбран узел 'Стадия'
             if (CurrNodeType == TreeViewNodeType.Stage)
             {
-                return null;
+                DB_Stage Stage =
+                    db.DB_Stages.FirstOrDefault(q => q.Id == id);
+                if (Stage == null) return null;
+                ColumnData TemplateCD = new ColumnData();
+                ColumnData FileNameCD = new ColumnData();
+                ColumnData FilePathCD = new ColumnData();
+                
+
             }
             //если выбран узел 'Шаблон'
             else if (CurrNodeType == TreeViewNodeType.Template)
             {
                 return null;
             }
+            //если выбран узел 'Объект'
+            else if (CurrNodeType == TreeViewNodeType.Object)
+            {
+                //получить информацию по столбцу 
+                ColumnData CD = GetObjectColumnData();
+                //добавить информацию по умолчанию для таблицы
+                AddDefaultTableData(TD, CD, CurrNodeType);
+            }
             else//если выбран узел по умолчанию 
                 //(дочерние элементы которого соответствуют строкам БД)
             {
-                //данные
-                TD = GetDefaultTableData(CurrNodeInfo, CurrNodeType);
-            }
-
+                //получить информацию по столбцу 
+                ColumnData CD = ColumnData.GetDefault();
+                //добавить информацию по умолчанию для таблицы
+                AddDefaultTableData(TD, CD, CurrNodeType);                
+            }                        
             return TD;
         }
-        //получить таблицу для узла по умолчанию
-        //(дочерние элементы которого соответствуют строкам БД)
-        TableData GetDefaultTableData(TreeViewNodeInfo CurrNodeInfo,
-                                      TreeViewNodeType CurrNodeType)
+        //получить информацию по столбцу таблицы для узла Object
+        ColumnData GetObjectColumnData()
         {
-            TreeNodeConstructor TNC = new TreeNodeConstructor(db);
-            TreeViewNode ClientsNode = TNC.GetTreeViewNode();
-
-            TreeViewNode FoundNode = null;
-            if (CurrNodeType == TreeViewNodeType.Clients)
-            {
-                FoundNode = ClientsNode;
-            }
-            else
-            {
-                FoundNode = TreeViewNode.FindNode(systemName,
-                                          id,
-                                          parentSystemName,
-                                          parentId,
-                                          ClientsNode);
-            }              
-            if (FoundNode == null) return null;
-
-            TableData TD = new TableData();
-            TD.tableName = CurrNodeInfo.TableName;
             ColumnData CD = ColumnData.GetDefault();
-            FoundNode.children.ForEach(q =>
+            //тип ячеек таблицы - комбобокс
+            CD.type = 1;
+            //заполнение списка стадий
+            CD.comboboxData =
+                db.DB_Stage_consts.Select(q => q.Name).ToList();
+            //значение по умолчанию
+            CD.defVal = CD.comboboxData.Count > 0 ?
+                                    CD.comboboxData[0] : "";
+            return CD;
+        }
+        //добавить информацию по умолчанию для таблицы
+        void AddDefaultTableData(TableData TD, ColumnData CD,
+                                 TreeViewNodeType CurrNodeType)
+        {
+            //текущий выбранный узел
+            TreeViewNode CurrNode = GetFoundNode(CurrNodeType);
+            CurrNode.children.ForEach(q =>
             {
                 if (q is TreeViewNodeDB)
                 {
@@ -108,8 +132,26 @@ namespace Bim_Service.Model
                     TD.rowIds.Add(ViewNode.id);
                 }
             });
+            //добавить столбец в таблицу
             TD.columnData.Add(CD);
-            return TD;
+        }
+        //записать данные из базы в объект типа TreeViewNode
+        TreeViewNode GetFoundNode(TreeViewNodeType CurrNodeType)
+        {
+            TreeNodeConstructor TNC = new TreeNodeConstructor(db);
+            TreeViewNode ClientsNode = TNC.GetTreeViewNode();
+            if (CurrNodeType == TreeViewNodeType.Clients)
+            {
+                return ClientsNode;
+            }
+            else
+            {
+                return TreeViewNode.FindNode(systemName,
+                                          id,
+                                          parentSystemName,
+                                          parentId,
+                                          ClientsNode);
+            }
         }
     }
 }
