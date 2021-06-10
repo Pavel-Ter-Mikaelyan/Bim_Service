@@ -3,8 +3,8 @@ using System.Linq;
 
 namespace Bim_Service.Model
 {
-    public class DB_Client: ITreeView
-    {       
+    public class DB_Client : ITreeView
+    {
         public int Id { get; set; }
         public string Name { get; set; }
 
@@ -16,7 +16,7 @@ namespace Bim_Service.Model
         }
         public List<ITreeView> GetTreeViewNodes()
         {
-           return DB_Objects.Cast<ITreeView>().ToList();
+            return DB_Objects.Cast<ITreeView>().ToList();
         }
     }
 }

@@ -14,7 +14,7 @@ export const MinTableCellWidth = 80 //минимальная ширина сто
 export const StartTableWidth = 100//стартовая ширина столбцов по умолчанию
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop0', 80],
-    ['prop1', 150],
+    ['name', 200],
     ['prop2', 200],
     ['prop3', 300]
 ])

@@ -8,14 +8,14 @@ namespace Bim_Service.Model
     public class TableData
     {
         public string tableName { get; set; } = "";       
-        public List<string> rowIds { get; set; } = new List<string>();
+        public List<int> rowIds { get; set; } = new List<int>();
         public List<ColumnData> columnData { get; set; } =
             new List<ColumnData>();
     }
     public class ColumnData
     {
         //тип контрола (0-textbox, 1-combobox, 2-checkbox)
-        public string type { get; set; } = "";
+        public int type { get; set; }
         //имя заголовка столбца
         public string headerName { get; set; } = "";
         //имя свойства для заголовка столбца
@@ -27,7 +27,16 @@ namespace Bim_Service.Model
             new List<string>();
         //значения ячеек в одном столбце
         public List<rowVal> rowVals { get; set; } = 
-            new List<rowVal>();        
+            new List<rowVal>();
+        public static ColumnData GetDefault()
+        {
+            ColumnData CD = new ColumnData();
+            CD.type = 0;
+            CD.headerName = "Название";
+            CD.headerPropName = "name";
+            CD.defVal = "";
+            return CD;
+        }
     }
     public class rowVal
     {

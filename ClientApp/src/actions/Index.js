@@ -47,9 +47,12 @@ const LoadTableData_Action = (TableData) => ({
 })
 
 //загрузка данных таблицы
-export async function LoadTableData(dispatch, nodeSystemName) {
-    const response1 =
-        await fetch('/api/TablePanelInfo/GetTableData/' + nodeSystemName);
-    const TableData = await response1.json();
+export async function LoadTableData(dispatch, SelectedId) {
+    let TableData = null
+    if (SelectedId != null) { 
+        const response1 =
+            await fetch('/api/TablePanelInfo/GetTableData/' + SelectedId);
+        TableData = await response1.json();
+    }
     dispatch(LoadTableData_Action(TableData))
 }

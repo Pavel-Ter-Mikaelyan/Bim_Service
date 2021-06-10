@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { TablePanel } from '../TablePanel/TablePanel'
+import TablePanel from '../TablePanel/TablePanel'
 import { Tabs } from '../Tabs/Tabs'
 
 //компонент

@@ -22,6 +22,11 @@ export const TableManagerContainer = ({ TableInfo }) => {
     //сохранить изменения в базе
     const Save = () => {
         onClick()
+
+
+
+
+
     }
 
     return (

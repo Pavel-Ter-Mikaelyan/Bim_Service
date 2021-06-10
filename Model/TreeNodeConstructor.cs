@@ -8,7 +8,7 @@ namespace Bim_Service.Model
 {
     public class TreeNodeConstructor
     {
-        public ApplicationContext db { get; set; }
+        ApplicationContext db { get; set; }
         public TreeNodeConstructor(ApplicationContext db)
         {
             this.db = db;

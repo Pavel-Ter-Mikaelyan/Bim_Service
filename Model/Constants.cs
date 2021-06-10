@@ -24,38 +24,38 @@ namespace Bim_Service.Model
         }
         //словарь узлов
         public static Dictionary<TreeViewNodeType, TreeViewNodeInfo>
-            TreeViewNodeNames =
+            TreeViewNodeInfos =
             new Dictionary<TreeViewNodeType, TreeViewNodeInfo>() {
                 {TreeViewNodeType.Clients,
-                  new TreeViewNodeInfo("Clients","Заказчики")},
+                  new TreeViewNodeInfo("Clients","Заказчики",true,"Заказчики")},
                 { TreeViewNodeType.Client,
-                  new TreeViewNodeInfo("Client","Заказчик")},
+                  new TreeViewNodeInfo("Client","Заказчик",true,"Объекты")},
                  { TreeViewNodeType.Object,
-                  new TreeViewNodeInfo("Object","Объект")},
+                  new TreeViewNodeInfo("Object","Объект",true,"Стадии")},
                   { TreeViewNodeType.Stage,
-                  new TreeViewNodeInfo("Stage","Стадия")},
+                  new TreeViewNodeInfo("Stage","Стадия",true,"Файлы и шаблоны")},
                 {TreeViewNodeType.Templates,
-                  new TreeViewNodeInfo("Templates","Шаблоны")},
+                  new TreeViewNodeInfo("Templates","Шаблоны",true,"Шаблоны")},
                 {TreeViewNodeType.Template,
-                  new TreeViewNodeInfo("Template","Шаблон")},
+                  new TreeViewNodeInfo("Template","Шаблон", true,"Плагины")},
                 {TreeViewNodeType.Files,
-                  new TreeViewNodeInfo("Files","Файлы")},
+                  new TreeViewNodeInfo("Files","Файлы", false,"")},
                 {TreeViewNodeType.File,
-                  new TreeViewNodeInfo("File","Файл")},
+                  new TreeViewNodeInfo("File","Файл", false,"")},
                  {TreeViewNodeType.Plugin,
-                  new TreeViewNodeInfo("Plugin","Плагин")},
+                  new TreeViewNodeInfo("Plugin","Плагин", false,"")},
                 {TreeViewNodeType.Checking,
-                  new TreeViewNodeInfo("Checking","Проверки")},
+                  new TreeViewNodeInfo("Checking","Проверки", false,"")},
                 {TreeViewNodeType.Setting,
-                  new TreeViewNodeInfo("Setting","Настройки")},
+                  new TreeViewNodeInfo("Setting","Настройки", false,"")},
             };
-        //получить корневой узел
+        //получить корневой узел "Клиенты'
         public static TreeViewNodeStandart GetTreeViewClients()
         {
-            //информация по корневому узлу
+            //информация по корневому узлу "Клиенты"
             TreeViewNodeInfo NI =
-                TreeViewNodeNames[TreeViewNodeType.Clients];
-            //создать корневой узел
+                TreeViewNodeInfos[TreeViewNodeType.Clients];
+            //создать корневой узел "Клиенты"
             return new TreeViewNodeStandart(NI.nodeName,
                                             NI.systemNodeName,
                                             0,

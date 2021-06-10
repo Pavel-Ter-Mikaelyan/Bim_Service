@@ -11,7 +11,7 @@ namespace Bim_Service.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class TablePanelInfoController : ControllerBase
-    {        
+    {
         private ApplicationContext db;
         public TablePanelInfoController(ApplicationContext context)
         {
@@ -23,20 +23,34 @@ namespace Bim_Service.Controllers
             db.DB_Plugin_consts.Load();
             db.DB_Stages.Load();
             db.DB_Stage_consts.Load();
-            db.DB_Templates.Load();           
+            db.DB_Templates.Load();
         }
 
         //получить данные таблицы
-        [HttpGet("GetTableData/{name}")]
-        public object Get(string name)
+        [HttpGet("GetTableData/{systemName}/true/{parentSystemName}/{parentId:int}")]
+        public object Get(
+            string systemName,
+            string parentSystemName,
+            int parentId
+            )
         {
-            TreeNodeConstructor TNC = new TreeNodeConstructor(db);
-            TreeViewNode TVN = TNC.GetTreeViewNode();
-
-           
-
-
-            return null;
+            TableDataConstructor TDC =
+                new TableDataConstructor(db,
+                                         systemName,
+                                         parentSystemName,
+                                         parentId);
+            TableData TD = TDC.GetTableData();
+            return TD;
+        }
+        [HttpGet("GetTableData/{systemName}/false/{id:int}")]
+        public object Get(string systemName, int id)
+        {
+            TableDataConstructor TDC =
+                new TableDataConstructor(db,
+                                         systemName,
+                                         id);
+            TableData TD = TDC.GetTableData();
+            return TD;
         }
 
         [HttpPost("{id}")]

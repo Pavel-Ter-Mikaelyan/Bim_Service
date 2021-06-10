@@ -5,15 +5,15 @@ export const NodeIdConstructor = (TreeNode) => {
     //собрать текущий идентификатор узла
     let NodeId = null;
     if (TreeNode.standartNode) {
-        //например Files_true_Stage_65432
-        NodeId = systemName + '_' +
-            TreeNode.standartNode + '_' +
-            TreeNode.parentSystemName + '_' +
+        //например Files/true/Stage/65432
+        NodeId = systemName + '/' +
+            TreeNode.standartNode + '/' +
+            TreeNode.parentSystemName + '/' +
             TreeNode.parentId
     } else {
         //например Stage_false_35545    
-        NodeId = systemName + '_' +
-            TreeNode.standartNode + '_' +
+        NodeId = systemName + '/' +
+            TreeNode.standartNode + '/' +
             TreeNode.id
     }
     return NodeId

@@ -15,13 +15,13 @@ namespace Bim_Service.Model
         public DbSet<DB_Plugin_const> DB_Plugin_consts { get; set; }
         public DbSet<DB_Stage> DB_Stages { get; set; }
         public DbSet<DB_Stage_const> DB_Stage_consts { get; set; }
-        public DbSet<DB_Template> DB_Templates { get; set; } 
+        public DbSet<DB_Template> DB_Templates { get; set; }
 
         //создание базы данных
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
-            : base(options)
-        {           
-            Database.EnsureCreated();
+                : base(options)
+        {            
+            Database.EnsureCreated();      
         }
         //заполнение бд начальными данными
         protected override void OnModelCreating(ModelBuilder modelBuilder)

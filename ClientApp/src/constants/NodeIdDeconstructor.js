@@ -1,6 +1,6 @@
 ﻿
 export const NodeIdDeconstructor = (NodeId) => {    
-    const arr = NodeId.split('_')
+    const arr = NodeId.split('/')
     let TreeNode = {
         systemName: arr[0],
         standartNode: arr[1]

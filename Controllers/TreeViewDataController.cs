@@ -12,7 +12,7 @@ namespace Bim_Service.Controllers
     [Route("api/[controller]")]
     public class TreeViewController : ControllerBase
     {
-        private ApplicationContext db;
+        ApplicationContext db;
         public TreeViewController(ApplicationContext context)
         {
             db = context;
@@ -37,7 +37,7 @@ namespace Bim_Service.Controllers
         [HttpGet("GetTreeDictionary")]
         public object Get2()
         {           
-            return Constants.TreeViewNodeNames.Values;
+            return Constants.TreeViewNodeInfos.Values;
         }
     }
 }

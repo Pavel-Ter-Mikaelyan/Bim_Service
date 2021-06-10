@@ -9,7 +9,7 @@ import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
 
 import { TreeIcons, SimpleLineStyle } from '../../constants/Constants'
-import { LoadTreeNodesData } from '../../actions/Index'
+import { LoadTreeNodesData, LoadTableData } from '../../actions/Index'
 
 //стили для TreeItem
 const StyledTreeItem = withStyles(() => ({
@@ -65,11 +65,17 @@ const StyledTreeItem = withStyles(() => ({
 }))((props) => <TreeItem {...props} />);
 
 //компонент
-function NavTreeView({ TreeNodesData, LoadData }) {
+function NavTreeView({
+    TreeNodesData,
+    LoadTreeNodesData,
+    LoadTableData
+}) {
 
     useEffect(() => {
-        //начальная загрузка TreeNodes
-        LoadData(null)
+        //начальная загрузка данных дерева
+        LoadTreeNodesData(null)
+        //начальная загрузка данных таблицы
+        LoadTableData(null)
     }, [])
 
     //создание лейбла
@@ -104,9 +110,11 @@ function NavTreeView({ TreeNodesData, LoadData }) {
             </StyledTreeItem >)
     }
     //событие выделения узла
-    const onNodeSelect = (event, nodeId) => {
+    const onNodeSelect = (event, SelectedId) => {
         //загрузка дерева и передача Id выделенного узла
-        LoadData(nodeId)
+        LoadTreeNodesData(SelectedId)
+        //загрузка таблицы и передача Id выделенного узла
+        LoadTableData(SelectedId)
     }
 
     //стиль контейнера
@@ -135,6 +143,7 @@ function NavTreeView({ TreeNodesData, LoadData }) {
 export default connect(
     state => ({ TreeNodesData: state.TreeNodes.Data }),
     dispatch => ({
-        LoadData: (SelectedId) => LoadTreeNodesData(dispatch, SelectedId)
+        LoadTreeNodesData: (SelectedId) => LoadTreeNodesData(dispatch, SelectedId),
+        LoadTableData: (SelectedId) => LoadTableData(dispatch, SelectedId) 
     }))
     (NavTreeView)

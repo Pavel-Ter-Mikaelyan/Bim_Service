@@ -9,7 +9,7 @@ namespace Bim_Service.Model
     //узел дерева, соответствующий таблице в базе
     public class TreeViewNodeDB : TreeViewNode
     {
-        public int id { get; set; }
+        public int id { get; set; }//id в базе данных
 
         public TreeViewNodeDB(int id,
                               string name,
@@ -24,7 +24,7 @@ namespace Bim_Service.Model
                                             TreeViewNodeType NT)
         {
             //информация по добавляемому стандартному узлу
-            TreeViewNodeInfo NI = TreeViewNodeNames[NT];        
+            TreeViewNodeInfo NI = TreeViewNodeInfos[NT];        
             //создать стандартный узел
             var NS =
                 new TreeViewNodeStandart(NI.nodeName,
