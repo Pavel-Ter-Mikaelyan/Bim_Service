@@ -15,8 +15,10 @@ export const StartTableWidth = 100//стартовая ширина столбц
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop0', 80],
     ['name', 400],
-    ['prop2', 200],
-    ['prop3', 300]
+    ['Template', 200],
+    ['FileName', 250],
+    ['FilePath', 400],
+    ['Plugin', 300],
 ])
 export const SelectColor1 = 'hsl(0, 25%, 65%)'//удаление в табл.
 

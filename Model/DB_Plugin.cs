@@ -9,8 +9,6 @@ namespace Bim_Service.Model
     public class DB_Plugin : ITreeView
     {
         public int Id { get; set; }
-        public bool NeedChecking { get; set; }
-        public bool NeedSetting { get; set; }
         public string CheckingData { get; set; }
         public string SettingData { get; set; }
         public string PluginVersion { get; set; }
