@@ -24,7 +24,7 @@ export const TableManagerContainer = ({ TableInfo }) => {
         onClick()
 
 
-
+       // TableInfo.TableState.MainTableData.TableData
 
 
     }
