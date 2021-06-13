@@ -31,12 +31,18 @@ namespace Bim_Service.Controllers
         public object Get1()
         {
             TreeNodeConstructor TNC = new TreeNodeConstructor(db);
-            return TNC.GetTreeViewNode();
+            TreeViewNode TVN = null;
+            try
+            {
+                TVN = TNC.GetTreeViewNode();
+            }
+            catch { }
+            return TVN;
         }
         //получить словарь узлов
         [HttpGet("GetTreeDictionary")]
         public object Get2()
-        {           
+        {
             return Constants.TreeViewNodeInfos.Values;
         }
     }

@@ -14,9 +14,9 @@ namespace Bim_Service.Model
         public List<DB_Template> DB_Templates { get; set; }
         public List<DB_Plugin> DB_Plugins { get; set; }
 
-        public TreeViewNodeDB GetNode()
+        public TreeViewNode GetNode(int nodeId)
         {
-            return new TreeViewNodeDB(Id, DB_Stage_const.Name, "Stage", false);
+            return new TreeViewNode(DB_Stage_const.Name, "Stage", nodeId, Id);
         }
         public List<ITreeView> GetTreeViewNodes()
         {

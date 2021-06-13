@@ -1,16 +1,13 @@
-﻿import { NodeIdConstructor } from '../constants/NodeIdConstructor'
-import { NodeIdDeconstructor } from '../constants/NodeIdDeconstructor'
-import { NullUndefValid } from '../constants/Constants'
+﻿import { NullUndefValid } from '../constants/Constants'
 
 //-----------------------------------------------------------------------
 //конструктор для загрузки дерева
 const LoadTreeNodesData_Action =
-    (TreeNodesData, SelectedId, SelectedNode, TreeDictionary) => ({
+    (TreeNodesData, SelectedId, TreeDictionary) => ({
         type: 'LOAD_TREENODES',
         Data: TreeNodesData,
         TreeDictionary: TreeDictionary,
-        SelectedId: SelectedId,
-        SelectedNode: SelectedNode
+        SelectedId: SelectedId      
     })
 //загрузить данные узлов дерева из базы
 export async function LoadTreeNodesData(dispatch, SelectedId) {
@@ -25,25 +22,13 @@ export async function LoadTreeNodesData(dispatch, SelectedId) {
     catch { return }
     if (!NullUndefValid([TreeNodesData, TreeDictionary])){
         return
-    }
-    SetNodeId(TreeNodesData)
-    let SelectedNode = SelectedId != null ?
-        NodeIdDeconstructor(SelectedId) : null
+    }    
+   
     dispatch(LoadTreeNodesData_Action(
         TreeNodesData,
-        SelectedId,
-        SelectedNode,
+        SelectedId,       
         TreeDictionary
     ))
-}
-//установить идентификатор для всех узлов
-const SetNodeId = (NodesData) => {
-    //идентификатор узла  
-    NodesData.NodeId = NodeIdConstructor(NodesData)
-
-    return NodesData.children
-        .some(childrenData =>
-            SetNodeId(childrenData))
 }
 
 //-----------------------------------------------------------------------
@@ -55,9 +40,22 @@ const LoadTableData_Action = (TableData) => ({
 //загрузка данных таблицы
 export async function LoadTableData(dispatch, SelectedId) {
     let TableData = null
+
+    //let response = await fetch('/api/TablePanelInfo/LoadTableData', {
+    //    method: 'POST',
+    //    headers: {
+    //        'Content-Type': 'application/json;charset=utf-8'
+    //    },
+    //    body: JSON.stringify(TreeNodesData)
+    //});
+
+    ////let result = await response.json();
+    ////alert(result.name);
+
+
     if (SelectedId != null) {
         try {
-            const response1 =
+            const response1 = 
                 await fetch('/api/TablePanelInfo/GetTableData/' + SelectedId);
             TableData = await response1.json();
         }

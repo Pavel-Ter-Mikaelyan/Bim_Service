@@ -12,9 +12,9 @@ namespace Bim_Service.Model
         public DB_Stage DB_Stage { get; set; }
         public DB_Template DB_Template { get; set; }
 
-        public TreeViewNodeDB GetNode()
-        {
-            return new TreeViewNodeDB(Id, FileName, "File", false);
+        public TreeViewNode GetNode(int nodeId)
+        {            
+            return new TreeViewNode (FileName, "File", nodeId, Id);
         }
         public List<ITreeView> GetTreeViewNodes()
         {

@@ -9,7 +9,7 @@ namespace Bim_Service.Model
     //(например, DB_Client) к типу узла дерева (TreeViewNode)
     public interface ITreeView
     {
-        public TreeViewNodeDB GetNode();
+        public TreeViewNode GetNode(int nodeId);
         public List<ITreeView> GetTreeViewNodes();
     }
 }

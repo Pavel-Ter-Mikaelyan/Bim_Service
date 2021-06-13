@@ -10,9 +10,9 @@ namespace Bim_Service.Model
 
         public List<DB_Object> DB_Objects { get; set; }
 
-        public TreeViewNodeDB GetNode()
+        public TreeViewNode GetNode(int nodeId)
         {
-            return new TreeViewNodeDB(Id, Name, "Client", false);
+            return new TreeViewNode(Name, "Client", nodeId, Id);
         }
         public List<ITreeView> GetTreeViewNodes()
         {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Bim_Service.Controllers
 {
@@ -26,36 +27,18 @@ namespace Bim_Service.Controllers
             db.DB_Templates.Load();
         }
 
-        //получить данные таблицы
-        [HttpGet("GetTableData/{systemName}/true/{parentSystemName}/{parentId:int}")]
-        public object Get(
-            string systemName,
-            string parentSystemName,
-            int parentId
-            )
+        [HttpGet("GetTableData/{selectedId}")]
+        public object Get(int selectedId)
         {
-            TableDataConstructor TDC =
-                new TableDataConstructor(db,                                         
-                                         systemName,
-                                         parentSystemName,
-                                         parentId);
-            TableData TD = TDC.GetAllTableData();
+            TableData TD = null;
+            try
+            {
+                TableDataConstructor TDC =
+                    new TableDataConstructor(db, selectedId);
+                TD = TDC.GetAllTableData();
+            }
+            catch { }
             return TD;
-        }
-        [HttpGet("GetTableData/{systemName}/false/{id:int}")]
-        public object Get(string systemName, int id)
-        {
-            TableDataConstructor TDC =
-                new TableDataConstructor(db,
-                                         systemName,
-                                         id);
-            TableData TD = TDC.GetAllTableData();
-            return TD;
-        }
-
-        [HttpPost("{id}")]
-        public void Post(int id)
-        {
         }
 
         [HttpPut("{id}")]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,54 +10,36 @@ namespace Bim_Service.Model
     //конструктор данных для таблиц
     public class TableDataConstructor
     {
-        //данные для поиска выбранного в дереве узла -----------------
-        string systemName { get; set; } = null;
-        int id { get; set; }
-        string parentSystemName { get; set; } = null;
-        int parentId { get; set; }
-        string selectNodeInfo;
-        //------------------------------------------------------------
-        ApplicationContext db { get; set; }
+        TreeViewNode currNode = null;
+        ApplicationContext db = null;
 
         //если в дереве был выбран стандартный узел
         public TableDataConstructor(ApplicationContext db,
-                                    string systemName,
-                                    string parentSystemName,
-                                    int parentId)
+                                    int selectedId)
         {
             this.db = db;
-            this.systemName = systemName;
-            this.parentSystemName = parentSystemName;
-            this.parentId = parentId;
-            selectNodeInfo = systemName + "/true/" +
-                parentSystemName + "/" + parentId;
-        }
-        //если в дереве был выбран узел, соответствующий таблице БД
-        public TableDataConstructor(ApplicationContext db,
-                                    string systemName,
-                                    int id)
-        {
-            this.db = db;
-            this.systemName = systemName;
-            this.id = id;
-            selectNodeInfo = systemName + "/false/" + id;
+            TreeNodeConstructor TNC = new TreeNodeConstructor(db);
+            TreeViewNode TVN = TNC.GetTreeViewNode();
+            currNode = TreeViewNode.GetNode(selectedId, TVN);
         }
 
         //получить данные для таблицы выбранного узла
         public TableData GetAllTableData()
         {
+            if (currNode == null) return null;
             //получить общую информацию о выбранном узле
             var CurrNodeInfos =
                 TreeViewNodeInfos.FirstOrDefault(q =>
                                                  q.Value
                                                   .systemNodeName ==
-                                                   systemName);
+                                                   currNode.systemName);
             if (CurrNodeInfos.Value == null) return null;
             TreeViewNodeType CurrNodeType = CurrNodeInfos.Key;
             TreeViewNodeInfo CurrNodeInfo = CurrNodeInfos.Value;
             if (CurrNodeInfo.hasTableData == false) return null;
 
-            return GetAllTableData(CurrNodeInfo, CurrNodeType);
+            TableData TD = GetAllTableData(CurrNodeInfo, CurrNodeType);
+            return TD;
         }
         //получить данные для таблицы выбранного узла
         TableData GetAllTableData(TreeViewNodeInfo CurrNodeInfo,
@@ -64,13 +47,13 @@ namespace Bim_Service.Model
         {
             TableData TD = new TableData();
             TD.tableName = CurrNodeInfo.TableName;
-            TD.selectNodeInfo = selectNodeInfo;
+            TD.selectedId = currNode.nodeId;
 
             //если выбран узел 'Стадия'
             if (CurrNodeType == TreeViewNodeType.Stage)
             {
                 DB_Stage Stage =
-                    db.DB_Stages.FirstOrDefault(q => q.Id == id);
+                    db.DB_Stages.FirstOrDefault(q => q.Id == currNode.id);
                 if (Stage == null) return null;
                 //добавить информацию по таблице
                 AddStageTableData(Stage, TD);
@@ -79,7 +62,7 @@ namespace Bim_Service.Model
             else if (CurrNodeType == TreeViewNodeType.Template)
             {
                 DB_Template Template =
-                   db.DB_Templates.FirstOrDefault(q => q.Id == id);
+                   db.DB_Templates.FirstOrDefault(q => q.Id == currNode.id);
                 if (Template == null) return null;
                 //если в базе нет ни одного плагина
                 if (db.DB_Plugin_consts.Count() == 0) return null;
@@ -92,7 +75,7 @@ namespace Bim_Service.Model
                 //получить информацию по столбцу 
                 ColumnData CD = GetObjectColumnData();
                 //добавить информацию по умолчанию для таблицы
-                AddDefaultTableData(TD, CD, CurrNodeType);
+                AddStandartInfo(TD, CD, CurrNodeType);
             }
             else//если выбран узел по умолчанию 
                 //(дочерние элементы которого соответствуют строкам БД)
@@ -100,7 +83,7 @@ namespace Bim_Service.Model
                 //получить информацию по столбцу 
                 ColumnData CD = ColumnData.GetDefault();
                 //добавить информацию по умолчанию для таблицы
-                AddDefaultTableData(TD, CD, CurrNodeType);
+                AddStandartInfo(TD, CD, CurrNodeType);
             }
             return TD;
         }
@@ -173,43 +156,24 @@ namespace Bim_Service.Model
                                     CD.comboboxData[0] : "";
             return CD;
         }
-        //добавить информацию по умолчанию для таблицы
-        void AddDefaultTableData(TableData TD, ColumnData CD,
-                                 TreeViewNodeType CurrNodeType)
+        //добавить стандартную информацию для таблицы
+        //(если дочерние узлы сооветствуют строкам БД)
+        void AddStandartInfo(TableData TD, ColumnData CD,
+                             TreeViewNodeType CurrNodeType)
         {
-            //текущий выбранный узел
-            TreeViewNode CurrNode = GetFoundNode(CurrNodeType);
-            CurrNode.children.ForEach(q =>
+            currNode.children.ForEach(child =>
             {
-                if (q is TreeViewNodeDB)
+                try
                 {
-                    TreeViewNodeDB ViewNode =
-                               (TreeViewNodeDB)q;
-                    rowVal rv = new rowVal { value = ViewNode.name };
+                    TreeViewNode childNode = (TreeViewNode)child;
+                    rowVal rv = new rowVal { value = childNode.name };
                     CD.rowVals.Add(rv);
-                    TD.rowIds.Add(ViewNode.id);
+                    TD.rowIds.Add(childNode.id);
                 }
+                catch { }
             });
             //добавить столбец в таблицу
             TD.columnData.Add(CD);
-        }
-        //записать данные из базы в объект типа TreeViewNode
-        TreeViewNode GetFoundNode(TreeViewNodeType CurrNodeType)
-        {
-            TreeNodeConstructor TNC = new TreeNodeConstructor(db);
-            TreeViewNode ClientsNode = TNC.GetTreeViewNode();
-            if (CurrNodeType == TreeViewNodeType.Clients)
-            {
-                return ClientsNode;
-            }
-            else
-            {
-                return TreeViewNode.FindNode(systemName,
-                                          id,
-                                          parentSystemName,
-                                          parentId,
-                                          ClientsNode);
-            }
         }
     }
 }

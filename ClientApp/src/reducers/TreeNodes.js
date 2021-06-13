@@ -2,8 +2,7 @@
     (state = {
         Data: null,
         TreeDictionary: null,
-        SelectedId: null,
-        SelectedNode: null
+        SelectedId: null     
     }, action) => {
         switch (action.type) {
             case 'LOAD_TREENODES':
@@ -16,8 +15,7 @@
                 }
                 return ({
                     Data: action.Data,
-                    SelectedId: SelectedId,
-                    SelectedNode: action.SelectedNode,
+                    SelectedId: SelectedId,                    
                     TreeDictionary: action.TreeDictionary
                 })
             default:
@@ -28,7 +26,7 @@
 const ValidSelectId = (Data, SelectedId) => {
     if (SelectedId == null) { return false }
     //идентификатор узла  
-    if (Data.NodeId === SelectedId) { return true }
+    if (Data.nodeId === SelectedId) { return true }
 
     return Data.children
         .some(childrenData =>

@@ -50,17 +50,16 @@ namespace Bim_Service.Model
                   new TreeViewNodeInfo("Setting","Настройки", false,"")},
             };
         //получить корневой узел "Клиенты'
-        public static TreeViewNodeStandart GetTreeViewClients()
+        public static TreeViewNode GetTreeViewClients(int nodeId)
         {
             //информация по корневому узлу "Клиенты"
             TreeViewNodeInfo NI =
                 TreeViewNodeInfos[TreeViewNodeType.Clients];
             //создать корневой узел "Клиенты"
-            return new TreeViewNodeStandart(NI.nodeName,
-                                            NI.systemNodeName,
-                                            0,
-                                            "root",
-                                            true);
+            return new TreeViewNode(NI.nodeName,
+                                    NI.systemNodeName,
+                                    nodeId,
+                                    0);
         }
     }
 }

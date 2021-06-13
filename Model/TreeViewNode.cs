@@ -13,22 +13,26 @@ namespace Bim_Service.Model
         public string name { get; set; } = "";
         //системное имя, например "Stage"
         public string systemName { get; set; } = "";
-        //стандартный узел (не имеющий табличного аналога в базе)
-        public bool standartNode { get; set; } = false;
         //узел, при выборе которого в дереве, на панели справа
         //будет отображаться таблица формата TableData
         public bool hasTableData { get; set; } = false;
         //подузлы
         public List<object> children { get; set; } =
             new List<object>();
+        //идентификатор узла в дереве
+        public int nodeId { get; set; }
+        //идентификатор узла в базе (при наличии табличного аналога в базе)
+        public int id { get; set; }
         //конструктор
         public TreeViewNode(string name,
                             string systemName,
-                            bool standartNode)
+                            int nodeId,
+                            int id)
         {
             this.name = name;
             this.systemName = systemName;
-            this.standartNode = standartNode;
+            this.nodeId = nodeId;
+            this.id = id;
             hasTableData =
                 TreeViewNodeInfos.First(q => q.Value.systemNodeName ==
                                                        systemName)
@@ -40,60 +44,42 @@ namespace Bim_Service.Model
             //добавить узел в коллекцию
             children.Add(child);
         }
-        //рекурсивный поиск узла 
-        public static TreeViewNode FindNode(string systemName_,
-                                            int id_,
-                                            string parentSystemName_,
-                                            int parentId_,
-                                            TreeViewNode currNode)
+        //поиск узла
+        public static TreeViewNode GetNode(int nodeId,
+                                           TreeViewNode TVN)
         {
-            try
+            if (TVN.nodeId == nodeId)
             {
-                if (currNode.systemName == systemName_)
-                {
-                    if (currNode.standartNode)
-                    {
-                        TreeViewNodeStandart TVNS =
-                            (TreeViewNodeStandart)currNode;
-                        if (TVNS.parentId == parentId_ &&
-                            TVNS.parentSystemName == parentSystemName_)
-                        {
-                            return currNode;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        TreeViewNodeDB TVNDB = (TreeViewNodeDB)currNode;
-                        if (TVNDB.id == id_)
-                        {
-                            return currNode;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (TreeViewNode TVN in currNode.children)
-                    {
-                        TreeViewNode returnVal =
-                            FindNode(systemName_,
-                                     id_,
-                                     parentSystemName_,
-                                     parentId_,
-                                     TVN);
-                        if (returnVal != null) return returnVal;
-                    }
-                    return null;
-                }
+                return TVN;
             }
-            catch { return null; }
+            else if (TVN.children.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                foreach (TreeViewNode child in TVN.children)
+                {
+                    TreeViewNode childNode = GetNode(nodeId, child);
+                    if (childNode != null) return childNode;
+                }
+                return null;
+            }
+        }
+        //добавить стандартный узел
+        public TreeViewNode AddStandartChildren(TreeViewNodeType NT,
+                                                int childNodeId)
+        {
+            //информация по добавляемому стандартному узлу
+            TreeViewNodeInfo NI = TreeViewNodeInfos[NT];
+            //создать стандартный узел
+            var NS = new TreeViewNode(NI.nodeName,
+                                      NI.systemNodeName,
+                                      childNodeId,
+                                      0);
+            //добавить стандартный узел в коллекцию
+            children.Add(NS);
+            return NS;
         }
     }
 }

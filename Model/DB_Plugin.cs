@@ -17,10 +17,10 @@ namespace Bim_Service.Model
         public DB_Template DB_Template { get; set; }       
         public DB_Stage DB_Stage { get; set; }
 
-        public TreeViewNodeDB GetNode()
+        public TreeViewNode GetNode(int nodeId)
         {
-            return new TreeViewNodeDB(Id, DB_Plugin_const.Name, "Plugin", false);
-        }
+            return new TreeViewNode(DB_Plugin_const.Name, "Plugin", nodeId, Id);
+        }        
         public List<ITreeView> GetTreeViewNodes()
         {
             return new List<ITreeView>();

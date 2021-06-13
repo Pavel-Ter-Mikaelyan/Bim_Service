@@ -11,9 +11,9 @@ namespace Bim_Service.Model
         public DB_Client DB_Client { get; set; }
         public List<DB_Stage> DB_Stages { get; set; }
               
-        public TreeViewNodeDB GetNode()
-        {
-            return new TreeViewNodeDB(Id, Name, "Object", false);
+        public TreeViewNode GetNode(int nodeId)
+        {      
+            return new TreeViewNode( Name, "Object", nodeId, Id);
         }
         public List<ITreeView> GetTreeViewNodes()
         {

@@ -104,7 +104,7 @@ function NavTreeView({
             })
 
         return (
-            <StyledTreeItem key={TreeNodes.NodeId} nodeId={TreeNodes.NodeId} label={label} >
+            <StyledTreeItem key={TreeNodes.nodeId} nodeId={TreeNodes.nodeId} label={label} >
                 {Array.isArray(TreeNodes.children) ?
                     TreeNodes.children.map((node) => TreeConstructor(node)) : null}
             </StyledTreeItem >)

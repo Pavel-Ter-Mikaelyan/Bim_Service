@@ -2,7 +2,8 @@
 import { connect } from 'react-redux'
 import { createUseStyles } from 'react-jss';
 
-import { Focus_Icon } from '../../constants/Constants'
+import { Focus_Icon, NullUndefValid } from '../../constants/Constants'
+import { GetNode } from '../../constants/GetNode'
 
 //стили
 const useStyles = createUseStyles({
@@ -45,10 +46,20 @@ const mapStateToProps = (state) => ({ nodeName: GetNodeName(state) })
 export default connect(mapStateToProps)(NavSelectInfo)
 //получить имя узла
 const GetNodeName = (state) => {
-    let SelectedId = state.TreeNodes.SelectedId
-    if (SelectedId == null) return null
-    let systemName = state.TreeNodes.SelectedNode.systemName
-    let TreeDictionary = state.TreeNodes.TreeDictionary
-    return TreeDictionary.find(Node =>
-        Node.systemNodeName == systemName).nodeName
+    const SelectedId = state.TreeNodes.SelectedId
+    const TreeNodesData = state.TreeNodes.Data
+    const TreeDictionary = state.TreeNodes.TreeDictionary 
+    if (!NullUndefValid([SelectedId, TreeDictionary, TreeNodesData])) {
+        return null
+    }
+
+    const currNode = GetNode(TreeNodesData, SelectedId)
+    if (!NullUndefValid([currNode])) return null
+
+    const Dict = TreeDictionary.find(Node =>
+        Node.systemNodeName == currNode.systemName)
+    if (!NullUndefValid([Dict])) return null
+
+    return Dict.nodeName
 }
+

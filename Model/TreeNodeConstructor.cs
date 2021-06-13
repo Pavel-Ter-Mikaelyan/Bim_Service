@@ -9,17 +9,20 @@ namespace Bim_Service.Model
     public class TreeNodeConstructor
     {
         ApplicationContext db { get; set; }
+        int nodeId = 0;
+
         public TreeNodeConstructor(ApplicationContext db)
         {
             this.db = db;
         }
+
         //рекурсивное добавление узлов дерева
         public void AddTreeViewNodes(TreeViewNode MainNode,
                                      List<ITreeView> Nodes)
         {
             foreach (ITreeView Node in Nodes)
             {
-                TreeViewNodeDB ChildNode = Node.GetNode();
+                TreeViewNode ChildNode = Node.GetNode(++nodeId);
                 //добавление узла
                 MainNode.AddChildren(ChildNode);
                 //для узла 'Стадия'
@@ -28,9 +31,11 @@ namespace Bim_Service.Model
                     DB_Stage Stage = (DB_Stage)Node;
                     //добавление стандартных узлов
                     var TemplatesNode = //"Шаблоны"
-                        ChildNode.AddStandartChildren(TreeViewNodeType.Templates);
+                        ChildNode.AddStandartChildren(TreeViewNodeType.Templates,
+                                                      ++nodeId);
                     var FilesNode =//"Файлы"
-                        ChildNode.AddStandartChildren(TreeViewNodeType.Files);
+                        ChildNode.AddStandartChildren(TreeViewNodeType.Files,
+                                                      ++nodeId);
                     //добавление подузлов в узел "Шаблоны"
                     AddTreeViewNodes(TemplatesNode, Stage.GetTemplatesTreeViewNodes());
                     //добавление подузловв узел "Файлы"
@@ -40,8 +45,10 @@ namespace Bim_Service.Model
                 else if (Node is DB_Plugin)
                 {
                     //добавление стандартных узлов
-                    ChildNode.AddStandartChildren(TreeViewNodeType.Checking);
-                    ChildNode.AddStandartChildren(TreeViewNodeType.Setting);
+                    ChildNode.AddStandartChildren(TreeViewNodeType.Checking,
+                                                  ++nodeId);
+                    ChildNode.AddStandartChildren(TreeViewNodeType.Setting,
+                                                  ++nodeId);
                 }
                 else //для остальных узлов
                 {
@@ -54,12 +61,12 @@ namespace Bim_Service.Model
         public TreeViewNode GetTreeViewNode()
         {
             //корневой узел
-            var ClientsNode = GetTreeViewClients();
+            var ClientsNode = GetTreeViewClients(++nodeId);
 
             //рекурсивное добавление подузлов
             AddTreeViewNodes(ClientsNode,
                 db.DB_Clients.Cast<ITreeView>().ToList());
-                        
+
             return ClientsNode;
         }
     }

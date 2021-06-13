@@ -205,10 +205,12 @@ TreeIcons.set("Files", Files_Icon)
 TreeIcons.set("File", File_Icon)
 
 export const NullUndefValid = (array) => {
-    array.forEach(q => {
-        if (q == undefined || q == null) {
-            return false
-        }
-    })
-    return true
+    const el = array.findIndex(q => q == undefined || q == null)
+    if (el == -1) {
+        return true
+    }
+    else {
+        return false
+    }
+
 }
