@@ -18,56 +18,31 @@ namespace Bim_Service.Model
 
         //рекурсивное добавление узлов дерева
         public void AddTreeViewNodes(TreeViewNode MainNode,
-                                     List<ITreeView> Nodes)
+                                     List<TreeViewProvider> Nodes)
         {
-            foreach (ITreeView Node in Nodes)
+            foreach (TreeViewProvider Node in Nodes)
             {
                 TreeViewNode ChildNode = Node.GetNode(++nodeId);
                 //добавление узла
-                MainNode.AddChildren(ChildNode);
-                //для узла 'Стадия'
-                if (Node is DB_Stage)
-                {
-                    DB_Stage Stage = (DB_Stage)Node;
-                    //добавление стандартных узлов
-                    var TemplatesNode = //"Шаблоны"
-                        ChildNode.AddStandartChildren(TreeViewNodeType.Templates,
-                                                      ++nodeId);
-                    var FilesNode =//"Файлы"
-                        ChildNode.AddStandartChildren(TreeViewNodeType.Files,
-                                                      ++nodeId);
-                    //добавление подузлов в узел "Шаблоны"
-                    AddTreeViewNodes(TemplatesNode, Stage.GetTemplatesTreeViewNodes());
-                    //добавление подузловв узел "Файлы"
-                    AddTreeViewNodes(FilesNode, Stage.GetFilesTreeViewNodes());
-                }
-                //для узла 'Плагин'
-                else if (Node is DB_Plugin)
-                {
-                    //добавление стандартных узлов
-                    ChildNode.AddStandartChildren(TreeViewNodeType.Checking,
-                                                  ++nodeId);
-                    ChildNode.AddStandartChildren(TreeViewNodeType.Setting,
-                                                  ++nodeId);
-                }
-                else //для остальных узлов
-                {
-                    //добавление подузлов
-                    AddTreeViewNodes(ChildNode, Node.GetTreeViewNodes());
-                }
+                MainNode.children.Add(ChildNode);
+                //добавление подузлов
+                AddTreeViewNodes(ChildNode, Node.GetNodes());
             }
         }
         //получить все узлы дерева
         public TreeViewNode GetTreeViewNode()
         {
-            //корневой узел
-            var ClientsNode = GetTreeViewClients(++nodeId);
+            //корневой узел Клиенты
+            StandartNode ClientsNode =
+                new StandartNode(TreeViewNodeType.Clients,
+                                 true,
+                                 db.DB_Clients.Cast<TreeViewProvider>().ToList());
+            TreeViewNode RootNode = ClientsNode.GetNode(++nodeId);
 
             //рекурсивное добавление подузлов
-            AddTreeViewNodes(ClientsNode,
-                db.DB_Clients.Cast<ITreeView>().ToList());
+            AddTreeViewNodes(RootNode, ClientsNode.GetNodes());
 
-            return ClientsNode;
+            return RootNode;
         }
     }
 }

@@ -9,6 +9,7 @@ import {
     StartTableWidth
 } from '../../constants/Constants'
 import { addSeparIndicatorInfo } from './Table/SharedMethods/addSeparIndicatorInfo'
+import { LoadTreeNodesData, LoadTableData } from '../../actions/Index'
 
 //стили
 const TablePanelStyles = createUseStyles({
@@ -26,7 +27,11 @@ const TablePanelStyles = createUseStyles({
     }
 })
 
-const TablePanel = ({ TableData }) => {
+const TablePanel = ({
+    TableData,
+    LoadTableData,
+    LoadTreeNodesData
+}) => {
     //получить размеры столбцов и данные сепаратора по умолчанию
     const getDefColumnSizeData = (TableData) => {
         //данные ширин столбцов
@@ -110,7 +115,11 @@ const TablePanel = ({ TableData }) => {
     if (TableState == null) return null
     return (
         <div class={cls.TablePanel} >
-            <TableManagerContainer TableInfo={TableInfo} />
+            <TableManagerContainer
+                TableInfo={TableInfo}
+                LoadTableData={LoadTableData}
+                LoadTreeNodesData={LoadTreeNodesData}
+            />
             <Table TableInfo={NewRowTableInfo} />
             <Table TableInfo={MainTableInfo} />
         </div>
@@ -119,6 +128,10 @@ const TablePanel = ({ TableData }) => {
 
 //присоединить состояние
 const mapStateToProps = (state) => ({
-    TableData: state.TablePanelInfo.TableData 
+    TableData: state.TablePanelInfo.TableData
 })
-export default connect(mapStateToProps)(TablePanel)
+const mapDispatchToProps = (dispatch) => ({
+    LoadTreeNodesData: (SelectedId) => LoadTreeNodesData(dispatch, SelectedId),
+    LoadTableData: (SelectedId) => LoadTableData(dispatch, SelectedId)
+})
+export default connect(mapStateToProps, mapDispatchToProps)(TablePanel)

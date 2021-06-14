@@ -13,36 +13,32 @@ namespace Bim_Service.Model
         public string name { get; set; } = "";
         //системное имя, например "Stage"
         public string systemName { get; set; } = "";
-        //узел, при выборе которого в дереве, на панели справа
-        //будет отображаться таблица формата TableData
-        public bool hasTableData { get; set; } = false;
         //подузлы
-        public List<object> children { get; set; } =
-            new List<object>();
+        public List<TreeViewNode> children { get; set; } =
+                new List<TreeViewNode>();
         //идентификатор узла в дереве
         public int nodeId { get; set; }
         //идентификатор узла в базе (при наличии табличного аналога в базе)
         public int id { get; set; }
+        [NonSerialized] //тип узла 
+        public TreeViewNodeType NodeType;
+        [NonSerialized] //инфо узла
+        public TreeViewNodeInfo NodeInfo;
+        [NonSerialized] //объект узла
+        public TreeViewProvider NodeProvider;
         //конструктор
         public TreeViewNode(string name,
-                            string systemName,
                             int nodeId,
-                            int id)
+                            int id,
+                            TreeViewProvider NodeProvider)
         {
             this.name = name;
-            this.systemName = systemName;
             this.nodeId = nodeId;
             this.id = id;
-            hasTableData =
-                TreeViewNodeInfos.First(q => q.Value.systemNodeName ==
-                                                       systemName)
-                                 .Value.hasTableData;
-        }
-        //добавить узел
-        public void AddChildren(object child)
-        {
-            //добавить узел в коллекцию
-            children.Add(child);
+            this.NodeProvider = NodeProvider;
+            NodeType = NodeProvider.NodeType;
+            NodeInfo = TreeViewNodeInfos[NodeType];
+            systemName = NodeInfo.systemNodeName;
         }
         //поиск узла
         public static TreeViewNode GetNode(int nodeId,
@@ -66,20 +62,11 @@ namespace Bim_Service.Model
                 return null;
             }
         }
-        //добавить стандартный узел
-        public TreeViewNode AddStandartChildren(TreeViewNodeType NT,
-                                                int childNodeId)
-        {
-            //информация по добавляемому стандартному узлу
-            TreeViewNodeInfo NI = TreeViewNodeInfos[NT];
-            //создать стандартный узел
-            var NS = new TreeViewNode(NI.nodeName,
-                                      NI.systemNodeName,
-                                      childNodeId,
-                                      0);
-            //добавить стандартный узел в коллекцию
-            children.Add(NS);
-            return NS;
-        }
+
+        //public TableData GetTableData()
+        //{
+        //    TableData TD = new TableData();
+
+        //}
     }
 }

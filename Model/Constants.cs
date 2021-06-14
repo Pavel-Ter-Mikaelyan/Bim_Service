@@ -20,7 +20,14 @@ namespace Bim_Service.Model
             Files,
             File,
             Checking,
-            Setting, 
+            Setting,
+        }
+        //Типы узлов
+        public enum ColumnDataType
+        {
+            Textbox,
+            Combobox,
+            Checkbox
         }
         //словарь узлов
         public static Dictionary<TreeViewNodeType, TreeViewNodeInfo>
@@ -49,17 +56,5 @@ namespace Bim_Service.Model
                 {TreeViewNodeType.Setting,
                   new TreeViewNodeInfo("Setting","Настройки", false,"")},
             };
-        //получить корневой узел "Клиенты'
-        public static TreeViewNode GetTreeViewClients(int nodeId)
-        {
-            //информация по корневому узлу "Клиенты"
-            TreeViewNodeInfo NI =
-                TreeViewNodeInfos[TreeViewNodeType.Clients];
-            //создать корневой узел "Клиенты"
-            return new TreeViewNode(NI.nodeName,
-                                    NI.systemNodeName,
-                                    nodeId,
-                                    0);
-        }
     }
 }

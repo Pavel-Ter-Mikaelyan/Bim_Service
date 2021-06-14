@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Bim_Service.Controllers
 {
@@ -27,7 +28,7 @@ namespace Bim_Service.Controllers
             db.DB_Templates.Load();
         }
 
-        [HttpGet("GetTableData/{selectedId}")]
+        [HttpGet("GetTableData/{selectedId:int}")]
         public object Get(int selectedId)
         {
             TableData TD = null;
@@ -41,14 +42,18 @@ namespace Bim_Service.Controllers
             return TD;
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id)
+        [HttpPut("PutTableData")]
+        public bool Put(TableData TD)
         {
-        }
+            TableDataModifier TDM = new TableDataModifier(db, TD);
+            bool bResult = false;
+            try
+            {
+                bResult = TDM.Modify();
+            }
+            catch { }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return bResult;
         }
     }
 }

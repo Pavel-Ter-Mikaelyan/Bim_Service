@@ -1,22 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class DB_Client : ITreeView
+    public class DB_Client : TreeViewProvider
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public override int Id { get; set; }
+        public override string Name { get; set; }
+
+        [NotMapped]
+        public override TreeViewNodeType NodeType { get; set; } =
+                             TreeViewNodeType.Client;
 
         public List<DB_Object> DB_Objects { get; set; }
 
-        public TreeViewNode GetNode(int nodeId)
+        public override List<TreeViewProvider> GetNodes()
         {
-            return new TreeViewNode(Name, "Client", nodeId, Id);
-        }
-        public List<ITreeView> GetTreeViewNodes()
-        {
-            return DB_Objects.Cast<ITreeView>().ToList();
-        }
+            return DB_Objects.Cast<TreeViewProvider>().ToList();
+        }       
     }
 }

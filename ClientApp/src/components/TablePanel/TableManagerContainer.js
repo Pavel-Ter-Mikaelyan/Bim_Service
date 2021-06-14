@@ -7,8 +7,11 @@ import { changeColumnForDelete } from './Table/SharedMethods/changeColumnForDele
 import { CheckBox } from './Components/CheckBox';
 import { Button } from './Components/Button';
 
-export const TableManagerContainer = ({ TableInfo }) => {
-
+export const TableManagerContainer = ({
+    TableInfo,
+    LoadTableData,
+    LoadTreeNodesData
+}) => {
     //вкл/выкл режим редактирования
     const onClick = () => {
         TableInfo.TableState.disabled = !TableInfo.TableState.disabled
@@ -21,12 +24,10 @@ export const TableManagerContainer = ({ TableInfo }) => {
     }
     //сохранить изменения в базе
     const Save = () => {
+        //вкл/выкл режим редактирования
         onClick()
-
-
-       // TableInfo.TableState.MainTableData.TableData
-
-
+        //сохранить изменения в базе и перезагрузить дерево и таблицу
+        PutTableData(TableInfo, LoadTableData, LoadTreeNodesData)
     }
 
     return (
@@ -36,13 +37,52 @@ export const TableManagerContainer = ({ TableInfo }) => {
                 text='Режим редактирования'
                 Click={onClick}
                 disabled={false}
-            />   
+            />
             < Button
-                Icon={<SaveOutlinedIcon size="small"/>}
+                Icon={<SaveOutlinedIcon size="small" />}
                 text='Сохранить'
                 Click={Save}
                 disabled={TableInfo.TableState.disabled}
             />
         </div>
     )
+}
+
+//сохранить изменения в базе и перезагрузить дерево и таблицу
+async function PutTableData(
+    TableInfo,
+    LoadTableData,
+    LoadTreeNodesData) {
+
+    const TableData = TableInfo.TableState.MainTableData.TableData
+    const SelectedId = TableData.selectedId
+    let resultText = 'Не успешная запись в базу'
+
+    try {
+        let response = await fetch('/api/TablePanelInfo/PutTableData', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(TableData)
+        });
+        if (response.ok) {
+            const bResponse = await response.json();
+            if (bResponse) {
+                resultText = 'Успешная запись в базу'
+
+                //загрузка дерева и передача Id выделенного узла
+                LoadTreeNodesData(SelectedId)
+                //загрузка таблицы и передача Id выделенного узла
+                LoadTableData(SelectedId)
+            }
+        }
+        else {
+            resultText = 'Не успешная запись в базу, статус: ' + response.statusText;
+        }
+    }
+    catch { }
+
+    //сообщение в конце
+    alert(resultText)
 }

@@ -28,7 +28,7 @@ namespace Bim_Service.Controllers
 
         //получить все узлы дерева
         [HttpGet("GetNodes")]
-        public object Get1()
+        public TreeViewNode Get1()
         {
             TreeNodeConstructor TNC = new TreeNodeConstructor(db);
             TreeViewNode TVN = null;

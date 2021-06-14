@@ -7,7 +7,7 @@ const LoadTreeNodesData_Action =
         type: 'LOAD_TREENODES',
         Data: TreeNodesData,
         TreeDictionary: TreeDictionary,
-        SelectedId: SelectedId      
+        SelectedId: SelectedId
     })
 //загрузить данные узлов дерева из базы
 export async function LoadTreeNodesData(dispatch, SelectedId) {
@@ -15,18 +15,22 @@ export async function LoadTreeNodesData(dispatch, SelectedId) {
     let TreeDictionary = null
     try {
         const response1 = await fetch("/api/TreeView/GetNodes");
-        TreeNodesData = await response1.json();
+        if (response1.ok) {
+            TreeNodesData = await response1.json();
+        }
         const response2 = await fetch("/api/TreeView/GetTreeDictionary");
-        TreeDictionary = await response2.json();
+        if (response2.ok) {
+            TreeDictionary = await response2.json();
+        }
     }
     catch { return }
-    if (!NullUndefValid([TreeNodesData, TreeDictionary])){
+    if (!NullUndefValid([TreeNodesData, TreeDictionary])) {
         return
-    }    
-   
+    }
+
     dispatch(LoadTreeNodesData_Action(
         TreeNodesData,
-        SelectedId,       
+        SelectedId,
         TreeDictionary
     ))
 }
@@ -41,23 +45,13 @@ const LoadTableData_Action = (TableData) => ({
 export async function LoadTableData(dispatch, SelectedId) {
     let TableData = null
 
-    //let response = await fetch('/api/TablePanelInfo/LoadTableData', {
-    //    method: 'POST',
-    //    headers: {
-    //        'Content-Type': 'application/json;charset=utf-8'
-    //    },
-    //    body: JSON.stringify(TreeNodesData)
-    //});
-
-    ////let result = await response.json();
-    ////alert(result.name);
-
-
     if (SelectedId != null) {
         try {
-            const response1 = 
+            const response1 =
                 await fetch('/api/TablePanelInfo/GetTableData/' + SelectedId);
-            TableData = await response1.json();
+            if (response1.ok) {
+                TableData = await response1.json();
+            }
         }
         catch { }
     }
