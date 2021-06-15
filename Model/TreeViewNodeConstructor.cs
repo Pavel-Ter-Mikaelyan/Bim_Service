@@ -6,21 +6,21 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class TreeNodeConstructor
+    public class TreeViewNodeConstructor
     {
         ApplicationContext db { get; set; }
         int nodeId = 0;
 
-        public TreeNodeConstructor(ApplicationContext db)
+        public TreeViewNodeConstructor(ApplicationContext db)
         {
             this.db = db;
         }
 
         //рекурсивное добавление узлов дерева
         public void AddTreeViewNodes(TreeViewNode MainNode,
-                                     List<TreeViewProvider> Nodes)
+                                     List<DataProvider> Nodes)
         {
-            foreach (TreeViewProvider Node in Nodes)
+            foreach (DataProvider Node in Nodes)
             {
                 TreeViewNode ChildNode = Node.GetNode(++nodeId);
                 //добавление узла
@@ -36,7 +36,7 @@ namespace Bim_Service.Model
             StandartNode ClientsNode =
                 new StandartNode(TreeViewNodeType.Clients,
                                  true,
-                                 db.DB_Clients.Cast<TreeViewProvider>().ToList());
+                                 db.DB_Clients.Cast<DataProvider>().ToList());
             TreeViewNode RootNode = ClientsNode.GetNode(++nodeId);
 
             //рекурсивное добавление подузлов

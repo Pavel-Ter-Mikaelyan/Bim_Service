@@ -16,13 +16,13 @@ namespace Bim_Service.Model
 
         public TableData(int selectedId,
                          string tableName,
-                         List<int> rowIds,
-                         List<ColumnData> columnData)
+                         List<ColumnData> columnData = null,
+                         List<int> rowIds = null)
         {
             this.selectedId = selectedId;
             this.tableName = tableName;
-            this.rowIds = rowIds;
-            this.columnData = columnData;
+            if (rowIds != null) this.rowIds = rowIds;
+            if (columnData != null) this.columnData = columnData;
         }
-    }  
+    }
 }

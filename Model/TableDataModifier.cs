@@ -18,7 +18,7 @@ namespace Bim_Service.Model
         {
             this.db = db;
             this.TableData = TableData;
-            TreeNodeConstructor TNC = new TreeNodeConstructor(db);
+            TreeViewNodeConstructor TNC = new TreeViewNodeConstructor(db);
             TreeViewNode TVN = TNC.GetTreeViewNode();
             currNode = TreeViewNode.GetNode(TableData.selectedId,
                                             TVN);

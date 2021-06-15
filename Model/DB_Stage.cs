@@ -5,7 +5,7 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class DB_Stage : TreeViewProvider
+    public class DB_Stage : DataProvider
     {
         public override int Id { get; set; }
 
@@ -23,23 +23,71 @@ namespace Bim_Service.Model
         public List<DB_Plugin> DB_Plugins { get; set; }
 
         public override TreeViewNode GetNode(int nodeId)
-        {
-            Name = DB_Stage_const.Name;
-            return GetTreeViewNode(nodeId);
+        {         
+            return NodeConstructor(nodeId, DB_Stage_const.Name);
         }
-        public override List<TreeViewProvider> GetNodes()
+        public override List<DataProvider> GetNodes()
         {
-            StandartNode TemplatesNode =
+            StandartNode TemplatesNode = DB_Templates == null ?
+                        new StandartNode(TreeViewNodeType.Templates) :
                         new StandartNode(TreeViewNodeType.Templates,
                                          true,
-                                         DB_Templates.Cast<TreeViewProvider>().ToList());
-            StandartNode FilesNode =
+                                         DB_Templates.Cast<DataProvider>().ToList());
+            StandartNode FilesNode = DB_Files == null ?
+                new StandartNode(TreeViewNodeType.Files) :
                 new StandartNode(TreeViewNodeType.Files,
                                  true,
-                                 DB_Files.Cast<TreeViewProvider>().ToList());
-            List<TreeViewProvider> Nodes =
-                new List<TreeViewProvider> { TemplatesNode, FilesNode };
+                                 DB_Files.Cast<DataProvider>().ToList());
+            List<DataProvider> Nodes =
+                new List<DataProvider> { TemplatesNode, FilesNode };
             return Nodes;
+        }
+
+        public override TableData GetTableData(int nodeId,
+                                               ApplicationContext db)
+        {
+            TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];
+            if (!NodeInfo.hasTableData) return null;
+
+            if (DB_Templates == null || DB_Templates.Count == 0)
+            {
+                return null;
+            }
+
+            List<string> Templates = DB_Templates.Select(q => q.Name).ToList();
+
+            ColumnData TemplateCD = new ColumnData(ColumnDataType.Combobox,
+                                                   "Шаблон",
+                                                   "Template",
+                                                   Templates[0],
+                                                   Templates);
+            ColumnData FilePathCD = new ColumnData(ColumnDataType.Textbox,
+                                                   "Путь к файлу",
+                                                   "FilePath",
+                                                   "");
+            ColumnData FileNameCD = new ColumnData(ColumnDataType.Textbox,
+                                                   "Имя файла",
+                                                   "FileName",
+                                                   "");
+
+            TableData TD = new TableData(nodeId,
+                                         NodeInfo.TableName,
+                                         new List<ColumnData> {
+                                                    TemplateCD,
+                                                    FilePathCD,
+                                                    FileNameCD
+                                         });
+            if (DB_Files != null)
+            {
+                DB_Files.ForEach(q =>
+                {
+                    TD.rowIds.Add(q.Id);
+                    TemplateCD.rowVals.Add(new rowVal(q.DB_Template.Name));
+                    FilePathCD.rowVals.Add(new rowVal(q.FilePath));
+                    FileNameCD.rowVals.Add(new rowVal(q.FileName));
+                });
+            }
+            return TD;
         }
     }
 }

@@ -29,8 +29,8 @@ namespace Bim_Service.Model
                           string headerName,
                           string headerPropName,
                           string defVal,
-                          List<rowVal> rowVals,
-                          List<string> comboboxData = null)
+                          List<string> comboboxData = null,
+                          List<rowVal> rowVals = null)
         {
             type = (int)ColumnType;
             this.ColumnType = ColumnType;
@@ -38,7 +38,7 @@ namespace Bim_Service.Model
             this.headerPropName = headerPropName;
             this.defVal = defVal;
             if (comboboxData != null) this.comboboxData = comboboxData;
-            this.rowVals = rowVals;
+            if (rowVals != null) this.rowVals = rowVals;
         }
     }
     public class rowVal

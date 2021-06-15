@@ -25,14 +25,14 @@ namespace Bim_Service.Model
         [NonSerialized] //инфо узла
         public TreeViewNodeInfo NodeInfo;
         [NonSerialized] //объект узла
-        public TreeViewProvider NodeProvider;
+        public DataProvider NodeProvider;
         //конструктор
         public TreeViewNode(string name,
                             int nodeId,
                             int id,
-                            TreeViewProvider NodeProvider)
+                            DataProvider NodeProvider)
         {
-            this.name = name;
+            if (name != null) this.name = name;
             this.nodeId = nodeId;
             this.id = id;
             this.NodeProvider = NodeProvider;
@@ -62,11 +62,5 @@ namespace Bim_Service.Model
                 return null;
             }
         }
-
-        //public TableData GetTableData()
-        //{
-        //    TableData TD = new TableData();
-
-        //}
     }
 }

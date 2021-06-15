@@ -5,7 +5,7 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class DB_File : TreeViewProvider
+    public class DB_File : DataProvider
     {
         public override int Id { get; set; }
         public string FilePath { get; set; }
@@ -21,9 +21,8 @@ namespace Bim_Service.Model
         public DB_Template DB_Template { get; set; }
 
         public override TreeViewNode GetNode(int nodeId)
-        {
-            Name = FileName;
-            return GetTreeViewNode(nodeId);
+        {           
+            return NodeConstructor(nodeId, FileName);
         }      
     }
 }

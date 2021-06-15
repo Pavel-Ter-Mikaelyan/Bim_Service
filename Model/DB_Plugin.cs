@@ -8,7 +8,7 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class DB_Plugin : TreeViewProvider
+    public class DB_Plugin : DataProvider
     {
         public override int Id { get; set; }
         public string CheckingData { get; set; }
@@ -26,18 +26,17 @@ namespace Bim_Service.Model
         public DB_Stage DB_Stage { get; set; }
 
         public override TreeViewNode GetNode(int nodeId)
-        {
-            Name = DB_Plugin_const.Name;
-            return GetTreeViewNode(nodeId);
+        {         
+            return NodeConstructor(nodeId, DB_Plugin_const.Name);
         }
-        public override List<TreeViewProvider> GetNodes()
+        public override List<DataProvider> GetNodes()
         {
             StandartNode CheckingNode =
                 new StandartNode(TreeViewNodeType.Checking, false);
             StandartNode SettingNode =
                 new StandartNode(TreeViewNodeType.Setting, false);
-            List<TreeViewProvider> Nodes =
-                new List<TreeViewProvider> { CheckingNode, SettingNode };
+            List<DataProvider> Nodes =
+                new List<DataProvider> { CheckingNode, SettingNode };
             return Nodes;
         }
     }

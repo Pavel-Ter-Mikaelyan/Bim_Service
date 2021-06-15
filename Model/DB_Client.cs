@@ -6,7 +6,7 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class DB_Client : TreeViewProvider
+    public class DB_Client : DataProvider
     {
         public override int Id { get; set; }
         public override string Name { get; set; }
@@ -17,9 +17,16 @@ namespace Bim_Service.Model
 
         public List<DB_Object> DB_Objects { get; set; }
 
-        public override List<TreeViewProvider> GetNodes()
+        public override List<DataProvider> GetNodes()
         {
-            return DB_Objects.Cast<TreeViewProvider>().ToList();
-        }       
+            if (DB_Objects == null)
+            {
+                return new List<DataProvider>();
+            }
+            else
+            {
+                return DB_Objects.Cast<DataProvider>().ToList();
+            }
+        }
     }
 }
