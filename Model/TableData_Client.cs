@@ -16,14 +16,53 @@ namespace Bim_Service.Model
             new List<ColumnData>();
 
         public TableData_Client(int selectedId,
-                               string tableName,
-                               List<ColumnData> columnData,
-                               List<int> rowIds)
+                                string tableName,
+                                List<ColumnData> columnData = null,
+                                List<int> rowIds = null)
         {
             this.selectedId = selectedId;
             this.tableName = tableName;
-            this.rowIds = rowIds;
-            this.columnData = columnData;
+            if (rowIds != null) this.rowIds = rowIds;
+            if (columnData != null) this.columnData = columnData;
+        }
+        //перевод данных в формат, удобный на сервере
+        public TableData_Server TransformToClient()
+        {
+            List<CellContainer> HeaderCellContainer =
+                new List<CellContainer>();
+            foreach (ColumnData CD in columnData)
+            {
+                CellInfo CI =
+                    new CellInfo(CD.headerName,
+                                 CD.headerPropName,
+                                 (ColumnDataType)CD.type,
+                                 CD.comboboxData);
+                CellContainer CC =
+                     new CellContainer(CD.defVal, CI);
+                HeaderCellContainer.Add(CC);
+            }
+            List<RowContainer> RowContainers = new List<RowContainer>();    
+            for (int x = 0; x < rowIds.Count; x++)
+            {
+                List<CellContainer> ValueCellContainer =
+                    new List<CellContainer>();
+                for (int y = 0; y < columnData.Count; y++)
+                {
+                    CellInfo CI = HeaderCellContainer[y].CI;
+                    string value = columnData[y].rowVals[x].value;
+                    CellContainer CC = new CellContainer(value, CI);
+                    ValueCellContainer.Add(CC);
+                }
+                RowContainer RC = new(rowIds[x], ValueCellContainer);
+                RowContainers.Add(RC);
+            }
+            TableData_Server TDS =
+                new TableData_Server(selectedId,
+                                     tableName,
+                                     HeaderCellContainer,
+                                     RowContainers);
+
+            return TDS;
         }
     }
     //данные столбца

@@ -7,7 +7,7 @@ using static Bim_Service.Model.Constants;
 namespace Bim_Service.Model
 {
     //данные таблицы (в формате, удобном на сервере)    
-    public class TableDataServer
+    public class TableData_Server
     {
         public int nodeId { get; set; }
         public string tableName { get; set; } = "";
@@ -16,7 +16,7 @@ namespace Bim_Service.Model
         public List<RowContainer> RowContainers { get; set; } =
             new List<RowContainer>();
 
-        public TableDataServer(int nodeId,
+        public TableData_Server(int nodeId,
                                string tableName,
                                List<CellContainer> HeaderCellContainer,
                                List<RowContainer> RowContainers = null)
@@ -48,6 +48,10 @@ namespace Bim_Service.Model
                         HeaderContainer.CI.comboboxData);
                 CDs.Add(CD);
             }
+            List<int> rowIds = RowContainers.Select(q => q.Id).ToList();
+            TableData_Client TDC =
+               new TableData_Client(nodeId, tableName, CDs, rowIds);
+            return TDC;
         }
     }
     //контейнер для строки таблицы
