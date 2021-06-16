@@ -7,7 +7,7 @@ using static Bim_Service.Model.Constants;
 namespace Bim_Service.Model
 {
     //данные таблицы (в формате, удобном в веб клиенте)
-    public class TableData
+    public class TableData_Client
     {
         public int selectedId { get; set; }
         public string tableName { get; set; } = "";
@@ -15,14 +15,14 @@ namespace Bim_Service.Model
         public List<ColumnData> columnData { get; set; } =
             new List<ColumnData>();
 
-        public TableData(int selectedId,
-                         string tableName,
-                         List<ColumnData> columnData,
-                         List<int> rowIds = null)
+        public TableData_Client(int selectedId,
+                               string tableName,
+                               List<ColumnData> columnData,
+                               List<int> rowIds)
         {
             this.selectedId = selectedId;
             this.tableName = tableName;
-            if (rowIds != null) this.rowIds = rowIds;
+            this.rowIds = rowIds;
             this.columnData = columnData;
         }
     }
@@ -41,14 +41,14 @@ namespace Bim_Service.Model
         //значение по умолчанию
         public string defVal { get; set; } = "";
         //значения ячеек в одном столбце
-        public List<CellValue> rowVals { get; set; } =
-            new List<CellValue>();
+        public List<TableDataCellValue> rowVals { get; set; } =
+            new List<TableDataCellValue>();
 
         public ColumnData(int type,
                           string headerName,
                           string headerPropName,
                           string defVal = null,
-                          List<CellValue> rowVals = null,
+                          List<TableDataCellValue> rowVals = null,
                           List<string> comboboxData = null)
         {
             this.type = type;
@@ -57,15 +57,6 @@ namespace Bim_Service.Model
             if (defVal != null) this.defVal = defVal;
             if (rowVals != null) this.rowVals = rowVals;
             if (comboboxData != null) this.comboboxData = comboboxData;
-        }
-    }
-    //значение ячейки таблицы
-    public class CellValue
-    {
-        public string value { get; set; } = "";
-        public CellValue(string value)
-        {
-            if (value != null) this.value = value;
         }
     }
 }
