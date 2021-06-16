@@ -23,27 +23,22 @@ namespace Bim_Service.Model
         public List<DB_Plugin> DB_Plugins { get; set; }
 
         public override TreeViewNode GetNode(int nodeId)
-        {         
+        {
             return NodeConstructor(nodeId, DB_Stage_const.Name);
         }
         public override List<DataProvider> GetNodes()
         {
-            StandartNode TemplatesNode = DB_Templates == null ?
-                        new StandartNode(TreeViewNodeType.Templates) :
-                        new StandartNode(TreeViewNodeType.Templates,
-                                         true,
-                                         DB_Templates.Cast<DataProvider>().ToList());
-            StandartNode FilesNode = DB_Files == null ?
-                new StandartNode(TreeViewNodeType.Files) :
-                new StandartNode(TreeViewNodeType.Files,
-                                 true,
-                                 DB_Files.Cast<DataProvider>().ToList());
+            StandartNode_Templates TemplatesNode =
+                        new StandartNode_Templates(DB_Templates);
+            StandartNode_Files FilesNode =
+                 new StandartNode_Files(DB_Files); ;
+
             List<DataProvider> Nodes =
                 new List<DataProvider> { TemplatesNode, FilesNode };
             return Nodes;
         }
 
-        public override TableData GetTableData(int nodeId,
+        public override TableData_Client GetTableData(int nodeId,
                                                ApplicationContext db)
         {
             TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];
@@ -70,7 +65,7 @@ namespace Bim_Service.Model
                                                    "FileName",
                                                    "");
 
-            TableData TD = new TableData(nodeId,
+            TableData_Client TD = new TableData(nodeId,
                                          NodeInfo.TableName,
                                          new List<ColumnData> {
                                                     TemplateCD,
@@ -82,12 +77,26 @@ namespace Bim_Service.Model
                 DB_Files.ForEach(q =>
                 {
                     TD.rowIds.Add(q.Id);
-                    TemplateCD.rowVals.Add(new rowVal(q.DB_Template.Name));
-                    FilePathCD.rowVals.Add(new rowVal(q.FilePath));
-                    FileNameCD.rowVals.Add(new rowVal(q.FileName));
+                    TemplateCD.rowVals.Add(new TableDataCellValue(q.DB_Template.Name));
+                    FilePathCD.rowVals.Add(new TableDataCellValue(q.FilePath));
+                    FileNameCD.rowVals.Add(new TableDataCellValue(q.FileName));
                 });
             }
             return TD;
+        }
+
+        public override void ChangeName(ApplicationContext db,
+                                        string newName)
+        {
+            if (db.DB_Stage_consts == null) return;
+            if (newName == Name) return;
+
+            DB_Stage_const Stage_const =
+                db.DB_Stage_consts
+                  .FirstOrDefault(q => q.Name == newName);
+            if (Stage_const == null) return;
+
+            DB_Stage_const = Stage_const;           
         }
     }
 }

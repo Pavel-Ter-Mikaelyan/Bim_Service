@@ -7,14 +7,14 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    //класс для возможности передачи данных из объектов БД
-    //(например, DB_Client) в узлы дерева (TreeViewNode) и
-    //таблицы данных (TableData)
+    //абстрактный класс для возможности передачи данных из объектов БД
+    //(например, DB_Client) в узлы дерева (TreeViewNode) и связанные
+    //с ними таблицы данных (TableData)
     public abstract class DataProvider
     {
         public abstract int Id { get; set; }
         public abstract string Name { get; set; }
-
+      
         [NotMapped]
         public abstract TreeViewNodeType NodeType { get; set; }
 
@@ -37,13 +37,13 @@ namespace Bim_Service.Model
             return new List<DataProvider>();
         }
         //получить таблицу для текущего выбранного узла
-        public virtual TableData GetTableData(int nodeId,
+        public virtual TableData_Client GetTableData(int nodeId,
                                               ApplicationContext db)
         {
             return GetDefaultTableData(nodeId);
         }
         //стандартная таблица данных
-        public TableData GetDefaultTableData(int nodeId,
+        public TableData_Client GetDefaultTableData(int nodeId,
                                              string defVal = "",
                                              bool bCombobox = false,
                                              List<string> comboboxData = null)
@@ -53,11 +53,11 @@ namespace Bim_Service.Model
 
             if (comboboxData == null) comboboxData = new List<string>();
 
-            List<rowVal> rowVals = new List<rowVal>();
+            List<TableDataCellValue> rowVals = new List<TableDataCellValue>();
             List<int> rowIds = new List<int>();
             GetNodes().ForEach(q =>
             {
-                rowVals.Add(new rowVal(q.Name));
+                rowVals.Add(new TableDataCellValue(q.Name));
                 rowIds.Add(q.Id);
             });
             ColumnDataType DataType =
@@ -70,15 +70,31 @@ namespace Bim_Service.Model
                                            defVal,
                                            comboboxData,
                                            rowVals);
-            TableData TD = new TableData(nodeId,
+            TableData_Client TD = new TableData_Client(nodeId,
                                          NodeInfo.TableName,
                                          new List<ColumnData> { CD },
                                          rowIds);
             return TD;
         }
 
-        //public abstract void AddChildNode(TreeViewProvider ChildNode);
-        //public abstract void DeleteChildNode(TreeViewProvider ChildNode);
-        //public abstract void ChangeChildNode(TreeViewProvider ChildNode);
+        //public abstract void AddChildNode();
+        //public abstract void DeleteChildNode();
+        //public abstract void ChangeChildNode();
+        public virtual void ChangeName(ApplicationContext db,
+                                       string newName)
+        {
+            Name = newName;
+        }
+        public virtual bool Modify(ApplicationContext db,
+                                   TableData_Client newTD)
+        {
+
+
+
+
+
+
+
+        }
     }
 }

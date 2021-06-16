@@ -31,7 +31,7 @@ namespace Bim_Service.Controllers
         [HttpGet("GetTableData/{selectedId:int}")]
         public object Get(int selectedId)
         {
-            TableData TD = null;
+            TableData_Client TD = null;
             try
             {
                 TableDataConstructor TDC =
@@ -43,7 +43,7 @@ namespace Bim_Service.Controllers
         }
 
         [HttpPut("PutTableData")]
-        public bool Put(TableData TD)
+        public bool Put(TableData_Client TD)
         {
             TableDataModifier TDM = new TableDataModifier(db, TD);
             bool bResult = false;

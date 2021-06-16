@@ -10,11 +10,11 @@ namespace Bim_Service.Model
     public class TableDataModifier
     {
         ApplicationContext db = null;
-        TableData TableData = null;
+        TableData_Client TableData = null;
         TreeViewNode currNode;
 
         public TableDataModifier(ApplicationContext db,
-                                 TableData TableData)
+                                 TableData_Client TableData)
         {
             this.db = db;
             this.TableData = TableData;

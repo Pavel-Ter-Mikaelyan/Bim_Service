@@ -28,7 +28,7 @@ namespace Bim_Service.Model
                 return DB_Plugins.Cast<DataProvider>().ToList();
             }
         }
-        public override TableData GetTableData(int nodeId,
+        public override TableData_Client GetTableData(int nodeId,
                                                ApplicationContext db)
         {
             TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];

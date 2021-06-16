@@ -33,10 +33,8 @@ namespace Bim_Service.Model
         public TreeViewNode GetTreeViewNode()
         {
             //корневой узел Клиенты
-            StandartNode ClientsNode =
-                new StandartNode(TreeViewNodeType.Clients,
-                                 true,
-                                 db.DB_Clients.Cast<DataProvider>().ToList());
+            StandartNode_Clients ClientsNode =
+                new StandartNode_Clients(db.DB_Clients);
             TreeViewNode RootNode = ClientsNode.GetNode(++nodeId);
 
             //рекурсивное добавление подузлов

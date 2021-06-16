@@ -26,7 +26,7 @@ namespace Bim_Service.Model
         }
 
         //получить данные для таблицы выбранного узла
-        public TableData GetAllTableData()
+        public TableData_Client GetAllTableData()
         {
             if (currNode == null) return null;
 

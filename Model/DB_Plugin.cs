@@ -26,15 +26,13 @@ namespace Bim_Service.Model
         public DB_Stage DB_Stage { get; set; }
 
         public override TreeViewNode GetNode(int nodeId)
-        {         
+        {
             return NodeConstructor(nodeId, DB_Plugin_const.Name);
         }
         public override List<DataProvider> GetNodes()
         {
-            StandartNode CheckingNode =
-                new StandartNode(TreeViewNodeType.Checking, false);
-            StandartNode SettingNode =
-                new StandartNode(TreeViewNodeType.Setting, false);
+            StandartNode_Checking CheckingNode = new StandartNode_Checking();
+            StandartNode_Setting SettingNode = new StandartNode_Setting();
             List<DataProvider> Nodes =
                 new List<DataProvider> { CheckingNode, SettingNode };
             return Nodes;
