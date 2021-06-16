@@ -8,6 +8,8 @@ namespace Bim_Service.Model
     public class DB_Template : DataProvider
     {
         public override int Id { get; set; }
+     
+        [Column("Название", "Name", ColumnDataType.Textbox, 0)]
         public override string Name { get; set; }
 
         [NotMapped]
@@ -16,7 +18,6 @@ namespace Bim_Service.Model
 
         public DB_Stage DB_Stage { get; set; }
         public List<DB_Plugin> DB_Plugins { get; set; }
-
         public override List<DataProvider> GetNodes()
         {
             if (DB_Plugins == null)
@@ -28,16 +29,40 @@ namespace Bim_Service.Model
                 return DB_Plugins.Cast<DataProvider>().ToList();
             }
         }
-        public override TableData_Client GetTableData(int nodeId,
-                                               ApplicationContext db)
+              
+        //модификация
+        public override bool Modify(ApplicationContext db,
+                                   TableData_Server newTD)
         {
-            TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];
-            if (!NodeInfo.hasTableData) return null;
-
-            List<string> Plugins =
-                     db.DB_Plugin_consts.Select(q => q.Name).ToList();
-            if (Plugins.Count == 0) return null;
-            return GetDefaultTableData(nodeId, Plugins[0], true, Plugins);
+            //если в новой таблице нет строк
+            if (newTD.RowContainers.Count == 0)
+            {
+                //удалить все строки
+                DB_Plugins.Clear();
+            }
+            else
+            {
+                List<DB_Plugin> forAdd = new List<DB_Plugin>();
+                foreach (RowContainer RC in newTD.RowContainers)
+                {
+                    DataProvider ProviderObject =
+                        GetNodes().FirstOrDefault(q => q.Id == RC.Id);
+                    //добавление нового объекта для строки в коллекцию
+                    if (ProviderObject == null)
+                    {
+                        DB_Plugin obj = new DB_Plugin();
+                        obj.SetRowData(db, RC);
+                        forAdd.Add(obj);
+                    }
+                    else//изменение строки таблицы
+                    {
+                        ProviderObject.SetRowData(db, RC);
+                    }
+                }
+                //добавление новой строки в таблицу
+                if (forAdd.Count > 0) DB_Plugins.AddRange(forAdd);
+            }
+            return true;
         }
     }
 }

@@ -33,7 +33,11 @@ namespace Bim_Service.Model
             TreeViewNodeInfo CurrNodeInfo = currNode.NodeInfo;
             if (CurrNodeInfo.hasTableData == false) return null;
 
-            return currNode.NodeProvider.GetTableData(selectedId, db);
+            TableData_Server TDS =
+                currNode.NodeProvider.GetTableData(db, selectedId);
+            if (TDS == null) return null;
+
+            return TDS.TransformToClient();
         }
     }
 }

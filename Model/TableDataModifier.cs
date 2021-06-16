@@ -11,30 +11,27 @@ namespace Bim_Service.Model
     {
         ApplicationContext db = null;
         TableData_Client TableData = null;
-        TreeViewNode currNode;
+        TreeViewNode currNode = null;
 
         public TableDataModifier(ApplicationContext db,
                                  TableData_Client TableData)
         {
             this.db = db;
-            this.TableData = TableData;
-            TreeViewNodeConstructor TNC = new TreeViewNodeConstructor(db);
-            TreeViewNode TVN = TNC.GetTreeViewNode();
-            currNode = TreeViewNode.GetNode(TableData.selectedId,
-                                            TVN);
+            this.TableData = TableData;  
         }
 
         //модифицировать
         public bool Modify()
         {
+            if (TableData == null) return false;
+            TreeViewNodeConstructor TNC = new TreeViewNodeConstructor(db);
+            TreeViewNode TVN = TNC.GetTreeViewNode();
+            currNode = TreeViewNode.GetNode(TableData.selectedId, TVN);
             if (currNode == null) return false;
 
-            DB_Client Client = db.DB_Clients.First();
-
-
-
+            TableData_Server newTD = TableData.TransformToServer();
+            currNode.NodeProvider.Modify(db, newTD);
             db.SaveChanges();
-
             return true;
         }
     }

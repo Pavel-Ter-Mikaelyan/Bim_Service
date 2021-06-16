@@ -7,7 +7,8 @@ namespace Bim_Service.Model
 {
     public class DB_Object : DataProvider
     {
-        public override int Id { get; set; }
+        public override int Id { get; set; }       
+        [Column("Название", "Name", ColumnDataType.Textbox, 0)]
         public override string Name { get; set; }
 
         [NotMapped]
@@ -28,43 +29,40 @@ namespace Bim_Service.Model
                 return DB_Stages.Cast<DataProvider>().ToList();
             }
         }
-        public override TableData_Client GetTableData(int nodeId,
-                                               ApplicationContext db)
-        {
-            TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];
-            if (!NodeInfo.hasTableData) return null;
 
-            if (db.DB_Stage_consts == null) return null;
-            List<string> Stages =
-                     db.DB_Stage_consts.Select(q => q.Name).ToList();
-            if (Stages.Count == 0) return null;
-            return GetDefaultTableData(nodeId, Stages[0], true, Stages);
-        }
-
+        //модификация
         public override bool Modify(ApplicationContext db,
-                                    TableData_Client newTD)
+                                    TableData_Server newTD)
         {
-            if (newTD == null) return false;
-            if (DB_Stages == null) return false;
-            if (newTD.columnData.Count == 0) return false;
-
-            for (int i = 0; i < newTD.rowIds.Count; i++)
+            //если в новой таблице нет строк
+            if (newTD.RowContainers.Count == 0)
             {
-                DataProvider ChildNode =
-                   GetNodes().FirstOrDefault(q => q.Id == newTD.rowIds[i]);
-                if (ChildNode != null) 
-                {
-
-                    ColumnData columnData = newTD.columnData[0].rowVals[i];
-
-                    Node.ChangeName(db,);
-                }
-
-
+                //удалить все строки
+                DB_Stages.Clear();
             }
-
-
-            DB_Stages.Add(Stage);
+            else
+            {
+                List<DB_Stage> forAdd = new List<DB_Stage>();
+                foreach (RowContainer RC in newTD.RowContainers)
+                {
+                    DataProvider ProviderObject =
+                        GetNodes().FirstOrDefault(q => q.Id == RC.Id);
+                    //добавление нового объекта для строки в коллекцию
+                    if (ProviderObject == null)
+                    {
+                        DB_Stage obj = new DB_Stage();
+                        obj.SetRowData(db, RC);
+                        forAdd.Add(obj);
+                    }
+                    else//изменение строки таблицы
+                    {
+                        ProviderObject.SetRowData(db, RC);
+                    }
+                }
+                //добавление новой строки в таблицу
+                if (forAdd.Count > 0) DB_Stages.AddRange(forAdd);
+            }
+            return true;
         }
     }
 }

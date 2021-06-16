@@ -26,7 +26,7 @@ namespace Bim_Service.Model
             if (columnData != null) this.columnData = columnData;
         }
         //перевод данных в формат, удобный на сервере
-        public TableData_Server TransformToClient()
+        public TableData_Server TransformToServer()
         {
             List<CellContainer> HeaderCellContainer =
                 new List<CellContainer>();

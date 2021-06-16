@@ -7,17 +7,23 @@ using static Bim_Service.Model.Constants;
 namespace Bim_Service.Model
 {
     public class StandartNode_Checking : DataProvider
-    {
-        public override int Id { get; set; } = 0;
+    {      
         public override string Name { get; set; }
         public override TreeViewNodeType NodeType { get; set; } =
                               TreeViewNodeType.Checking;
 
+        //конструктор
         public StandartNode_Checking()
         {
             //информация по узлу
             TreeViewNodeInfo NI = TreeViewNodeInfos[NodeType];
             Name = NI.nodeName;
+        }
+
+        public override bool Modify(ApplicationContext db,
+                                    TableData_Server newTD)
+        {
+            return true;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using static Bim_Service.Model.Constants;
 
@@ -12,9 +13,9 @@ namespace Bim_Service.Model
     //с ними таблицы данных (TableData)
     public abstract class DataProvider
     {
-        public abstract int Id { get; set; }
+        public virtual int Id { get; set; }      
         public abstract string Name { get; set; }
-      
+
         [NotMapped]
         public abstract TreeViewNodeType NodeType { get; set; }
 
@@ -36,65 +37,41 @@ namespace Bim_Service.Model
         {
             return new List<DataProvider>();
         }
-        //получить таблицу для текущего выбранного узла
-        public virtual TableData_Client GetTableData(int nodeId,
-                                              ApplicationContext db)
+        //установить данные для строки таблицы
+        public void SetRowData(ApplicationContext db, RowContainer RC)
         {
-            return GetDefaultTableData(nodeId);
-        }
-        //стандартная таблица данных
-        public TableData_Client GetDefaultTableData(int nodeId,
-                                             string defVal = "",
-                                             bool bCombobox = false,
-                                             List<string> comboboxData = null)
-        {
-            TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];
-            if (!NodeInfo.hasTableData) return null;
-
-            if (comboboxData == null) comboboxData = new List<string>();
-
-            List<TableDataCellValue> rowVals = new List<TableDataCellValue>();
-            List<int> rowIds = new List<int>();
-            GetNodes().ForEach(q =>
+            RC.ValueCellContainer.ForEach(Cell =>
             {
-                rowVals.Add(new TableDataCellValue(q.Name));
-                rowIds.Add(q.Id);
+                foreach (PropertyInfo PI in GetType().GetProperties())
+                {
+                    //перебор атрибутов (false - без родителей)
+                    foreach (ColumnAttribute Column in
+                                PI.GetCustomAttributes<ColumnAttribute>(false))
+                    {
+                        //поиск по имени атрибута
+                        if (Column.headerPropName == Cell.CI.headerPropName)
+                        {
+                            //установить значение свойства
+                            PI.SetValue(this, Cell.value);
+                        }
+                    }
+                }
             });
-            ColumnDataType DataType =
-                bCombobox ? ColumnDataType.Combobox :
-                            ColumnDataType.Textbox;
-
-            ColumnData CD = new ColumnData(DataType,
-                                           "Название",
-                                           "name",
-                                           defVal,
-                                           comboboxData,
-                                           rowVals);
-            TableData_Client TD = new TableData_Client(nodeId,
-                                         NodeInfo.TableName,
-                                         new List<ColumnData> { CD },
-                                         rowIds);
-            return TD;
         }
+        //модификация
+        public abstract bool Modify(ApplicationContext db,
+                                    TableData_Server newTD);
 
-        //public abstract void AddChildNode();
-        //public abstract void DeleteChildNode();
-        //public abstract void ChangeChildNode();
-        public virtual void ChangeName(ApplicationContext db,
-                                       string newName)
-        {
-            Name = newName;
-        }
-        public virtual bool Modify(ApplicationContext db,
-                                   TableData_Client newTD)
+
+        //получить таблицу для текущего выбранного узла
+        public virtual TableData_Server GetTableData(ApplicationContext db,
+                                                     int nodeId)
         {
 
+            return null;
+        }      
 
 
 
-
-
-
-        }
     }
 }

@@ -8,12 +8,16 @@ namespace Bim_Service.Model
     public class DB_Stage : DataProvider
     {
         public override int Id { get; set; }
+        [NotMapped]
+        public override string Name { get; set; }
 
         [NotMapped]
         public override TreeViewNodeType NodeType { get; set; } =
                            TreeViewNodeType.Stage;
+       
+        [Column("Стадия", "StageName", ColumnDataType.Combobox, 0)]
         [NotMapped]
-        public override string Name { get; set; }
+        public string StageName { get; set; }
 
         public DB_Object DB_Object { get; set; }
         public DB_Stage_const DB_Stage_const { get; set; }
@@ -38,65 +42,50 @@ namespace Bim_Service.Model
             return Nodes;
         }
 
-        public override TableData_Client GetTableData(int nodeId,
-                                               ApplicationContext db)
+        
+
+        //public static List<CellContainer> GetHeaderCellContainer(
+        //                                            ApplicationContext db)
+        //{
+        //    List<string> Stages =
+        //            db.DB_Stage_consts.Select(q => q.Name).ToList();
+        //    if(Stages)
+
+        //}
+
+        //модификация
+        public override bool Modify(ApplicationContext db,
+                                    TableData_Server newTD)
         {
-            TreeViewNodeInfo NodeInfo = TreeViewNodeInfos[NodeType];
-            if (!NodeInfo.hasTableData) return null;
-
-            if (DB_Templates == null || DB_Templates.Count == 0)
+            //если в новой таблице нет строк
+            if (newTD.RowContainers.Count == 0)
             {
-                return null;
+                //удалить все строки
+                DB_Files.Clear();
             }
-
-            List<string> Templates = DB_Templates.Select(q => q.Name).ToList();
-
-            ColumnData TemplateCD = new ColumnData(ColumnDataType.Combobox,
-                                                   "Шаблон",
-                                                   "Template",
-                                                   Templates[0],
-                                                   Templates);
-            ColumnData FilePathCD = new ColumnData(ColumnDataType.Textbox,
-                                                   "Путь к файлу",
-                                                   "FilePath",
-                                                   "");
-            ColumnData FileNameCD = new ColumnData(ColumnDataType.Textbox,
-                                                   "Имя файла",
-                                                   "FileName",
-                                                   "");
-
-            TableData_Client TD = new TableData(nodeId,
-                                         NodeInfo.TableName,
-                                         new List<ColumnData> {
-                                                    TemplateCD,
-                                                    FilePathCD,
-                                                    FileNameCD
-                                         });
-            if (DB_Files != null)
+            else
             {
-                DB_Files.ForEach(q =>
+                List<DB_File> forAdd = new List<DB_File>();
+                foreach (RowContainer RC in newTD.RowContainers)
                 {
-                    TD.rowIds.Add(q.Id);
-                    TemplateCD.rowVals.Add(new TableDataCellValue(q.DB_Template.Name));
-                    FilePathCD.rowVals.Add(new TableDataCellValue(q.FilePath));
-                    FileNameCD.rowVals.Add(new TableDataCellValue(q.FileName));
-                });
+                    DataProvider ProviderObject =
+                        GetNodes().FirstOrDefault(q => q.Id == RC.Id);
+                    //добавление нового объекта для строки в коллекцию
+                    if (ProviderObject == null)
+                    {
+                        DB_File obj = new DB_File();
+                        obj.SetRowData(db, RC);
+                        forAdd.Add(obj);
+                    }
+                    else//изменение строки таблицы
+                    {
+                        ProviderObject.SetRowData(db, RC);
+                    }
+                }
+                //добавление новой строки в таблицу
+                if (forAdd.Count > 0) DB_Files.AddRange(forAdd);
             }
-            return TD;
-        }
-
-        public override void ChangeName(ApplicationContext db,
-                                        string newName)
-        {
-            if (db.DB_Stage_consts == null) return;
-            if (newName == Name) return;
-
-            DB_Stage_const Stage_const =
-                db.DB_Stage_consts
-                  .FirstOrDefault(q => q.Name == newName);
-            if (Stage_const == null) return;
-
-            DB_Stage_const = Stage_const;           
+            return true;
         }
     }
 }

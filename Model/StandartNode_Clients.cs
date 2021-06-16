@@ -9,12 +9,12 @@ namespace Bim_Service.Model
 {
     public class StandartNode_Clients : DataProvider
     {
-        public override int Id { get; set; } = 0;
         public override string Name { get; set; }
         public override TreeViewNodeType NodeType { get; set; } =
                               TreeViewNodeType.Clients;
         public DbSet<DB_Client> DB_Clients { get; set; }
 
+        //конструктор
         public StandartNode_Clients(DbSet<DB_Client> DB_Clients)
         {
             //информация по узлу
@@ -22,6 +22,7 @@ namespace Bim_Service.Model
             Name = NI.nodeName;
             this.DB_Clients = DB_Clients;
         }
+
         public override List<DataProvider> GetNodes()
         {
             if (DB_Clients == null)
@@ -32,6 +33,43 @@ namespace Bim_Service.Model
             {
                 return DB_Clients.Cast<DataProvider>().ToList();
             }
+        }
+        //модификация
+        public override bool Modify(ApplicationContext db,
+                                    TableData_Server newTD)
+        {
+            //если в новой таблице нет строк
+            if (newTD.RowContainers.Count == 0)
+            {
+                if (DB_Clients.Count() != 0)
+                {
+                    //удалить все строки
+                    DB_Clients.RemoveRange(DB_Clients);
+                }
+            }
+            else
+            {
+                List<DB_Client> forAdd = new List<DB_Client>();
+                foreach (RowContainer RC in newTD.RowContainers)
+                {
+                    DataProvider ProviderObject =
+                        GetNodes().FirstOrDefault(q => q.Id == RC.Id);
+                    //добавление нового объекта для строки в коллекцию
+                    if (ProviderObject == null)
+                    {
+                        DB_Client obj = new DB_Client();
+                        obj.SetRowData(db, RC);
+                        forAdd.Add(obj);
+                    }
+                    else//изменение строки таблицы
+                    {
+                        ProviderObject.SetRowData(db, RC);
+                    }
+                }
+                //добавление новой строки в таблицу
+                if (forAdd.Count > 0) DB_Clients.AddRange(forAdd);
+            }
+            return true;
         }
     }
 }

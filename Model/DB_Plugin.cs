@@ -11,15 +11,19 @@ namespace Bim_Service.Model
     public class DB_Plugin : DataProvider
     {
         public override int Id { get; set; }
+        [NotMapped]
+        public override string Name { get; set; }
         public string CheckingData { get; set; }
         public string SettingData { get; set; }
         public string PluginVersion { get; set; }
 
         [NotMapped]
         public override TreeViewNodeType NodeType { get; set; } =
-                           TreeViewNodeType.Plugin;
+                           TreeViewNodeType.Plugin;   
+
+        [Column("Плагин", "PluginName", ColumnDataType.Combobox, 0)]
         [NotMapped]
-        public override string Name { get; set; }
+        public string PluginName { get; set; }
 
         public DB_Plugin_const DB_Plugin_const { get; set; }
         public DB_Template DB_Template { get; set; }
@@ -36,6 +40,13 @@ namespace Bim_Service.Model
             List<DataProvider> Nodes =
                 new List<DataProvider> { CheckingNode, SettingNode };
             return Nodes;
+        }
+
+        //модификация
+        public override bool Modify(ApplicationContext db,
+                                    TableData_Server newTD)
+        {           
+            return true;
         }
     }
 }
