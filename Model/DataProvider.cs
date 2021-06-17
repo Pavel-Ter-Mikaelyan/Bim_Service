@@ -73,10 +73,11 @@ namespace Bim_Service.Model
         }
 
         public virtual void SetPropertyForGetTableRowData(ApplicationContext db,
-                                                          DataProvider ParentProvider){}
+                                                          DataProvider ParentProvider)
+        { }
         //получить коллекцию ячеек для заголовка таблицы
         public List<CellContainer> GetHeaderCellContainer()
-        {    
+        {
             List<CellContainer> HeaderCellContainer = new List<CellContainer>();
             foreach (PropertyInfo PI in GetType().GetProperties())
             {
@@ -142,10 +143,15 @@ namespace Bim_Service.Model
         public virtual TableData_Server GetTableData(ApplicationContext db,
                                                      int nodeId)
         {
-            List<CellContainer> HeaderCellContainer = new List<CellContainer>();
+            //метод для установки Childs и ChildType
+            SetNodes();//запускаю на всякий случай (если ранее этот метод не запускался в GetNodes)
+            
+            DataProvider Child =
+                (DataProvider)Activator.CreateInstance(ChildType.GetType());
+            List<CellContainer> HeaderCellContainer = Child.GetHeaderCellContainer();
+            if (HeaderCellContainer == null) return null;
 
-            ChildType.GetType();
-            (ObjectType)Activator.CreateInstance(objectType);
+
 
 
             return null;
