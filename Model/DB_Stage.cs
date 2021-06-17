@@ -47,52 +47,7 @@ namespace Bim_Service.Model
 
 
             Childs = ;
-        }
-
-
-
-        //public static List<CellContainer> GetHeaderCellContainer(
-        //                                            ApplicationContext db)
-        //{
-        //    List<string> Stages =
-        //            db.DB_Stage_consts.Select(q => q.Name).ToList();
-        //    if(Stages)
-
-        //}
-
-        //модификация
-        public override bool Modify(ApplicationContext db,
-                                    TableData_Server newTD)
-        {
-            //если в новой таблице нет строк
-            if (newTD.RowContainers.Count == 0)
-            {
-                //удалить все строки
-                DB_Files.Clear();
-            }
-            else
-            {
-                List<DB_File> forAdd = new List<DB_File>();
-                foreach (RowContainer RC in newTD.RowContainers)
-                {
-                    DataProvider ProviderObject =
-                        GetNodes().FirstOrDefault(q => q.Id == RC.Id);
-                    //добавление нового объекта для строки в коллекцию
-                    if (ProviderObject == null)
-                    {
-                        DB_File obj = new DB_File();
-                        obj.SetRowData(db, RC);
-                        forAdd.Add(obj);
-                    }
-                    else//изменение строки таблицы
-                    {
-                        ProviderObject.SetRowData(db, RC);
-                    }
-                }
-                //добавление новой строки в таблицу
-                if (forAdd.Count > 0) DB_Files.AddRange(forAdd);
-            }
-            return true;
-        }
+        }     
+       
     }
 }

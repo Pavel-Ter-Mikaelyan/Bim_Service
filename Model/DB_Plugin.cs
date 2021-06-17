@@ -49,12 +49,6 @@ namespace Bim_Service.Model
             Childs = ;
         }
 
-
-        //модификация
-        public override bool Modify(ApplicationContext db,
-                                    TableData_Server newTD)
-        {           
-            return true;
-        }
+        
     }
 }

@@ -35,7 +35,7 @@ namespace Bim_Service.Model
         {
             return NodeConstructor(nodeId, FileName);
         }
-
+       
         //задать значение свойств для последующего получения строки таблицы
         public override void SetPropertyForGetTableRowData(ApplicationContext db,
                                                            DataProvider ParentProvider)
@@ -46,12 +46,6 @@ namespace Bim_Service.Model
             //список шаблонов
             List<string> TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
         }   
-
-        //модификация
-        public override bool Modify(ApplicationContext db,
-                                    TableData_Server newTD)
-        {
-            return true;
-        }
+              
     }
 }

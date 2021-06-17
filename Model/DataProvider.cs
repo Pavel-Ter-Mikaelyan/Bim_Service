@@ -136,10 +136,54 @@ namespace Bim_Service.Model
             return CellContainers;
         }
 
-
         //модификация
-        public abstract bool Modify(ApplicationContext db,
-                                    TableData_Server newTD);
+        public virtual bool Modify(ApplicationContext db,
+                                    TableData_Server newTD)
+        {
+            //если в новой таблице нет строк
+            if (newTD.RowContainers.Count == 0)
+            {
+                //удалить все строки
+                MethodInfo MI = Childs.GetType().GetMethod("Clear");
+                MI.Invoke(Childs, null);
+            }
+            else
+            {
+                List<DB_Template> forAdd = new List<DB_Template>();
+                foreach (RowContainer RC in newTD.RowContainers)
+                {
+                    IEnumerator enumerator = GetNodes();
+                    bool bNewObject = true;
+                    DataProvider ProviderObject = null;
+                    if (enumerator != null)
+                    {
+                        while (enumerator.MoveNext())
+                        {
+                            ProviderObject = (DataProvider)enumerator.Current;
+                            if (ProviderObject.Id == RC.Id)
+                            {
+                                bNewObject = false;
+                                break;
+                            }
+                        }
+                    }
+                    //добавление нового объекта для строки в коллекцию
+                    if (bNewObject)
+                    {
+                        DB_Template obj = new DB_Template();
+                        obj.SetRowData(db, RC);
+                        forAdd.Add(obj);
+                    }
+                    else//изменение строки таблицы
+                    {
+                        ProviderObject.SetRowData(db, RC);
+                    }
+                }
+                //добавление новой строки в таблицу
+                if (forAdd.Count > 0) DB_Templates.AddRange(forAdd);
+            }
+            return true;
+        }
 
 
         //получить таблицу для текущего выбранного узла

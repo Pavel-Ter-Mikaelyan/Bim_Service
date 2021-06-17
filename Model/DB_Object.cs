@@ -23,40 +23,6 @@ namespace Bim_Service.Model
         {
             Childs = DB_Stages;
             ChildType = typeof(DB_Stage);
-        }
-        //модификация
-        public override bool Modify(ApplicationContext db,
-                                    TableData_Server newTD)
-        {
-            //если в новой таблице нет строк
-            if (newTD.RowContainers.Count == 0)
-            {
-                //удалить все строки
-                DB_Stages.Clear();
-            }
-            else
-            {
-                List<DB_Stage> forAdd = new List<DB_Stage>();
-                foreach (RowContainer RC in newTD.RowContainers)
-                {
-                    DataProvider ProviderObject =
-                        GetNodes().FirstOrDefault(q => q.Id == RC.Id);
-                    //добавление нового объекта для строки в коллекцию
-                    if (ProviderObject == null)
-                    {
-                        DB_Stage obj = new DB_Stage();
-                        obj.SetRowData(db, RC);
-                        forAdd.Add(obj);
-                    }
-                    else//изменение строки таблицы
-                    {
-                        ProviderObject.SetRowData(db, RC);
-                    }
-                }
-                //добавление новой строки в таблицу
-                if (forAdd.Count > 0) DB_Stages.AddRange(forAdd);
-            }
-            return true;
-        }
+        }        
     }
 }
