@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,16 +24,10 @@ namespace Bim_Service.Model
             this.DB_Clients = DB_Clients;
         }
 
-        public override List<DataProvider> GetNodes()
-        {
-            if (DB_Clients == null)
-            {
-                return new List<DataProvider>();
-            }
-            else
-            {
-                return DB_Clients.Cast<DataProvider>().ToList();
-            }
+        public override IEnumerator GetNodes()
+        {           
+            IEnumerator returnVal = DB_Clients.AsEnumerable().GetEnumerator();     
+            return returnVal;
         }
         //модификация
         public override bool Modify(ApplicationContext db,

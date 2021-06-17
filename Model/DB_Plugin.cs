@@ -41,6 +41,14 @@ namespace Bim_Service.Model
                 new List<DataProvider> { CheckingNode, SettingNode };
             return Nodes;
         }
+        //назначить дочерние подузлы
+        public override void SetNodes()
+        {
+
+
+            Childs = ;
+        }
+
 
         //модификация
         public override bool Modify(ApplicationContext db,

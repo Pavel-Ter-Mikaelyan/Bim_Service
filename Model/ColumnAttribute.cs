@@ -10,7 +10,7 @@ namespace Bim_Service.Model
     {
         //имя заголовка столбца
         public string headerName;
-        //имя свойства для заголовка столбца
+        //системное имя для заголовка столбца
         public string headerPropName;
         //тип столбца
         public ColumnDataType ColumnType { get; set; }
@@ -24,6 +24,16 @@ namespace Bim_Service.Model
             this.headerPropName = headerPropName;
             this.ColumnType = ColumnType;
             this.index = index;
+        }
+    }
+
+    public class ColumnComboboxDataAttribute : Attribute
+    {
+        //системное имя для заголовка столбца
+        public string headerPropName;
+        public ColumnComboboxDataAttribute(string headerPropName)
+        {
+            this.headerPropName = headerPropName;           
         }
     }
 }

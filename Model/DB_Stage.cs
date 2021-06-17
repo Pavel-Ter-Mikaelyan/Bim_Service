@@ -41,8 +41,15 @@ namespace Bim_Service.Model
                 new List<DataProvider> { TemplatesNode, FilesNode };
             return Nodes;
         }
+        //назначить дочерние подузлы
+        public override void SetNodes()
+        {
 
-        
+
+            Childs = ;
+        }
+
+
 
         //public static List<CellContainer> GetHeaderCellContainer(
         //                                            ApplicationContext db)

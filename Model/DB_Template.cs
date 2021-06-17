@@ -18,18 +18,13 @@ namespace Bim_Service.Model
 
         public DB_Stage DB_Stage { get; set; }
         public List<DB_Plugin> DB_Plugins { get; set; }
-        public override List<DataProvider> GetNodes()
+      
+        //назначить дочерние подузлы
+        public override void SetNodes()
         {
-            if (DB_Plugins == null)
-            {
-                return new List<DataProvider>();
-            }
-            else
-            {
-                return DB_Plugins.Cast<DataProvider>().ToList();
-            }
+            Childs = DB_Plugins;
         }
-              
+
         //модификация
         public override bool Modify(ApplicationContext db,
                                    TableData_Server newTD)

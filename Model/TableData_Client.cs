@@ -72,7 +72,7 @@ namespace Bim_Service.Model
         public int type { get; set; }
         //имя заголовка столбца
         public string headerName { get; set; } = "";
-        //имя свойства для заголовка столбца
+        //системное имя для заголовка столбца
         public string headerPropName { get; set; } = "";
         //данные комбобокса
         public List<string> comboboxData { get; set; } =

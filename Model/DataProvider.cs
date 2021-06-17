@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace Bim_Service.Model
     //с ними таблицы данных (TableData)
     public abstract class DataProvider
     {
-        public virtual int Id { get; set; }      
+        public virtual int Id { get; set; }
         public abstract string Name { get; set; }
 
         [NotMapped]
         public abstract TreeViewNodeType NodeType { get; set; }
+        [NotMapped]
+        public virtual object Childs { get; set; }
 
         //получить объект дерева текущего узла(nodeId-идентификатор в дереве)
         //переопределенные методы тоже должны возвращать 
@@ -32,10 +35,17 @@ namespace Bim_Service.Model
             if (newName != null) Name = newName;
             return new TreeViewNode(Name, nodeId, Id, this);
         }
+
+        public virtual void SetNodes() { }
         //получить подузлы
-        public virtual List<DataProvider> GetNodes()
+        public virtual IEnumerator GetNodes()
         {
-            return new List<DataProvider>();
+            SetNodes();
+            if (Childs == null) return null;
+            MethodInfo MI = Childs.GetType().GetMethod("GetEnumerator");
+            if (MI == null) return null;
+            IEnumerator returnVal = (IEnumerator)MI.Invoke(Childs, null);
+            return returnVal;
         }
         //установить данные для строки таблицы
         public void SetRowData(ApplicationContext db, RowContainer RC)
@@ -69,7 +79,7 @@ namespace Bim_Service.Model
         {
 
             return null;
-        }      
+        }
 
 
 

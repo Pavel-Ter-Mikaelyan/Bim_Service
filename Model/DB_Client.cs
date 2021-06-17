@@ -19,19 +19,12 @@ namespace Bim_Service.Model
                              TreeViewNodeType.Client;
 
         public List<DB_Object> DB_Objects { get; set; }
-
-        public override List<DataProvider> GetNodes()
+           
+        //назначить дочерние подузлы
+        public override void SetNodes() 
         {
-            if (DB_Objects == null)
-            {
-                return new List<DataProvider>();
-            }
-            else
-            {
-                return DB_Objects.Cast<DataProvider>().ToList();
-            }
+            Childs = DB_Objects;
         }
-
         //модификация
         public override bool Modify(ApplicationContext db,
                                     TableData_Server newTD)
