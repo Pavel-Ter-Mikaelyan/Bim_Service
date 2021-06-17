@@ -154,19 +154,30 @@ namespace Bim_Service.Model
                                          .CreateInstance(ChildType.GetType());
             newChild.SetPropertyForGetTableRowData(db, this);
             List<CellContainer> HeaderCellContainer = newChild.GetCellContainers();
-            if (HeaderCellContainer == null) return null;
+            if (HeaderCellContainer == null && HeaderCellContainer.Count == 0) return null;
 
+            List<RowContainer> RowContainers = new List<RowContainer>();
             IEnumerator enumerator = GetNodes();
             while (enumerator.MoveNext())
             {
                 DataProvider Child = (DataProvider)enumerator.Current;
                 Child.SetPropertyForGetTableRowData(db, this);
-
-
-
+                List<CellContainer> ValueCellContainer = Child.GetCellContainers();
+                if (ValueCellContainer == null &&
+                    ValueCellContainer.Count == 0)
+                {
+                    return null;
+                }
+                RowContainer RC = new RowContainer(Child.Id, ValueCellContainer);
+                RowContainers.Add(RC);
             }
-
-            return null;
+            string TableName = TreeViewNodeInfos[NodeType].TableName;
+            TableData_Server TDS =
+                new TableData_Server(nodeId,
+                                     TableName,
+                                     HeaderCellContainer,
+                                     RowContainers);
+            return TDS;
         }
 
 
