@@ -76,11 +76,12 @@ namespace Bim_Service.Model
                                                           DataProvider ParentProvider)
         { }
         //получить коллекцию ячеек для заголовка таблицы
-        public List<CellContainer> GetHeaderCellContainer()
+        public List<CellContainer> GetCellContainers()
         {
-            List<CellContainer> HeaderCellContainer = new List<CellContainer>();
+            List<CellContainer> CellContainers = new List<CellContainer>();
             foreach (PropertyInfo PI in GetType().GetProperties())
             {
+                object oVal = PI.GetValue(this);
                 //словарь для выпадающего списка
                 Dictionary<string, List<string>> DictCombobox =
                     new Dictionary<string, List<string>>();
@@ -89,9 +90,8 @@ namespace Bim_Service.Model
                 foreach (ColumnComboboxDataAttribute ColumnCombobox in
                             PI.GetCustomAttributes<ColumnComboboxDataAttribute>(false))
                 {
-                    object oComboboxVals = PI.GetValue(this);
-                    if (oComboboxVals == null) return null;
-                    List<string> ComboboxVals = (List<string>)oComboboxVals;
+                    if (oVal == null) return null;
+                    List<string> ComboboxVals = (List<string>)oVal;
                     if (ComboboxVals.Count == 0) return null;
                     DictCombobox.Add(ColumnCombobox.headerPropName, ComboboxVals);
                 }
@@ -101,12 +101,14 @@ namespace Bim_Service.Model
                         PI.GetCustomAttributes<ColumnAttribute>(false))
                 {
                     CellContainer CC = null;
+                    CellInfo CI = null;
+                    string value = null;
                     if (Column.ColumnType == ColumnDataType.Textbox)
                     {
-                        CellInfo CI = new CellInfo(Column.headerName,
-                                                   Column.headerPropName,
-                                                   Column.ColumnType);
-                        CC = new CellContainer("", CI);
+                        CI = new CellInfo(Column.headerName,
+                                          Column.headerPropName,
+                                          Column.ColumnType);
+                        value = oVal == null ? "" : oVal.ToString();
                     }
                     if (Column.ColumnType == ColumnDataType.Combobox)
                     {
@@ -114,23 +116,24 @@ namespace Bim_Service.Model
                         { return null; }
                         List<string> ComboboxVals = DictCombobox[Column.headerPropName];
                         if (ComboboxVals.Count == 0) return null;
-                        CellInfo CI = new CellInfo(Column.headerName,
-                                                   Column.headerPropName,
-                                                   Column.ColumnType,
-                                                   ComboboxVals);
-                        CC = new CellContainer(ComboboxVals[0], CI);
+                        CI = new CellInfo(Column.headerName,
+                                          Column.headerPropName,
+                                          Column.ColumnType,
+                                          ComboboxVals);
+                        value = oVal == null ? ComboboxVals[0] : oVal.ToString();
                     }
                     if (Column.ColumnType == ColumnDataType.Checkbox)
                     {
-                        CellInfo CI = new CellInfo(Column.headerName,
-                                                   Column.headerPropName,
-                                                   Column.ColumnType);
-                        CC = new CellContainer("false", CI);
+                        CI = new CellInfo(Column.headerName,
+                                          Column.headerPropName,
+                                          Column.ColumnType);
+                        value = oVal == null ? "false" : oVal.ToString();
                     }
-                    HeaderCellContainer.Add(CC);
+                    CC = new CellContainer(value, CI);
+                    CellContainers.Add(CC);
                 }
             }
-            return HeaderCellContainer;
+            return CellContainers;
         }
 
 
@@ -145,14 +148,23 @@ namespace Bim_Service.Model
         {
             //метод для установки Childs и ChildType
             SetNodes();//запускаю на всякий случай (если ранее этот метод не запускался в GetNodes)
-            
-            DataProvider Child =
-                (DataProvider)Activator.CreateInstance(ChildType.GetType());
-            List<CellContainer> HeaderCellContainer = Child.GetHeaderCellContainer();
+
+            if (ChildType == null) return null;
+            DataProvider newChild = (DataProvider)Activator
+                                         .CreateInstance(ChildType.GetType());
+            newChild.SetPropertyForGetTableRowData(db, this);
+            List<CellContainer> HeaderCellContainer = newChild.GetCellContainers();
             if (HeaderCellContainer == null) return null;
 
+            IEnumerator enumerator = GetNodes();
+            while (enumerator.MoveNext())
+            {
+                DataProvider Child = (DataProvider)enumerator.Current;
+                Child.SetPropertyForGetTableRowData(db, this);
 
 
+
+            }
 
             return null;
         }
