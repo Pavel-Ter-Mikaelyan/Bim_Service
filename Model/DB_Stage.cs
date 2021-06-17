@@ -32,10 +32,7 @@ namespace Bim_Service.Model
         }
         public override List<DataProvider> GetNodes()
         {
-            StandartNode_Templates TemplatesNode =
-                        new StandartNode_Templates(DB_Templates);
-            StandartNode_Files FilesNode =
-                 new StandartNode_Files(DB_Files); ;
+            
 
             List<DataProvider> Nodes =
                 new List<DataProvider> { TemplatesNode, FilesNode };

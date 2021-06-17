@@ -40,7 +40,7 @@ namespace Bim_Service.Model
                  { TreeViewNodeType.Object,
                   new TreeViewNodeInfo("Object","Объект",true,"Стадии")},
                   { TreeViewNodeType.Stage,
-                  new TreeViewNodeInfo("Stage","Стадия",true,"false")},
+                  new TreeViewNodeInfo("Stage","Стадия",false,"")},
                 {TreeViewNodeType.Templates,
                   new TreeViewNodeInfo("Templates","Шаблоны",true,"Шаблоны")},
                 {TreeViewNodeType.Template,
