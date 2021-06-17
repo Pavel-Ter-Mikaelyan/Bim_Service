@@ -44,7 +44,7 @@ namespace Bim_Service.Model
             TemplateName = DB_Template == null ? "" : DB_Template.Name;
             DB_Stage Stage = (DB_Stage)ParentProvider;
             //список шаблонов
-            List<string> TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
+            TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
         }   
               
     }

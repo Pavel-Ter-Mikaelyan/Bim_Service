@@ -14,10 +14,13 @@ namespace Bim_Service.Model
         [NotMapped]
         public override TreeViewNodeType NodeType { get; set; } =
                            TreeViewNodeType.Stage;
-       
+
         [Column("Стадия", "StageName", ColumnDataType.Combobox, 0)]
         [NotMapped]
         public string StageName { get; set; }
+        [ColumnComboboxData("StageName")]
+        [NotMapped]
+        public List<string> StageNames { get; set; }
 
         public DB_Object DB_Object { get; set; }
         public DB_Stage_const DB_Stage_const { get; set; }
@@ -30,21 +33,28 @@ namespace Bim_Service.Model
         {
             return NodeConstructor(nodeId, DB_Stage_const.Name);
         }
-        public override List<DataProvider> GetNodes()
-        {
-            
-
-            List<DataProvider> Nodes =
-                new List<DataProvider> { TemplatesNode, FilesNode };
-            return Nodes;
-        }
-        //назначить дочерние подузлы
+        //метод для установки Childs и ChildType
         public override void SetNodes()
         {
-
-
-            Childs = ;
-        }     
-       
+            StandartNode TemplatesNode =
+                new StandartNode(TreeViewNodeType.Templates,
+                                 DB_Templates,
+                                 typeof(DB_Template));
+            StandartNode FilesNode =
+                new StandartNode(TreeViewNodeType.Files,
+                                 DB_Files,
+                                 typeof(DB_File));
+            Childs = new List<DataProvider> { TemplatesNode, FilesNode };
+            ChildType = typeof(DataProvider);
+        }
+        //задать значение свойств для последующего получения строки таблицы
+        public override void SetPropertyForGetTableRowData(ApplicationContext db,
+                                                           DataProvider ParentProvider)
+        {
+            //имя шаблона
+            StageName = DB_Stage_const == null ? "" : DB_Stage_const.Name;
+            //список шаблонов
+            StageNames = db.DB_Stages.Select(q => q.DB_Stage_const.Name).ToList();
+        }
     }
 }

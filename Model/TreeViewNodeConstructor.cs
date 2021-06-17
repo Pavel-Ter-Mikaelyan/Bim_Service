@@ -26,7 +26,7 @@ namespace Bim_Service.Model
                 //добавление узла
                 MainNode.children.Add(ChildNode);
                 //добавление подузлов
-                AddTreeViewNodes(ChildNode, Node.GetNodes());
+                //AddTreeViewNodes(ChildNode, Node.GetNodes());
             }
         }
         //получить все узлы дерева
@@ -38,7 +38,7 @@ namespace Bim_Service.Model
             TreeViewNode RootNode = ClientsNode.GetNode(++nodeId);
 
             //рекурсивное добавление подузлов
-            AddTreeViewNodes(RootNode, ClientsNode.GetNodes());
+            //AddTreeViewNodes(RootNode, ClientsNode.GetNodes());
 
             return RootNode;
         }

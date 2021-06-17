@@ -8,7 +8,7 @@ using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
 {
-    public class StandartNode_Clients : DataProvider
+    public class RootNode : DataProvider
     {
         public override string Name { get; set; }
         public override TreeViewNodeType NodeType { get; set; } =
@@ -16,7 +16,7 @@ namespace Bim_Service.Model
         public DbSet<DB_Client> DB_Clients { get; set; }
 
         //конструктор
-        public StandartNode_Clients(DbSet<DB_Client> DB_Clients)
+        public RootNode(DbSet<DB_Client> DB_Clients)
         {
             //информация по узлу
             TreeViewNodeInfo NI = TreeViewNodeInfos[NodeType];
@@ -24,11 +24,11 @@ namespace Bim_Service.Model
             this.DB_Clients = DB_Clients;
         }
 
-        public override IEnumerator GetNodes()
-        {           
-            IEnumerator returnVal = DB_Clients.AsEnumerable().GetEnumerator();     
-            return returnVal;
-        }
+        //public override IEnumerator GetNodes()
+        //{           
+        //    IEnumerator returnVal = DB_Clients.AsEnumerable().GetEnumerator();     
+        //    return returnVal;
+        //}
         ////модификация
         //public override bool Modify(ApplicationContext db,
         //                            TableData_Server newTD)

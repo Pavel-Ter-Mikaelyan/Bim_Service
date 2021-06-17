@@ -30,7 +30,7 @@ namespace Bim_Service.Model
             if (currNode == null) return false;
 
             TableData_Server newTD = TableData.TransformToServer();
-            currNode.NodeProvider.Modify(db, newTD);
+            //currNode.NodeProvider.Modify(db, newTD);
             db.SaveChanges();
             return true;
         }
