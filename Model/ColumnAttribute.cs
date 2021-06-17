@@ -26,7 +26,6 @@ namespace Bim_Service.Model
             this.index = index;
         }
     }
-
     public class ColumnComboboxDataAttribute : Attribute
     {
         //системное имя для заголовка столбца

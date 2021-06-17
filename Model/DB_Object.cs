@@ -22,6 +22,7 @@ namespace Bim_Service.Model
         public override void SetNodes()
         {
             Childs = DB_Stages;
+            ChildType = typeof(DB_Stage);
         }
         //модификация
         public override bool Modify(ApplicationContext db,

@@ -21,6 +21,8 @@ namespace Bim_Service.Model
         public abstract TreeViewNodeType NodeType { get; set; }
         [NotMapped]
         public virtual object Childs { get; set; }
+        [NotMapped]
+        public virtual Type ChildType { get; set; }
 
         //получить объект дерева текущего узла(nodeId-идентификатор в дереве)
         //переопределенные методы тоже должны возвращать 
@@ -36,6 +38,7 @@ namespace Bim_Service.Model
             return new TreeViewNode(Name, nodeId, Id, this);
         }
 
+        //метод для установки Childs и ChildType
         public virtual void SetNodes() { }
         //получить подузлы
         public virtual IEnumerator GetNodes()
@@ -68,6 +71,68 @@ namespace Bim_Service.Model
                 }
             });
         }
+
+        public virtual void SetPropertyForGetTableRowData(ApplicationContext db,
+                                                          DataProvider ParentProvider){}
+        //получить коллекцию ячеек для заголовка таблицы
+        public List<CellContainer> GetHeaderCellContainer()
+        {    
+            List<CellContainer> HeaderCellContainer = new List<CellContainer>();
+            foreach (PropertyInfo PI in GetType().GetProperties())
+            {
+                //словарь для выпадающего списка
+                Dictionary<string, List<string>> DictCombobox =
+                    new Dictionary<string, List<string>>();
+                //перебор атрибутов (false - без родителей)
+                //заполнение колекций выпадающий списков
+                foreach (ColumnComboboxDataAttribute ColumnCombobox in
+                            PI.GetCustomAttributes<ColumnComboboxDataAttribute>(false))
+                {
+                    object oComboboxVals = PI.GetValue(this);
+                    if (oComboboxVals == null) return null;
+                    List<string> ComboboxVals = (List<string>)oComboboxVals;
+                    if (ComboboxVals.Count == 0) return null;
+                    DictCombobox.Add(ColumnCombobox.headerPropName, ComboboxVals);
+                }
+                //перебор атрибутов (false - без родителей)
+                //заполнение коллекции заголовков ячеек таблицы (HeaderCellContainer)
+                foreach (ColumnAttribute Column in
+                        PI.GetCustomAttributes<ColumnAttribute>(false))
+                {
+                    CellContainer CC = null;
+                    if (Column.ColumnType == ColumnDataType.Textbox)
+                    {
+                        CellInfo CI = new CellInfo(Column.headerName,
+                                                   Column.headerPropName,
+                                                   Column.ColumnType);
+                        CC = new CellContainer("", CI);
+                    }
+                    if (Column.ColumnType == ColumnDataType.Combobox)
+                    {
+                        if (!DictCombobox.ContainsKey(Column.headerPropName))
+                        { return null; }
+                        List<string> ComboboxVals = DictCombobox[Column.headerPropName];
+                        if (ComboboxVals.Count == 0) return null;
+                        CellInfo CI = new CellInfo(Column.headerName,
+                                                   Column.headerPropName,
+                                                   Column.ColumnType,
+                                                   ComboboxVals);
+                        CC = new CellContainer(ComboboxVals[0], CI);
+                    }
+                    if (Column.ColumnType == ColumnDataType.Checkbox)
+                    {
+                        CellInfo CI = new CellInfo(Column.headerName,
+                                                   Column.headerPropName,
+                                                   Column.ColumnType);
+                        CC = new CellContainer("false", CI);
+                    }
+                    HeaderCellContainer.Add(CC);
+                }
+            }
+            return HeaderCellContainer;
+        }
+
+
         //модификация
         public abstract bool Modify(ApplicationContext db,
                                     TableData_Server newTD);
@@ -77,6 +142,11 @@ namespace Bim_Service.Model
         public virtual TableData_Server GetTableData(ApplicationContext db,
                                                      int nodeId)
         {
+            List<CellContainer> HeaderCellContainer = new List<CellContainer>();
+
+            ChildType.GetType();
+            (ObjectType)Activator.CreateInstance(objectType);
+
 
             return null;
         }

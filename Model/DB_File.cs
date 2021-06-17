@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
@@ -35,28 +36,16 @@ namespace Bim_Service.Model
             return NodeConstructor(nodeId, FileName);
         }
 
-        //изменить данные для строки таблицы
-        public void ChangeTableRowData(ApplicationContext db)
+        //задать значение свойств для последующего получения строки таблицы
+        public override void SetPropertyForGetTableRowData(ApplicationContext db,
+                                                           DataProvider ParentProvider)
         {
             //имя шаблона
             TemplateName = DB_Template == null ? "" : DB_Template.Name;
-            //шаблоны для текущей стадии
-            TemplateNames =
-                db.DB_Templates
-                  .Where(q => q.DB_Stage.Id == DB_Stage.Id)
-                  .Select(q => q.Name)
-                  .ToList();
-        }
-
-
-
-        public static List<CellContainer> HeaderCellContainer
-                           (ApplicationContext db, DataProvider TableNode)
-        {
-
-
-        }
-
+            DB_Stage Stage = (DB_Stage)ParentProvider;
+            //список шаблонов
+            List<string> TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
+        }   
 
         //модификация
         public override bool Modify(ApplicationContext db,

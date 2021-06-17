@@ -19,7 +19,7 @@ namespace Bim_Service.Model
     {
         public override string Name { get; set; }
         public override TreeViewNodeType NodeType { get; set; }
-        public Type ChildType { get; set; }
+        public override Type ChildType { get; set; }
 
         //конструктор
         public StandartNode(TreeViewNodeType NodeType,

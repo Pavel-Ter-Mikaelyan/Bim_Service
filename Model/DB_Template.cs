@@ -23,6 +23,7 @@ namespace Bim_Service.Model
         public override void SetNodes()
         {
             Childs = DB_Plugins;
+            ChildType = typeof(DB_Plugin);
         }
 
         //модификация
