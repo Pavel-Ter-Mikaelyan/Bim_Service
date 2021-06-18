@@ -14,11 +14,11 @@ export const MinTableCellWidth = 80 //минимальная ширина сто
 export const StartTableWidth = 100//стартовая ширина столбцов по умолчанию
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop0', 80],
-    ['Name', 400],
+    ['Name', 300],
     ['StageName', 250],  
     ['TemplateName', 200],      
     ['FileName', 250],
-    ['FilePath', 400],
+    ['FilePath', 300],
     ['PluginName', 300],
 ])
 export const SelectColor1 = 'hsl(0, 25%, 65%)'//удаление в табл.

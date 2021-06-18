@@ -197,15 +197,12 @@ namespace Bim_Service.Model
                 CI = new CellInfo(Column.headerName,
                                   Column.headerPropName,
                                   Column.ColumnType,
-                                  ComboboxVals);
+                                  ComboboxVals);             
+                value = ComboboxVals[0];
                 if (oVal != null)
                 {
                     string sVal = oVal.ToString();
-                    value = sVal == "" ? ComboboxVals[0] : sVal;
-                }
-                else
-                {
-                    value = ComboboxVals[0];
+                    if (sVal != "") value = sVal;
                 }
             }
             if (Column.ColumnType == ColumnDataType.Checkbox)
