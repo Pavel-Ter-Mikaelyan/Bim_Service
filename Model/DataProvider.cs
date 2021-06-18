@@ -24,7 +24,7 @@ namespace Bim_Service.Model
         [NotMapped]
         public virtual Type ChildType { get; set; } = null;
         [NotMapped]
-        List<DataProvider> Nodes { get; set; }
+        List<DataProvider> ChildProviders { get; set; }
         [NotMapped]
         bool bWasGetNodes = false;
         [NotMapped]
@@ -63,11 +63,11 @@ namespace Bim_Service.Model
         //получить подузлы
         public List<DataProvider> GetNodes()
         {
-            if (bWasGetNodes) return Nodes;
+            if (bWasGetNodes) return ChildProviders;
             bWasGetNodes = true;
-            Nodes = new List<DataProvider>();
+            ChildProviders = new List<DataProvider>();
             SetNodes();
-            if (Childs == null) return Nodes;
+            if (Childs == null) return ChildProviders;
             bool bDbSetType = false;
             if (this is StandartNode)
             {
@@ -78,14 +78,14 @@ namespace Bim_Service.Model
             if (bDbSetType)
             {
                 MethodInfo MI = Childs.GetType().GetMethod("AsQueryable");
-                if (MI == null) return Nodes;
+                if (MI == null) return ChildProviders;
                 IQueryable Collection = (IQueryable)MI.Invoke(Childs, null);
                 enumerator = Collection.GetEnumerator();
             }
             else
             {
                 MethodInfo MI = Childs.GetType().GetMethod("GetEnumerator");
-                if (MI == null) return Nodes;
+                if (MI == null) return ChildProviders;
                 enumerator = (IEnumerator)MI.Invoke(Childs, null);
             }
             if (enumerator != null)
@@ -94,10 +94,10 @@ namespace Bim_Service.Model
                 {
                     DataProvider Child = (DataProvider)enumerator.Current;
                     Child.ParentNode = this;
-                    Nodes.Add(Child);
+                    ChildProviders.Add(Child);
                 }
             }
-            return Nodes;
+            return ChildProviders;
         }
         #endregion
         #region Работа с таблицами
