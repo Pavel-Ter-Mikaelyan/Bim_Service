@@ -50,14 +50,14 @@ namespace Bim_Service.Model
             foreach (PropertyInfo PI in GetType().GetProperties())
             {
                 //атрибут текущего объекта (false - без родителей)
-                ChildsAttribute ChildsAttribute = 
-                    PI.GetCustomAttribute<ChildsAttribute>(false);               
+                ChildsAttribute ChildsAttribute =
+                    PI.GetCustomAttribute<ChildsAttribute>(false);
                 if (ChildsAttribute != null)
                 {
                     Childs = PI.GetValue(this);
                     ChildType = ChildsAttribute.ChildType;
                     break;
-                }               
+                }
             }
         }
         //получить подузлы
@@ -198,7 +198,11 @@ namespace Bim_Service.Model
                                   Column.headerPropName,
                                   Column.ColumnType,
                                   ComboboxVals);
-                value = oVal == null ? ComboboxVals[0] : oVal.ToString();
+                if (oVal == null)
+                {
+                    string sVal = oVal.ToString();
+                    value = sVal == "" ? ComboboxVals[0] : oVal.ToString();
+                }
             }
             if (Column.ColumnType == ColumnDataType.Checkbox)
             {
