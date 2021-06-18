@@ -20,14 +20,18 @@ namespace Bim_Service.Model
         public string StageName { get; set; }
         [ColumnComboboxData("StageName")]
         [NotMapped]
-        public List<string> StageNames { get; set; }
+        public List<string> StageNames { get; set; } =
+                       new List<string>();
 
         public DB_Object DB_Object { get; set; }
         public DB_Stage_const DB_Stage_const { get; set; }
 
-        public List<DB_File> DB_Files { get; set; }
-        public List<DB_Template> DB_Templates { get; set; }
-        public List<DB_Plugin> DB_Plugins { get; set; }
+        public List<DB_File> DB_Files { get; set; } =
+                       new List<DB_File>();
+        public List<DB_Template> DB_Templates { get; set; } =
+                       new List<DB_Template>();
+        public List<DB_Plugin> DB_Plugins { get; set; } =
+                       new List<DB_Plugin>();
 
         public override TreeViewNode GetNode(int nodeId)
         {
@@ -47,14 +51,27 @@ namespace Bim_Service.Model
             Childs = new List<DataProvider> { TemplatesNode, FilesNode };
             ChildType = typeof(DataProvider);
         }
-        //задать значение свойств для последующего получения строки таблицы
-        public override void SetPropertyForGetTableRowData(ApplicationContext db,
-                                                           DataProvider ParentProvider)
+        //задать значение свойств объекта для вывода информации (TableData) из БД
+        public override void SetPropertyForGetTableData(ApplicationContext db,
+                                                           DataProvider ParentNode)
         {
-            //имя шаблона
+            //имя стадии
             StageName = DB_Stage_const == null ? "" : DB_Stage_const.Name;
-            //список шаблонов
-            StageNames = db.DB_Stages.Select(q => q.DB_Stage_const.Name).ToList();
+            //список стадий
+            if (db.DB_Stage_consts != null && db.DB_Stage_consts.Count() > 0)
+            {
+                StageNames = db.DB_Stage_consts.Select(q => q.Name).ToList();
+            }
+        }
+        //установить специфические данные объекта для модификации БД
+        public override bool SetSecificDataForModify(ApplicationContext db,
+                                                     DataProvider ParentNode)
+        {
+            DB_Object = (DB_Object)ParentNode;
+            DB_Stage_const =
+                db.DB_Stage_consts.FirstOrDefault(q => q.Name == StageName);
+            if (DB_Stage_const == null) return false;
+            return true;
         }
     }
 }

@@ -32,11 +32,11 @@ namespace Bim_Service.Controllers
         { 
             TreeViewNodeConstructor TNC = new TreeViewNodeConstructor(db);
             TreeViewNode TVN = null;
-            try
-            {
+            //try
+            //{
                 TVN = TNC.GetTreeViewNode();
-            }
-            catch { }
+            //}
+            //catch { }
             return TVN;
         }
         //получить словарь узлов

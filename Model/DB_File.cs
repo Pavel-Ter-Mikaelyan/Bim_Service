@@ -29,23 +29,42 @@ namespace Bim_Service.Model
         public string TemplateName { get; set; }
         [ColumnComboboxData("TemplateName")]
         [NotMapped]
-        public List<string> TemplateNames { get; set; }
+        public List<string> TemplateNames { get; set; } =
+                            new List<string>();
 
         public override TreeViewNode GetNode(int nodeId)
         {
             return NodeConstructor(nodeId, FileName);
         }
-       
-        //задать значение свойств для последующего получения строки таблицы
-        public override void SetPropertyForGetTableRowData(ApplicationContext db,
-                                                           DataProvider ParentProvider)
+        //метод для установки Childs и ChildType
+        public override void SetNodes()
+        {
+            Childs = null;
+            ChildType = null;
+        }
+        //задать значение свойств объекта для вывода информации (TableData) из БД
+        public override void SetPropertyForGetTableData(ApplicationContext db,
+                                                        DataProvider ParentNode)
         {
             //имя шаблона
             TemplateName = DB_Template == null ? "" : DB_Template.Name;
-            DB_Stage Stage = (DB_Stage)ParentProvider;
+            DB_Stage Stage = (DB_Stage)ParentNode.ParentNode;
             //список шаблонов
-            TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
-        }   
-              
+            if (Stage.DB_Templates != null && Stage.DB_Templates.Count > 0)
+            {
+                TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
+            }
+        }
+        //установить специфические данные объекта для модификации БД
+        public override bool SetSecificDataForModify(ApplicationContext db,
+                                                     DataProvider ParentNode)
+        {
+            DB_Stage = (DB_Stage)ParentNode.ParentNode;
+            DB_Template= DB_Stage.DB_Templates
+                                 .FirstOrDefault(q => q.Name == 
+                                                        TemplateName);
+            if (DB_Template == null) return false;
+            return true;
+        }
     }
 }

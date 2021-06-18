@@ -19,14 +19,15 @@ namespace Bim_Service.Model
 
         [NotMapped]
         public override TreeViewNodeType NodeType { get; set; } =
-                           TreeViewNodeType.Plugin;   
+                           TreeViewNodeType.Plugin;
 
         [Column("Плагин", "PluginName", ColumnDataType.Combobox, 0)]
         [NotMapped]
         public string PluginName { get; set; }
         [ColumnComboboxData("PluginName")]
         [NotMapped]
-        public List<string> PluginNames { get; set; }
+        public List<string> PluginNames { get; set; } =
+                              new List<string>();
 
         public DB_Plugin_const DB_Plugin_const { get; set; }
         public DB_Template DB_Template { get; set; }
@@ -35,7 +36,7 @@ namespace Bim_Service.Model
         public override TreeViewNode GetNode(int nodeId)
         {
             return NodeConstructor(nodeId, DB_Plugin_const.Name);
-        }       
+        }
         //метод для установки Childs и ChildType
         public override void SetNodes()
         {
@@ -43,20 +44,33 @@ namespace Bim_Service.Model
                                                          null,
                                                          null);
             StandartNode SettingNode = new StandartNode(TreeViewNodeType.Setting,
-                                                         null,
-                                                         null);
+                                                        null,
+                                                        null);
             Childs = new List<DataProvider> { CheckingNode, SettingNode };
             ChildType = typeof(DataProvider);
         }
-
-        //задать значение свойств для последующего получения строки таблицы
-        public override void SetPropertyForGetTableRowData(ApplicationContext db,
-                                                           DataProvider ParentProvider)
+        //задать значение свойств объекта для вывода информации (TableData) из БД
+        public override void SetPropertyForGetTableData(ApplicationContext db,
+                                                           DataProvider ParentNode)
         {
             //имя плагина
             PluginName = DB_Plugin_const == null ? "" : DB_Plugin_const.Name;
             //список плагинов
-            PluginNames = db.DB_Plugins.Select(q => q.DB_Plugin_const.Name).ToList();
+            if (db.DB_Plugins != null && db.DB_Plugins.Count() > 0)
+            {
+                PluginNames = db.DB_Plugins.Select(q => q.DB_Plugin_const.Name).ToList();
+            }
+        }
+        //установить специфические данные объекта для модификации БД
+        public override bool SetSecificDataForModify(ApplicationContext db,
+                                                     DataProvider ParentNode)
+        {
+            DB_Template = (DB_Template)ParentNode;
+            DB_Stage = DB_Template.DB_Stage;
+            DB_Plugin_const =
+                db.DB_Plugin_consts.FirstOrDefault(q => q.Name == PluginName);
+            if (DB_Plugin_const == null) return false;
+            return true;
         }
     }
 }

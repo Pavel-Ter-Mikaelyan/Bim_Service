@@ -32,13 +32,13 @@ namespace Bim_Service.Controllers
         public object Get(int selectedId)
         {
             TableData_Client TD = null;
-            try
-            {
+            //try
+            //{
                 TableDataConstructor TDC =
                     new TableDataConstructor(db, selectedId);
                 TD = TDC.GetAllTableData();
-            }
-            catch { }
+            //}
+            //catch { }
             return TD;
         }
 
@@ -47,11 +47,11 @@ namespace Bim_Service.Controllers
         {
             TableDataModifier TDM = new TableDataModifier(db, TD);
             bool bResult = false;
-            try
-            {
+            //try
+            //{
                 bResult = TDM.Modify();
-            }
-            catch { }
+            //}
+            //catch { }
 
             return bResult;
         }

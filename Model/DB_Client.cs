@@ -18,7 +18,8 @@ namespace Bim_Service.Model
         public override TreeViewNodeType NodeType { get; set; } =
                              TreeViewNodeType.Client;
 
-        public List<DB_Object> DB_Objects { get; set; }
+        public List<DB_Object> DB_Objects { get; set; } = 
+                               new List<DB_Object>();
 
         //назначить дочерние подузлы
         public override void SetNodes()

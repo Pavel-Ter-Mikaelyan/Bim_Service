@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,28 +20,30 @@ namespace Bim_Service.Model
         //рекурсивное добавление узлов дерева
         public void AddTreeViewNodes(TreeViewNode MainNode,
                                      List<DataProvider> Nodes)
-        {
+        {           
             foreach (DataProvider Node in Nodes)
-            {
+            {         
                 TreeViewNode ChildNode = Node.GetNode(++nodeId);
                 //добавление узла
                 MainNode.children.Add(ChildNode);
                 //добавление подузлов
-                //AddTreeViewNodes(ChildNode, Node.GetNodes());
+                AddTreeViewNodes(ChildNode, Node.GetNodes());
             }
         }
         //получить все узлы дерева
         public TreeViewNode GetTreeViewNode()
         {
             //корневой узел Клиенты
-            StandartNode_Clients ClientsNode =
-                new StandartNode_Clients(db.DB_Clients);
-            TreeViewNode RootNode = ClientsNode.GetNode(++nodeId);
-
+            StandartNode ClientsNode =
+                new StandartNode(TreeViewNodeType.Clients,
+                                 db.DB_Clients,
+                                 typeof(DB_Client),
+                                 true);           
+            TreeViewNode MainNode = ClientsNode.GetNode(++nodeId);        
             //рекурсивное добавление подузлов
-            //AddTreeViewNodes(RootNode, ClientsNode.GetNodes());
+            AddTreeViewNodes(MainNode, ClientsNode.GetNodes());
 
-            return RootNode;
+            return MainNode;
         }
     }
 }

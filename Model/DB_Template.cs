@@ -17,7 +17,8 @@ namespace Bim_Service.Model
                                 TreeViewNodeType.Template;
 
         public DB_Stage DB_Stage { get; set; }
-        public List<DB_Plugin> DB_Plugins { get; set; }
+        public List<DB_Plugin> DB_Plugins { get; set; } =
+                     new List<DB_Plugin>();
       
         //назначить дочерние подузлы
         public override void SetNodes()
@@ -25,6 +26,13 @@ namespace Bim_Service.Model
             Childs = DB_Plugins;
             ChildType = typeof(DB_Plugin);
         }
-       
+        //установить специфические данные объекта для модификации БД
+        public override bool SetSecificDataForModify(ApplicationContext db,
+                                                     DataProvider ParentNode)
+        {
+            DB_Stage = (DB_Stage)ParentNode.ParentNode;           
+            return true;
+        }
+
     }
 }

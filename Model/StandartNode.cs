@@ -8,23 +8,33 @@ using System.Threading.Tasks;
 using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
-{ 
+{
     public class StandartNode : DataProvider
     {
         public override string Name { get; set; }
         public override TreeViewNodeType NodeType { get; set; }
-        public override Type ChildType { get; set; }
+        public bool bDbSetType { get; set; }
+        object ChildsParam;
+        Type ChildTypeParam;
 
         //конструктор
-        public StandartNode(TreeViewNodeType NodeType,
-                            object Childs,
-                            Type ChildType)
+        public StandartNode(TreeViewNodeType NodeType,                            
+                            object ChildsParam,
+                            Type ChildTypeParam,
+                            bool bDbSetType = false)
         {
             //информация по узлу
             TreeViewNodeInfo NI = TreeViewNodeInfos[NodeType];
             Name = NI.nodeName;
-            this.Childs = Childs;
-            this.ChildType = ChildType;
+            this.bDbSetType = bDbSetType;
+            this.ChildsParam = ChildsParam;
+            this.ChildTypeParam = ChildTypeParam;
+            this.NodeType = NodeType;
+        }
+        public override void SetNodes()
+        {
+            Childs = ChildsParam;
+            ChildType = ChildTypeParam;
         }
     }
 }
