@@ -35,13 +35,7 @@ namespace Bim_Service.Model
         public override TreeViewNode GetNode(int nodeId)
         {
             return NodeConstructor(nodeId, FileName);
-        }
-        //метод для установки Childs и ChildType
-        public override void SetNodes()
-        {
-            Childs = null;
-            ChildType = null;
-        }
+        }     
         //задать значение свойств объекта для вывода информации (TableData) из БД
         public override void SetPropertyForGetTableData(ApplicationContext db,
                                                         DataProvider ParentNode)

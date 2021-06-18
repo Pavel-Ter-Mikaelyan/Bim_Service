@@ -16,15 +16,11 @@ namespace Bim_Service.Model
                              TreeViewNodeType.Object;
 
         public DB_Client DB_Client { get; set; }
+
+        [Childs(typeof(DB_Stage))]
         public List<DB_Stage> DB_Stages { get; set; } =
                               new List<DB_Stage>();
 
-        //назначить дочерние подузлы
-        public override void SetNodes()
-        {
-            Childs = DB_Stages;
-            ChildType = typeof(DB_Stage);
-        }
         //установить специфические данные объекта для модификации БД
         public override bool SetSecificDataForModify(ApplicationContext db,
                                                      DataProvider ParentNode)

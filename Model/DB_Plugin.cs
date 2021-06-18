@@ -70,6 +70,10 @@ namespace Bim_Service.Model
             DB_Plugin_const =
                 db.DB_Plugin_consts.FirstOrDefault(q => q.Name == PluginName);
             if (DB_Plugin_const == null) return false;
+            PluginVersion = DB_Plugin_const.PluginVersion;
+            CheckingData = DB_Plugin_const.CheckingDataTemplate;
+            SettingData = DB_Plugin_const.SettingDataTemplate;
+
             return true;
         }
     }

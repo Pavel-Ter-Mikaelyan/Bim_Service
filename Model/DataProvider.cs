@@ -20,9 +20,9 @@ namespace Bim_Service.Model
         [NotMapped]
         public abstract TreeViewNodeType NodeType { get; set; }
         [NotMapped]
-        public virtual object Childs { get; set; }
+        public virtual object Childs { get; set; } = null;
         [NotMapped]
-        public virtual Type ChildType { get; set; }
+        public virtual Type ChildType { get; set; } = null;
         [NotMapped]
         List<DataProvider> Nodes { get; set; }
         [NotMapped]
@@ -45,7 +45,21 @@ namespace Bim_Service.Model
             return new TreeViewNode(Name, nodeId, Id, this);
         }
         //метод для установки Childs и ChildType
-        public abstract void SetNodes();
+        public virtual void SetNodes()
+        {
+            foreach (PropertyInfo PI in GetType().GetProperties())
+            {
+                //атрибут текущего объекта (false - без родителей)
+                ChildsAttribute ChildsAttribute = 
+                    PI.GetCustomAttribute<ChildsAttribute>(false);               
+                if (ChildsAttribute != null)
+                {
+                    Childs = PI.GetValue(this);
+                    ChildType = ChildsAttribute.ChildType;
+                    break;
+                }               
+            }
+        }
         //получить подузлы
         public List<DataProvider> GetNodes()
         {
