@@ -52,9 +52,9 @@ namespace Bim_Service.Model
                  {TreeViewNodeType.Plugin,
                   new TreeViewNodeInfo("Plugin","Плагин", false,"")},
                 {TreeViewNodeType.Checking,
-                  new TreeViewNodeInfo("Checking","Проверки", false,"")},
+                  new TreeViewNodeInfo("Checking","Проверки", true,"Параметры проверок")},
                 {TreeViewNodeType.Setting,
-                  new TreeViewNodeInfo("Setting","Настройки", false,"")},
+                  new TreeViewNodeInfo("Setting","Настройки", true,"Параметры настроек")},
             };
     }
 }

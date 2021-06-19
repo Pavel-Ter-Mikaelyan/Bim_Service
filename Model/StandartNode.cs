@@ -30,4 +30,21 @@ namespace Bim_Service.Model
             this.NodeType = NodeType;
         }
     }
+    public class CheckingNode : DataProvider
+    {
+        public override string Name { get; set; }
+        public override TreeViewNodeType NodeType { get; set; } =
+                              TreeViewNodeType.Checking;       
+
+        //конструктор
+        public CheckingNode()
+        {
+            //информация по узлу
+            TreeViewNodeInfo NI = TreeViewNodeInfos[NodeType];
+            Name = NI.nodeName;          
+        }
+
+
+
+    }
 }
