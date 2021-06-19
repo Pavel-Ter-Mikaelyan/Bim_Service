@@ -11,7 +11,7 @@ namespace Bim_Service.Model
     {
         public override int Id { get; set; }
 
-        [Column("Название", "Name", ColumnDataType.Textbox, 0)]
+        [Column("Название", "Name", ControlType.TextBox, 0)]
         public override string Name { get; set; }
 
         [NotMapped]

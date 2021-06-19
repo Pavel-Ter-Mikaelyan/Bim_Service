@@ -262,8 +262,9 @@ namespace Bim_Service.Model
         public TableData_Server GetTableDataForPluginParameters(int nodeId)
         {
             string TableName = TreeViewNodeInfos[NodeType].TableName;
-            //получить данные по параметрам плагина
+            //получить плагин
             DB_Plugin Plugin = (DB_Plugin)ParentNode;
+            //получить параметры плагина
             List<AddInsParameter> ParameterList =
                             GetParameterList(Plugin.CheckingData,
                                              Plugin.SettingData);
@@ -440,12 +441,10 @@ namespace Bim_Service.Model
         //модификация базы данных, если текущий узел - это Настройки или Проверки плагина
         public virtual bool ModifyForPluginParameters(ApplicationContext db,
                                                       TableData_Server newTD)
-        {
-            //получить данные по параметрам плагина
+        {            
             DB_Plugin Plugin = (DB_Plugin)ParentNode;
 
-            IEnumerable<AddInsParameter> AddInsParameters =
-                                       new List<AddInsParameter>();
+            List<AddInsParameter> AddInsParameters = new List<AddInsParameter>();
             List<RowContainer> RowContainers = newTD.RowContainers;
             for (int i = 0; i < RowContainers.Count; i++)
             {
@@ -462,7 +461,9 @@ namespace Bim_Service.Model
                     Parameter.ErrorMessage = "";
                     Parameter.ColumnIndex = CC.CI.columnIndex;
                     Parameter.ControlType = CC.CI.ColumnType;
+                    Parameter.AvailableValue = CC.CI.comboboxData.ToArray();
                 }
+                AddInsParameters.Add(Parameter);
             }
             string SerializeValue = JsonConvert.SerializeObject(AddInsParameters);
             if (SerializeValue == null || SerializeValue == "") return false;
@@ -474,8 +475,8 @@ namespace Bim_Service.Model
             if (NodeType == TreeViewNodeType.Setting)
             {
                 Plugin.SettingData = SerializeValue;
-            }                       
-      
+            }
+
             return true;
         }
         #endregion

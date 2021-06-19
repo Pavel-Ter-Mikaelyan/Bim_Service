@@ -8,7 +8,7 @@ namespace Bim_Service.Model
     public class DB_Object : DataProvider
     {
         public override int Id { get; set; }
-        [Column("Название", "Name", ColumnDataType.Textbox, 0)]
+        [Column("Название", "Name", ControlType.TextBox, 0)]
         public override string Name { get; set; }
 
         [NotMapped]

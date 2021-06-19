@@ -12,9 +12,9 @@ namespace Bim_Service.Model
         [NotMapped]
         public override string Name { get; set; }
 
-        [Column("Путь к файлу", "FilePath", ColumnDataType.Textbox, 1)]
+        [Column("Путь к файлу", "FilePath", ControlType.TextBox, 1)]
         public string FilePath { get; set; }
-        [Column("Имя файла", "FileName", ColumnDataType.Textbox, 2)]
+        [Column("Имя файла", "FileName", ControlType.TextBox, 2)]
         public string FileName { get; set; }
 
         public DB_Stage DB_Stage { get; set; }
@@ -24,7 +24,7 @@ namespace Bim_Service.Model
         public override TreeViewNodeType NodeType { get; set; } =
                           TreeViewNodeType.File;
 
-        [Column("Шаблон", "TemplateName", ColumnDataType.Combobox, 0)]
+        [Column("Шаблон", "TemplateName", ControlType.ComboBox, 0)]
         [NotMapped]
         public string TemplateName { get; set; }
         [ColumnComboboxData("TemplateName")]

@@ -15,7 +15,7 @@ namespace Bim_Service.Model
         public override TreeViewNodeType NodeType { get; set; } =
                            TreeViewNodeType.Stage;
 
-        [Column("Стадия", "StageName", ColumnDataType.Combobox, 0)]
+        [Column("Стадия", "StageName", ControlType.ComboBox, 0)]
         [NotMapped]
         public string StageName { get; set; }
         [ColumnComboboxData("StageName")]
