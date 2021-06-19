@@ -11,7 +11,7 @@ export const NavPanel_MinW = 150 //минимальная ширина NavPanel
 export const Window_minW = 400 //минимальная ширина окна браузера
 //настройки стилей таблицы
 export const MinTableCellWidth = 80 //минимальная ширина столбца
-export const StartTableWidth = 100//стартовая ширина столбцов по умолчанию
+export const StartTableWidth = 150//стартовая ширина столбцов по умолчанию
 export const TableStartWidths = new Map([//стартовые ширины столбцов таблицы
     ['prop0', 80],
     ['Name', 300],
