@@ -317,7 +317,7 @@ namespace Bim_Service.Model
             }
             return new TableData_Server(nodeId,
                                         TableName,
-                                        RowContainers[],
+                                        RowContainers[0].ValueCellContainer,
                                         true,
                                         RowContainers);
         }
