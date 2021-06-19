@@ -56,9 +56,9 @@ namespace Bim_Service.Model
             //имя плагина
             PluginName = DB_Plugin_const == null ? "" : DB_Plugin_const.Name;
             //список плагинов
-            if (db.DB_Plugins != null && db.DB_Plugins.Count() > 0)
+            if (db.DB_Plugin_consts != null && db.DB_Plugin_consts.Count() > 0)
             {
-                PluginNames = db.DB_Plugins.Select(q => q.DB_Plugin_const.Name).ToList();
+                PluginNames = db.DB_Plugin_consts.Select(q => q.Name).ToList();
             }
         }
         //установить специфические данные объекта для модификации БД

@@ -248,7 +248,7 @@ namespace Bim_Service.Model
                 new TableData_Server(nodeId,
                                      TableName,
                                      HeaderCellContainer,
-                                     false,
+                                     true,
                                      RowContainers);
             return TDS;
         }
