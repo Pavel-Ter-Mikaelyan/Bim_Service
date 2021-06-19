@@ -174,7 +174,7 @@ namespace Bim_Service.Model
                     CellContainers.Add(CC);
                 }
             }
-            return CellContainers;
+            return CellContainers.OrderBy(q=>q.CI.columnIndex).ToList();
         }
         CellContainer GetCellContainer(ColumnAttribute Column,
                                        object oVal,
@@ -183,7 +183,8 @@ namespace Bim_Service.Model
             string value = null;
             CellInfo CI = new CellInfo(Column.headerName,
                                        Column.headerPropName,
-                                       Column.ColumnType);
+                                       Column.ColumnType,
+                                       Column.index);
             if (Column.ColumnType == ColumnDataType.Textbox)
             {
                 value = oVal == null ? "" : oVal.ToString();
@@ -197,6 +198,7 @@ namespace Bim_Service.Model
                 CI = new CellInfo(Column.headerName,
                                   Column.headerPropName,
                                   Column.ColumnType,
+                                  Column.index,
                                   ComboboxVals);             
                 value = ComboboxVals[0];
                 if (oVal != null)
@@ -207,7 +209,12 @@ namespace Bim_Service.Model
             }
             if (Column.ColumnType == ColumnDataType.Checkbox)
             {
-                value = oVal == null ? "false" : oVal.ToString();
+                value = "false";
+                if (oVal != null)
+                {
+                    string sVal = oVal.ToString();
+                    if (sVal != "") value = sVal;
+                }                
             }
             return new CellContainer(value, CI);
         }
@@ -241,6 +248,7 @@ namespace Bim_Service.Model
                 new TableData_Server(nodeId,
                                      TableName,
                                      HeaderCellContainer,
+                                     false,
                                      RowContainers);
             return TDS;
         }

@@ -25,10 +25,10 @@ const CheckBoxStyle = createUseStyles({
 })
 
 export const Checkbox = ({ ComponentData }) => {
-   
-    const cls = CheckBoxStyle(ComponentData.disabled)       
+
+    const cls = CheckBoxStyle(ComponentData.disabled)
     const icon =
-        ComponentData.valueObj.value ?
+        ComponentData.valueObj.value == "true" ?
             <CheckBoxOutlinedIcon /> :
             <CheckBoxOutlineBlankOutlinedIcon />
 

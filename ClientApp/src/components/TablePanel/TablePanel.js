@@ -112,7 +112,11 @@ const TablePanel = ({
     //стили
     const cls = TablePanelStyles();
 
-    if (TableState == null) return null
+    if (TableState == null || TableData == null) return null
+
+    const NewRowTable = TableData.bAddNewRow ?
+        <Table TableInfo={NewRowTableInfo} /> : null
+
     return (
         <div class={cls.TablePanel} >
             <TableManagerContainer
@@ -120,7 +124,7 @@ const TablePanel = ({
                 LoadTableData={LoadTableData}
                 LoadTreeNodesData={LoadTreeNodesData}
             />
-            <Table TableInfo={NewRowTableInfo} />
+            {NewRowTable}
             <Table TableInfo={MainTableInfo} />
         </div>
     )

@@ -15,15 +15,18 @@ namespace Bim_Service.Model
            new List<CellContainer>();
         public List<RowContainer> RowContainers { get; set; } =
             new List<RowContainer>();
+        public bool bAddNewRow { get; set; } = false;
 
         public TableData_Server(int nodeId,
                                string tableName,
                                List<CellContainer> HeaderCellContainer,
+                               bool bAddNewRow,
                                List<RowContainer> RowContainers = null)
         {
             this.nodeId = nodeId;
             this.tableName = tableName;
             this.HeaderCellContainer = HeaderCellContainer;
+            this.bAddNewRow = bAddNewRow;
             if (RowContainers != null) this.RowContainers = RowContainers;
         }
         //перевод данных в формат, удобный на клиенте
@@ -50,7 +53,7 @@ namespace Bim_Service.Model
             }
             List<int> rowIds = RowContainers.Select(q => q.Id).ToList();
             TableData_Client TDC =
-               new TableData_Client(nodeId, tableName, CDs, rowIds);
+               new TableData_Client(nodeId, tableName, bAddNewRow, CDs, rowIds);
             return TDC;
         }
     }
@@ -82,6 +85,8 @@ namespace Bim_Service.Model
     //информация по ячейке таблицы
     public class CellInfo
     {
+        //индекс столбца
+        public int columnIndex { get; set; } 
         //имя заголовка столбца
         public string headerName { get; set; } = "";
         //имя свойства для заголовка столбца
@@ -95,11 +100,13 @@ namespace Bim_Service.Model
         public CellInfo(string headerName,
                         string headerPropName,
                         ColumnDataType ColumnType,
+                        int columnIndex,
                         List<string> comboboxData = null)
         {
             this.headerName = headerName;
             this.headerPropName = headerPropName;
             this.ColumnType = ColumnType;
+            this.columnIndex = columnIndex;
             if (comboboxData != null) this.comboboxData = comboboxData;
         }
     }

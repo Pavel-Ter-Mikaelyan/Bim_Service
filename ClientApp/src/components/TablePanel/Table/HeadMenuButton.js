@@ -12,7 +12,7 @@ export const HeadMenuButton = ({ TableInfo }) => {
         if (deleteMode == false) { return }
         TableInfo.TableState.MainTableData.TableData
             .columnData[0].rowVals.forEach((rowVal, i) => {
-                if (rowVal.value == true) {
+                if (rowVal.value == 'true') {
                     delete TableInfo.TableState.MainTableData.TableData.rowIds[i]
                     TableInfo.TableState.MainTableData.TableData
                         .columnData.forEach(columnData => {

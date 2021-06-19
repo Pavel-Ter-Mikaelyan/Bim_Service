@@ -14,14 +14,17 @@ namespace Bim_Service.Model
         public List<int> rowIds { get; set; } = new List<int>();
         public List<ColumnData> columnData { get; set; } =
             new List<ColumnData>();
+        public bool bAddNewRow { get; set; } = false;
 
         public TableData_Client(int selectedId,
                                 string tableName,
+                                bool bAddNewRow,
                                 List<ColumnData> columnData = null,
                                 List<int> rowIds = null)
         {
             this.selectedId = selectedId;
             this.tableName = tableName;
+            this.bAddNewRow = bAddNewRow;
             if (rowIds != null) this.rowIds = rowIds;
             if (columnData != null) this.columnData = columnData;
         }
@@ -30,17 +33,18 @@ namespace Bim_Service.Model
         {
             List<CellContainer> HeaderCellContainer =
                 new List<CellContainer>();
-            foreach (ColumnData CD in columnData)
+            for (int i = 0; i < columnData.Count; i++)
             {
-                CellInfo CI =
-                    new CellInfo(CD.headerName,
-                                 CD.headerPropName,
-                                 (ColumnDataType)CD.type,
-                                 CD.comboboxData);
+                ColumnData CD = columnData[i];
+                CellInfo CI = new CellInfo(CD.headerName,
+                                           CD.headerPropName,
+                                           (ColumnDataType)CD.type,
+                                           i,
+                                           CD.comboboxData);
                 CellContainer CC =
                      new CellContainer(CD.defVal, CI);
                 HeaderCellContainer.Add(CC);
-            }
+            }             
             List<RowContainer> RowContainers = new List<RowContainer>();    
             for (int x = 0; x < rowIds.Count; x++)
             {
@@ -60,6 +64,7 @@ namespace Bim_Service.Model
                 new TableData_Server(selectedId,
                                      tableName,
                                      HeaderCellContainer,
+                                     bAddNewRow,
                                      RowContainers);
 
             return TDS;

@@ -16,8 +16,11 @@ export const CellComponent = ({ TableInfo, ColumnIndex, RowIndex }) => {
     ComponentData.onChange = (e, type) => {
         if (ComponentData.disabled) return;
         if (type == 'Checkbox') {
-            ComponentData.valueObj.value =
-                !ComponentData.valueObj.value
+            if (ComponentData.valueObj.value == 'true') {
+                ComponentData.valueObj.value = 'false'
+            } else {
+                ComponentData.valueObj.value = 'true'
+            }
         }
         if (type == 'Combobox' || type == 'Textbox') {
             if (e !== undefined) {

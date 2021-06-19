@@ -11,7 +11,8 @@ export const HeadMenuCheckBox = ({ TableInfo }) => {
         changeColumnForDelete(TableInfo)
     }
 
-    if (TableInfo.newRowMode) {
+    if (TableInfo.newRowMode ||
+        !TableInfo.TableState.MainTableData.TableData.bAddNewRow) {
         return null
     }
     else {
