@@ -12,14 +12,14 @@ namespace Bim_Service.Model
     {
         TextBox = 1,
         CheckBox = 2,
-        ComboBox = 3,
-        DataGridViewBuilder = 4
+        ComboBox = 3
     }
 
     [Serializable]
     public class AddInsParameter : Attribute
     {
         public ControlType ControlType { get; set; }
+        public bool InTable { get; set; }
         public string[] AvailableValue { get; set; }
         public string Value { get; set; }
         public string VisibleName { get; set; }

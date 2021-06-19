@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -174,7 +175,7 @@ namespace Bim_Service.Model
                     CellContainers.Add(CC);
                 }
             }
-            return CellContainers.OrderBy(q=>q.CI.columnIndex).ToList();
+            return CellContainers.OrderBy(q => q.CI.columnIndex).ToList();
         }
         CellContainer GetCellContainer(ColumnAttribute Column,
                                        object oVal,
@@ -199,7 +200,7 @@ namespace Bim_Service.Model
                                   Column.headerPropName,
                                   Column.ColumnType,
                                   Column.index,
-                                  ComboboxVals);             
+                                  ComboboxVals);
                 value = ComboboxVals[0];
                 if (oVal != null)
                 {
@@ -214,7 +215,7 @@ namespace Bim_Service.Model
                 {
                     string sVal = oVal.ToString();
                     if (sVal != "") value = sVal;
-                }                
+                }
             }
             return new CellContainer(value, CI);
         }
@@ -222,6 +223,11 @@ namespace Bim_Service.Model
         public virtual TableData_Server GetTableData(ApplicationContext db,
                                                      int nodeId)
         {
+            if (NodeType == TreeViewNodeType.Checking ||
+                NodeType == TreeViewNodeType.Setting)
+            {
+                return GetTableDataForPluginParameters(nodeId);
+            }
             if (ChildType == null) return null;
             object ChildObject = Activator.CreateInstance(ChildType);
             if (ChildObject == null) return null;
@@ -252,10 +258,150 @@ namespace Bim_Service.Model
                                      RowContainers);
             return TDS;
         }
+        //получить таблицу, если текущий узел - это Настройки или Проверки плагина
+        public TableData_Server GetTableDataForPluginParameters(int nodeId)
+        {
+            string TableName = TreeViewNodeInfos[NodeType].TableName;
+            //получить данные по параметрам плагина
+            DB_Plugin Plugin = (DB_Plugin)ParentNode;
+            List<AddInsParameter> ParameterList =
+                            GetParameterList(Plugin.CheckingData,
+                                             Plugin.SettingData);
+            if (ParameterList == null || ParameterList.Count == 0) return null;
+
+            //тип контролов (1 тип - таблица, 2 тип - таблица с одним рядом)
+            bool tableType = false;
+            if (ParameterList[0].InTable) tableType = true;
+
+            //если тип контролов - таблица
+            if (tableType)
+            {
+                return GetTableDataAsTableType(ParameterList, nodeId, TableName);
+            }
+            else //если тип контролов - таблица с одним рядом
+            {
+                return GetTableDataAsNotTableType(ParameterList, nodeId, TableName);
+            }
+            //JsonConvert.SerializeObject();
+        }
+        TableData_Server GetTableDataAsTableType(
+                              List<AddInsParameter> ParameterList,
+                              int nodeId,
+                              string TableName)
+        {
+            ParameterList = ParameterList.OrderBy(q => q.RowIndex).ToList();
+            int oldRowIndex = ParameterList[0].RowIndex;
+            List<CellContainer> CellContainers = new List<CellContainer>();
+            List<RowContainer> RowContainers = new List<RowContainer>();
+            for (int i = 0; i < ParameterList.Count; i++)
+            {
+                AddInsParameter Parameter = ParameterList[i];
+                int newRowIndex = Parameter.RowIndex;
+                CellContainer CC = GetCellContainer(ParameterList[i],
+                                                    Parameter.ColumnIndex);
+                if (oldRowIndex == newRowIndex)
+                {
+                    CellContainers.Add(CC);
+                }
+                if (oldRowIndex != newRowIndex || i == ParameterList.Count - 1)
+                {
+                    RowContainer RC = new RowContainer(0, CellContainers);
+                    RowContainers.Add(RC);
+                    if (i != ParameterList.Count - 1)
+                    {
+                        CellContainers = new List<CellContainer>();
+                        CellContainers.Add(CC);
+                    }
+                }
+                oldRowIndex = newRowIndex;
+            }
+            return new TableData_Server(nodeId,
+                                        TableName,
+                                        RowContainers[],
+                                        true,
+                                        RowContainers);
+        }
+        TableData_Server GetTableDataAsNotTableType(
+                              List<AddInsParameter> ParameterList,
+                              int nodeId,
+                              string TableName)
+        {
+            List<CellContainer> CellContainers = new List<CellContainer>();
+            for (int i = 0; i < ParameterList.Count; i++)
+            {
+                CellContainer CC = GetCellContainer(ParameterList[i], i);
+                CellContainers.Add(CC);
+            }
+            RowContainer RC = new RowContainer(0, CellContainers);
+            return new TableData_Server(nodeId,
+                                        TableName,
+                                        CellContainers,
+                                        false,
+                                        new List<RowContainer> { RC });
+        }
+        CellContainer GetCellContainer(AddInsParameter Parameter, int columnIndex)
+        {
+            ColumnDataType CDT = GetColumnDataType(Parameter.ControlType);
+            List<string> comboboxData = null;
+            if (CDT == ColumnDataType.Combobox)
+            {
+                comboboxData = Parameter.AvailableValue.ToList();
+            }
+            CellInfo CI = new CellInfo(Parameter.VisibleName,
+                                       Parameter.PropertyName,
+                                       CDT,
+                                       columnIndex,
+                                       comboboxData);
+            return new CellContainer(Parameter.Value, CI);
+        }
+        List<AddInsParameter> GetParameterList(string CheckingData,
+                                               string SettingData)
+        {
+            string CurrData = null;
+            if (NodeType == TreeViewNodeType.Setting)
+            {
+                CurrData = SettingData;
+            }
+            else if (NodeType == TreeViewNodeType.Checking)
+            {
+                CurrData = CheckingData;
+            }
+            if (CurrData == null || CurrData == "") return null;
+            List<AddInsParameter> ParameterList = null;
+            try
+            {
+                ParameterList =
+                   JsonConvert.DeserializeObject<List<AddInsParameter>>(CurrData);
+            }
+            catch { }
+            return ParameterList;
+        }
+        ColumnDataType GetColumnDataType(ControlType CT)
+        {
+            if (CT == ControlType.CheckBox)
+            {
+                return ColumnDataType.Checkbox;
+            }
+            if (CT == ControlType.TextBox)
+            {
+                return ColumnDataType.Textbox;
+            }
+            if (CT == ControlType.ComboBox)
+            {
+                return ColumnDataType.Combobox;
+            }
+            return ColumnDataType.Textbox;
+        }
+
         //модификация базы данных
         public virtual bool Modify(ApplicationContext db,
                                    TableData_Server newTD)
         {
+            if (NodeType == TreeViewNodeType.Checking ||
+                NodeType == TreeViewNodeType.Setting)
+            {
+                return ModifyForPluginParameters(db, newTD);
+            }
             bool bDbSetType = false;
             if (this is StandartNode)
             {
@@ -300,6 +446,19 @@ namespace Bim_Service.Model
                     MI.Invoke(Childs, new object[] { delChild });
                 }
             }
+            return true;
+        }
+        //модификация базы данных, если текущий узел - это Настройки или Проверки плагина
+        public virtual bool ModifyForPluginParameters(ApplicationContext db,
+                                                      TableData_Server newTD)
+        {
+            //получить данные по параметрам плагина
+            DB_Plugin Plugin = (DB_Plugin)ParentNode;
+
+            //Plugin.CheckingData;
+            //Plugin.SettingData;
+
+
             return true;
         }
         #endregion

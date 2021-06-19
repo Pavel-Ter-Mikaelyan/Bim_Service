@@ -33,6 +33,8 @@ namespace Bim_Service.Model
         public TableData_Client TransformToClient()
         {
             List<ColumnData> CDs = new List<ColumnData>();
+            HeaderCellContainer =
+                HeaderCellContainer.OrderBy(q => q.CI.columnIndex).ToList();
             for (int i = 0; i < HeaderCellContainer.Count; i++)
             {
                 IEnumerable<CellContainer> ValueContainers =
@@ -86,7 +88,7 @@ namespace Bim_Service.Model
     public class CellInfo
     {
         //индекс столбца
-        public int columnIndex { get; set; } 
+        public int columnIndex { get; set; }
         //имя заголовка столбца
         public string headerName { get; set; } = "";
         //имя свойства для заголовка столбца
