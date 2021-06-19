@@ -462,8 +462,8 @@ namespace Bim_Service.Model
                     Parameter.ColumnIndex = CC.CI.columnIndex;
                     Parameter.ControlType = CC.CI.ColumnType;
                     Parameter.AvailableValue = CC.CI.comboboxData.ToArray();
-                }
-                AddInsParameters.Add(Parameter);
+                    AddInsParameters.Add(Parameter);
+                }                
             }
             string SerializeValue = JsonConvert.SerializeObject(AddInsParameters);
             if (SerializeValue == null || SerializeValue == "") return false;
