@@ -13,11 +13,11 @@ namespace Bim_Service.Model
         //системное имя для заголовка столбца
         public string headerPropName;
         //тип столбца
-        public ColumnDataType ColumnType { get; set; }
+        public ControlType ColumnType { get; set; }
         public int index = 0;
         public ColumnAttribute(string headerName,
                                string headerPropName,
-                               ColumnDataType ColumnType,
+                                ControlType ColumnType,
                                int index)
         {
             this.headerName = headerName;

@@ -38,7 +38,7 @@ namespace Bim_Service.Model
                 ColumnData CD = columnData[i];
                 CellInfo CI = new CellInfo(CD.headerName,
                                            CD.headerPropName,
-                                           (ColumnDataType)CD.type,
+                                           (ControlType)CD.type,
                                            i,
                                            CD.comboboxData);
                 CellContainer CC =

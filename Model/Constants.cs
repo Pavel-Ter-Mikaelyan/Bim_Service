@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,12 +24,13 @@ namespace Bim_Service.Model
             Checking,
             Setting,
         }
-        //Типы узлов
-        public enum ColumnDataType
+        //Типы контролов
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum ControlType
         {
-            Textbox,
-            Combobox,
-            Checkbox
+            TextBox = 0,
+            CheckBox = 2,
+            ComboBox = 1
         }
         //словарь узлов
         public static Dictionary<TreeViewNodeType, TreeViewNodeInfo>

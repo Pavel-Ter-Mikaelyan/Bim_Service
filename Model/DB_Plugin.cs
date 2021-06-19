@@ -21,7 +21,7 @@ namespace Bim_Service.Model
         public override TreeViewNodeType NodeType { get; set; } =
                            TreeViewNodeType.Plugin;
 
-        [Column("Плагин", "PluginName", ColumnDataType.Combobox, 0)]
+        [Column("Плагин", "PluginName", ControlType.ComboBox, 0)]
         [NotMapped]
         public string PluginName { get; set; }
         [ColumnComboboxData("PluginName")]

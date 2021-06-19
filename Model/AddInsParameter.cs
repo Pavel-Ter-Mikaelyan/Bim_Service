@@ -4,17 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Bim_Service.Model.Constants;
 
 namespace Bim_Service.Model
-{  
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum ControlType
-    {
-        TextBox = 1,
-        CheckBox = 2,
-        ComboBox = 3
-    }
-
+{    
     [Serializable]
     public class AddInsParameter : Attribute
     {

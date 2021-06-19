@@ -94,14 +94,14 @@ namespace Bim_Service.Model
         //имя свойства для заголовка столбца
         public string headerPropName { get; set; } = "";
         //тип столбца
-        public ColumnDataType ColumnType { get; set; }
+        public ControlType ColumnType { get; set; }
         //данные комбобокса
         public List<string> comboboxData { get; set; } =
             new List<string>();
 
         public CellInfo(string headerName,
                         string headerPropName,
-                        ColumnDataType ColumnType,
+                        ControlType ColumnType,
                         int columnIndex,
                         List<string> comboboxData = null)
         {

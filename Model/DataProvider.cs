@@ -186,11 +186,11 @@ namespace Bim_Service.Model
                                        Column.headerPropName,
                                        Column.ColumnType,
                                        Column.index);
-            if (Column.ColumnType == ColumnDataType.Textbox)
+            if (Column.ColumnType == ControlType.TextBox)
             {
                 value = oVal == null ? "" : oVal.ToString();
             }
-            if (Column.ColumnType == ColumnDataType.Combobox)
+            if (Column.ColumnType == ControlType.ComboBox)
             {
                 if (!DictCombobox.ContainsKey(Column.headerPropName))
                 { return null; }
@@ -208,7 +208,7 @@ namespace Bim_Service.Model
                     if (sVal != "") value = sVal;
                 }
             }
-            if (Column.ColumnType == ColumnDataType.Checkbox)
+            if (Column.ColumnType == ControlType.CheckBox)
             {
                 value = "false";
                 if (oVal != null)
@@ -282,7 +282,6 @@ namespace Bim_Service.Model
             {
                 return GetTableDataAsNotTableType(ParameterList, nodeId, TableName);
             }
-            //JsonConvert.SerializeObject();
         }
         TableData_Server GetTableDataAsTableType(
                               List<AddInsParameter> ParameterList,
@@ -315,6 +314,12 @@ namespace Bim_Service.Model
                 }
                 oldRowIndex = newRowIndex;
             }
+            //проверка, что во всех строках равное число столбцов
+            int CellCount = RowContainers[0].ValueCellContainer.Count();
+            bool CellCountValid =
+                RowContainers.Any(q => q.ValueCellContainer.Count != CellCount);
+            if (CellCountValid) return null;
+
             return new TableData_Server(nodeId,
                                         TableName,
                                         RowContainers[0].ValueCellContainer,
@@ -341,9 +346,9 @@ namespace Bim_Service.Model
         }
         CellContainer GetCellContainer(AddInsParameter Parameter, int columnIndex)
         {
-            ColumnDataType CDT = GetColumnDataType(Parameter.ControlType);
+            ControlType CDT = Parameter.ControlType;
             List<string> comboboxData = null;
-            if (CDT == ColumnDataType.Combobox)
+            if (CDT == ControlType.ComboBox)
             {
                 comboboxData = Parameter.AvailableValue.ToList();
             }
@@ -375,22 +380,6 @@ namespace Bim_Service.Model
             }
             catch { }
             return ParameterList;
-        }
-        ColumnDataType GetColumnDataType(ControlType CT)
-        {
-            if (CT == ControlType.CheckBox)
-            {
-                return ColumnDataType.Checkbox;
-            }
-            if (CT == ControlType.TextBox)
-            {
-                return ColumnDataType.Textbox;
-            }
-            if (CT == ControlType.ComboBox)
-            {
-                return ColumnDataType.Combobox;
-            }
-            return ColumnDataType.Textbox;
         }
 
         //модификация базы данных
@@ -455,10 +444,38 @@ namespace Bim_Service.Model
             //получить данные по параметрам плагина
             DB_Plugin Plugin = (DB_Plugin)ParentNode;
 
-            //Plugin.CheckingData;
-            //Plugin.SettingData;
+            IEnumerable<AddInsParameter> AddInsParameters =
+                                       new List<AddInsParameter>();
+            List<RowContainer> RowContainers = newTD.RowContainers;
+            for (int i = 0; i < RowContainers.Count; i++)
+            {
+                RowContainer RC = RowContainers[i];
+                AddInsParameter Parameter = new AddInsParameter();
+                Parameter.TableName = newTD.tableName;
+                Parameter.InTable = newTD.bAddNewRow;
+                Parameter.RowIndex = i;
+                foreach (CellContainer CC in RC.ValueCellContainer)
+                {
+                    Parameter.Value = CC.value;
+                    Parameter.VisibleName = CC.CI.headerName;
+                    Parameter.PropertyName = CC.CI.headerPropName;
+                    Parameter.ErrorMessage = "";
+                    Parameter.ColumnIndex = CC.CI.columnIndex;
+                    Parameter.ControlType = CC.CI.ColumnType;
+                }
+            }
+            string SerializeValue = JsonConvert.SerializeObject(AddInsParameters);
+            if (SerializeValue == null || SerializeValue == "") return false;
 
-
+            if (NodeType == TreeViewNodeType.Checking)
+            {
+                Plugin.CheckingData = SerializeValue;
+            }
+            if (NodeType == TreeViewNodeType.Setting)
+            {
+                Plugin.SettingData = SerializeValue;
+            }                       
+      
             return true;
         }
         #endregion
