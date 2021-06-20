@@ -436,12 +436,22 @@ namespace Bim_Service.Model
                     MI.Invoke(Childs, new object[] { delChild });
                 }
             }
+            //если после удаления шаблона остался файл с пустым шаблоном,
+            //то удалить этот файл из таблицы шаблонов
+            if (NodeType == TreeViewNodeType.Templates)
+            {
+                foreach (DB_File File in
+                              db.DB_Files.Where(q => q.DB_Template == null))
+                {
+                    db.DB_Files.Remove(File);
+                }
+            }
             return true;
         }
         //модификация базы данных, если текущий узел - это Настройки или Проверки плагина
         public virtual bool ModifyForPluginParameters(ApplicationContext db,
                                                       TableData_Server newTD)
-        {            
+        {
             DB_Plugin Plugin = (DB_Plugin)ParentNode;
 
             List<AddInsParameter> AddInsParameters = new List<AddInsParameter>();
@@ -463,7 +473,7 @@ namespace Bim_Service.Model
                     Parameter.ControlType = CC.CI.ColumnType;
                     Parameter.AvailableValue = CC.CI.comboboxData.ToArray();
                     AddInsParameters.Add(Parameter);
-                }                
+                }
             }
             string SerializeValue = JsonConvert.SerializeObject(AddInsParameters);
             if (SerializeValue == null || SerializeValue == "") return false;
