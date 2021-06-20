@@ -458,13 +458,13 @@ namespace Bim_Service.Model
             List<RowContainer> RowContainers = newTD.RowContainers;
             for (int i = 0; i < RowContainers.Count; i++)
             {
-                RowContainer RC = RowContainers[i];
-                AddInsParameter Parameter = new AddInsParameter();
-                Parameter.TableName = newTD.tableName;
-                Parameter.InTable = newTD.bAddNewRow;
-                Parameter.RowIndex = i;
+                RowContainer RC = RowContainers[i];                
                 foreach (CellContainer CC in RC.ValueCellContainer)
                 {
+                    AddInsParameter Parameter = new AddInsParameter();
+                    Parameter.TableName = newTD.tableName;
+                    Parameter.InTable = newTD.bAddNewRow;
+                    Parameter.RowIndex = i;
                     Parameter.Value = CC.value;
                     Parameter.VisibleName = CC.CI.headerName;
                     Parameter.PropertyName = CC.CI.headerPropName;
