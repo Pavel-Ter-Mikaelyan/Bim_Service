@@ -129,12 +129,12 @@ namespace Bim_Service.Model
             if (RC.ValueCellContainer.Count != nSetVal) return false;
 
             //установить специфические данные для строки таблицы
-            bool bSet = SetSecificDataForModify(db, ParentNode);
+            bool bSet = SetSpecificDataForModify(db, ParentNode);
             if (!bSet) return false;
             return true;
         }
         //установить специфические данные объекта для модификации БД
-        public virtual bool SetSecificDataForModify(ApplicationContext db,
+        public virtual bool SetSpecificDataForModify(ApplicationContext db,
                                                     DataProvider ParentNode)
         { return true; }
         //задать значение свойств объекта для вывода информации (TableData) из БД

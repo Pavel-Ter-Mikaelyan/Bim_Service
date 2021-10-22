@@ -23,7 +23,7 @@ namespace Bim_Service.Model
                      new List<DB_Plugin>();     
 
         //установить специфические данные объекта для модификации БД
-        public override bool SetSecificDataForModify(ApplicationContext db,
+        public override bool SetSpecificDataForModify(ApplicationContext db,
                                                      DataProvider ParentNode)
         {
             DB_Stage = (DB_Stage)ParentNode.ParentNode;           
