@@ -12,6 +12,7 @@ using Bim_Service.Model;
 
 namespace Bim_Service
 {
+    //Awesome comment
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -24,13 +25,13 @@ namespace Bim_Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // получаем строку подключения из файла конфигурации
+            // ГЇГ®Г«ГіГ·Г ГҐГ¬ Г±ГІГ°Г®ГЄГі ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГї ГЁГ§ ГґГ Г©Г«Г  ГЄГ®Г­ГґГЁГЈГіГ°Г Г¶ГЁГЁ
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            // добавляем контекст ApplicationContext в качестве сервиса в приложение
+            // Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЄГ®Г­ГІГҐГЄГ±ГІ ApplicationContext Гў ГЄГ Г·ГҐГ±ГІГўГҐ Г±ГҐГ°ГўГЁГ±Г  Гў ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГҐ
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(connection));
 
-            //чтобы кирилица нормально отображалась
+            //Г·ГІГ®ГЎГ» ГЄГЁГ°ГЁГ«ГЁГ¶Г  Г­Г®Г°Г¬Г Г«ГјГ­Г® Г®ГІГ®ГЎГ°Г Г¦Г Г«Г Г±Гј
             services.AddWebEncoders(o =>
             {
                 o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic, UnicodeRanges.CyrillicExtendedA, UnicodeRanges.CyrillicExtendedB);
