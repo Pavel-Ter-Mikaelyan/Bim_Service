@@ -39,17 +39,12 @@ namespace Bim_Service.Model
 
             modelBuilder.Entity<DB_File>()
               .HasOne(p => p.DB_Stage)
-              .WithMany(t => t.DB_Files)             
+              .WithMany(t => t.DB_Files)
               .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DB_Template>()
              .HasOne(p => p.DB_Stage)
              .WithMany(t => t.DB_Templates)
-             .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<DB_Plugin>()
-             .HasOne(p => p.DB_Stage)
-             .WithMany(t => t.DB_Plugins)
              .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DB_Plugin>()
