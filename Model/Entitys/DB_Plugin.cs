@@ -31,7 +31,6 @@ namespace Bim_Service.Model
 
         public DB_Plugin_const DB_Plugin_const { get; set; }
         public DB_Template DB_Template { get; set; }
-        public DB_Stage DB_Stage { get; set; }
 
         public override TreeViewNode GetNode(int nodeId)
         {
@@ -65,8 +64,7 @@ namespace Bim_Service.Model
         public override bool SetSpecificDataForModify(ApplicationContext db,
                                                      DataProvider ParentNode)
         {
-            DB_Template = (DB_Template)ParentNode;
-            DB_Stage = DB_Template.DB_Stage;
+            DB_Template = (DB_Template)ParentNode;          
             DB_Plugin_const =
                 db.DB_Plugin_consts.FirstOrDefault(q => q.Name == PluginName);
             if (DB_Plugin_const == null) return false;

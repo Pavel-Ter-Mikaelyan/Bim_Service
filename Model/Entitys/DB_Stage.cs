@@ -30,8 +30,6 @@ namespace Bim_Service.Model
                        new List<DB_File>();
         public List<DB_Template> DB_Templates { get; set; } =
                        new List<DB_Template>();
-        public List<DB_Plugin> DB_Plugins { get; set; } =
-                       new List<DB_Plugin>();
 
         public override TreeViewNode GetNode(int nodeId)
         {
