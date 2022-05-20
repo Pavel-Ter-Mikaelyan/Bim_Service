@@ -410,7 +410,7 @@ namespace Bim_Service.Model
                 foreach (RowContainer rc in newTD.RowContainers)
                 {
                     DataProvider changeChild =
-                                   GetNodes().FirstOrDefault(q => q.Id == RC.Id);
+                                   GetNodes().FirstOrDefault(q => q.Id == rc.Id);
                     //добавление нового объекта для строки в коллекцию
                     if (changeChild == null)
                     {
