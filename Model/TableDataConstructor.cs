@@ -10,34 +10,34 @@ namespace Bim_Service.Model
     //конструктор данных для таблиц
     public class TableDataConstructor
     {
-        TreeViewNode currNode = null;
-        ApplicationContext db = null;
-        int selectedId;
+        TreeViewNode _currNode = null;
+        ApplicationContext _db = null;
+        int _selectedId;
 
         //если в дереве был выбран стандартный узел
         public TableDataConstructor(ApplicationContext db,
                                     int selectedId)
         {
-            this.db = db;
-            this.selectedId = selectedId;
-            TreeViewNodeConstructor TNC = new TreeViewNodeConstructor(db);
-            TreeViewNode TVN = TNC.GetTreeViewNode();
-            currNode = TreeViewNode.GetNode(selectedId, TVN);
+            _db = db;
+            _selectedId = selectedId;
+            TreeViewNodeConstructor tnc = new TreeViewNodeConstructor(db);
+            TreeViewNode tvn = tnc.GetTreeViewNode();
+            _currNode = TreeViewNode.GetNode(selectedId, tvn);
         }
 
         //получить данные для таблицы выбранного узла
         public TableData_Client GetAllTableData()
         {
-            if (currNode == null) return null;
+            if (_currNode == null) return null;
 
-            TreeViewNodeInfo CurrNodeInfo = currNode.NodeInfo;
-            if (CurrNodeInfo.hasTableData == false) return null;
+            TreeViewNodeInfo currNodeInfo = _currNode.NodeInfo;
+            if (currNodeInfo.HasTableData == false) return null;
 
-            TableData_Server TDS =
-                currNode.NodeProvider.GetTableData(db, selectedId);
-            if (TDS == null) return null;
+            TableData_Server tds =
+                _currNode.NodeProvider.GetTableData(_db, _selectedId);
+            if (tds == null) return null;
 
-            return TDS.TransformToClient();
+            return tds.TransformToClient();
         }
     }
 }

@@ -39,18 +39,18 @@ namespace Bim_Service.Model
         //метод для установки Childs и ChildType
         public override void SetNodes()
         {
-            StandartNode CheckingNode = new StandartNode(TreeViewNodeType.Checking,
+            StandartNode checkingNode = new StandartNode(TreeViewNodeType.Checking,
                                                          null,
                                                          null);
-            StandartNode SettingNode = new StandartNode(TreeViewNodeType.Setting,
+            StandartNode settingNode = new StandartNode(TreeViewNodeType.Setting,
                                                         null,
                                                         null);
-            Childs = new List<DataProvider> { CheckingNode, SettingNode };
+            Childs = new List<DataProvider> { checkingNode, settingNode };
             ChildType = typeof(DataProvider);
         }
         //задать значение свойств объекта для вывода информации (TableData) из БД
         public override void SetPropertyForGetTableData(ApplicationContext db,
-                                                           DataProvider ParentNode)
+                                                           DataProvider parentNode)
         {
             //имя плагина
             PluginName = DB_Plugin_const == null ? "" : DB_Plugin_const.Name;
@@ -62,9 +62,9 @@ namespace Bim_Service.Model
         }
         //установить специфические данные объекта для модификации БД
         public override bool SetSpecificDataForModify(ApplicationContext db,
-                                                     DataProvider ParentNode)
+                                                     DataProvider parentNode)
         {
-            DB_Template = (DB_Template)ParentNode;          
+            DB_Template = (DB_Template)parentNode;          
             DB_Plugin_const =
                 db.DB_Plugin_consts.FirstOrDefault(q => q.Name == PluginName);
             if (DB_Plugin_const == null) return false;

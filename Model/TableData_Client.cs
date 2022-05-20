@@ -9,65 +9,64 @@ namespace Bim_Service.Model
     //данные таблицы (в формате, удобном в веб клиенте)
     public class TableData_Client
     {
-        public int selectedId { get; set; }
-        public string tableName { get; set; } = "";
-        public List<int> rowIds { get; set; } = new List<int>();
-        public List<ColumnData> columnData { get; set; } =
-            new List<ColumnData>();
-        public bool bAddNewRow { get; set; } = false;
+        public int SelectedId { get; set; }
+        public string TableName { get; set; } = "";
+        public List<int> RowIds { get; set; } = new List<int>();
+        public List<ColumnData> ColumnData { get; set; } = new List<ColumnData>();
+        public bool AddNewRow { get; set; } = false;
 
         public TableData_Client(int selectedId,
                                 string tableName,
-                                bool bAddNewRow,
+                                bool addNewRow,
                                 List<ColumnData> columnData = null,
                                 List<int> rowIds = null)
         {
-            this.selectedId = selectedId;
-            this.tableName = tableName;
-            this.bAddNewRow = bAddNewRow;
-            if (rowIds != null) this.rowIds = rowIds;
-            if (columnData != null) this.columnData = columnData;
+            SelectedId = selectedId;
+            TableName = tableName;
+            AddNewRow = addNewRow;
+            if (rowIds != null) RowIds = rowIds;
+            if (columnData != null) ColumnData = columnData;
         }
         //перевод данных в формат, удобный на сервере
         public TableData_Server TransformToServer()
         {
-            List<CellContainer> HeaderCellContainer =
+            List<CellContainer> headerCellContainer =
                 new List<CellContainer>();
-            for (int i = 0; i < columnData.Count; i++)
+            for (int i = 0; i < ColumnData.Count; i++)
             {
-                ColumnData CD = columnData[i];
-                CellInfo CI = new CellInfo(CD.headerName,
-                                           CD.headerPropName,
-                                           (ControlType)CD.type,
+                ColumnData cd = ColumnData[i];
+                CellInfo ci = new CellInfo(cd.headerName,
+                                           cd.headerPropName,
+                                           (ControlType)cd.type,
                                            i,
-                                           CD.comboboxData);
-                CellContainer CC =
-                     new CellContainer(CD.defVal, CI);
-                HeaderCellContainer.Add(CC);
+                                           cd.comboboxData);
+                CellContainer cc =
+                     new CellContainer(cd.defVal, ci);
+                headerCellContainer.Add(cc);
             }             
-            List<RowContainer> RowContainers = new List<RowContainer>();    
-            for (int x = 0; x < rowIds.Count; x++)
+            List<RowContainer> rowContainers = new List<RowContainer>();    
+            for (int x = 0; x < RowIds.Count; x++)
             {
-                List<CellContainer> ValueCellContainer =
+                List<CellContainer> valueCellContainer =
                     new List<CellContainer>();
-                for (int y = 0; y < columnData.Count; y++)
+                for (int y = 0; y < ColumnData.Count; y++)
                 {
-                    CellInfo CI = HeaderCellContainer[y].CI;
-                    string value = columnData[y].rowVals[x].value;
-                    CellContainer CC = new CellContainer(value, CI);
-                    ValueCellContainer.Add(CC);
+                    CellInfo ci = headerCellContainer[y].CI;
+                    string value = ColumnData[y].rowVals[x].value;
+                    CellContainer cc = new CellContainer(value, ci);
+                    valueCellContainer.Add(cc);
                 }
-                RowContainer RC = new(rowIds[x], ValueCellContainer);
-                RowContainers.Add(RC);
+                RowContainer rc = new(RowIds[x], valueCellContainer);
+                rowContainers.Add(rc);
             }
-            TableData_Server TDS =
-                new TableData_Server(selectedId,
-                                     tableName,
-                                     HeaderCellContainer,
-                                     bAddNewRow,
-                                     RowContainers);
+            TableData_Server tds =
+                new TableData_Server(SelectedId,
+                                     TableName,
+                                     headerCellContainer,
+                                     AddNewRow,
+                                     rowContainers);
 
-            return TDS;
+            return tds;
         }
     }
     //данные столбца

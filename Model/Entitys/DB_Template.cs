@@ -24,9 +24,9 @@ namespace Bim_Service.Model
 
         //установить специфические данные объекта для модификации БД
         public override bool SetSpecificDataForModify(ApplicationContext db,
-                                                     DataProvider ParentNode)
+                                                     DataProvider parentNode)
         {
-            DB_Stage = (DB_Stage)ParentNode.ParentNode;           
+            DB_Stage = (DB_Stage)parentNode.ParentNode;           
             return true;
         }
 

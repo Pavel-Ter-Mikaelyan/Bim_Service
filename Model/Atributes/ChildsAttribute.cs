@@ -8,9 +8,9 @@ namespace Bim_Service.Model
     public class ChildsAttribute : Attribute
     {
         public Type ChildType { get; set; }
-        public ChildsAttribute(Type ChildType)
+        public ChildsAttribute(Type childType)
         {
-            this.ChildType = ChildType;
+            ChildType = childType;
         }
     }
 }

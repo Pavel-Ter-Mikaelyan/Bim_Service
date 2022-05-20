@@ -34,7 +34,8 @@ namespace Bim_Service.Model
         }
         //словарь узлов
         public static Dictionary<TreeViewNodeType, TreeViewNodeInfo>
-            TreeViewNodeInfos =
+            TreeViewNodeInfos
+        { get; set; } =
             new Dictionary<TreeViewNodeType, TreeViewNodeInfo>() {
                 {TreeViewNodeType.Clients,
                   new TreeViewNodeInfo("Clients","Заказчики",true,"Заказчики")},

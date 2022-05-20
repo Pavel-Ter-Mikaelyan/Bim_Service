@@ -9,30 +9,30 @@ namespace Bim_Service.Model
     //данные таблицы (в формате, удобном на сервере)    
     public class TableData_Server
     {
-        public int nodeId { get; set; }
-        public string tableName { get; set; } = "";
+        public int NodeId { get; set; }
+        public string TableName { get; set; } = "";
         public List<CellContainer> HeaderCellContainer { get; set; } =
            new List<CellContainer>();
         public List<RowContainer> RowContainers { get; set; } =
             new List<RowContainer>();
-        public bool bAddNewRow { get; set; } = false;
+        public bool AddNewRow { get; set; } = false;
 
         public TableData_Server(int nodeId,
                                string tableName,
-                               List<CellContainer> HeaderCellContainer,
-                               bool bAddNewRow,
-                               List<RowContainer> RowContainers = null)
+                               List<CellContainer> headerCellContainer,
+                               bool addNewRow,
+                               List<RowContainer> rowContainers = null)
         {
-            this.nodeId = nodeId;
-            this.tableName = tableName;
-            this.HeaderCellContainer = HeaderCellContainer;
-            this.bAddNewRow = bAddNewRow;
-            if (RowContainers != null) this.RowContainers = RowContainers;
+            NodeId = nodeId;
+            TableName = tableName;
+            HeaderCellContainer = headerCellContainer;
+            AddNewRow = addNewRow;
+            if (rowContainers != null) RowContainers = rowContainers;
         }
         //перевод данных в формат, удобный на клиенте
         public TableData_Client TransformToClient()
         {
-            List<ColumnData> CDs = new List<ColumnData>();
+            List<ColumnData> cds = new List<ColumnData>();
             HeaderCellContainer =
                 HeaderCellContainer.OrderBy(q => q.CI.columnIndex).ToList();
             for (int i = 0; i < HeaderCellContainer.Count; i++)
@@ -44,19 +44,19 @@ namespace Bim_Service.Model
                 List<TableDataCellValue> rowVals =
                     values.Select(q => new TableDataCellValue(q)).ToList();
                 CellContainer HeaderContainer = HeaderCellContainer[i];
-                ColumnData CD = new ColumnData(
+                ColumnData cd = new ColumnData(
                         (int)HeaderContainer.CI.ColumnType,
                         HeaderContainer.CI.headerName,
                         HeaderContainer.CI.headerPropName,
                         HeaderContainer.value,
                         rowVals,
                         HeaderContainer.CI.comboboxData);
-                CDs.Add(CD);
+                cds.Add(cd);
             }
             List<int> rowIds = RowContainers.Select(q => q.Id).ToList();
-            TableData_Client TDC =
-               new TableData_Client(nodeId, tableName, bAddNewRow, CDs, rowIds);
-            return TDC;
+            TableData_Client tdc =
+               new TableData_Client(NodeId, TableName, AddNewRow, cds, rowIds);
+            return tdc;
         }
     }
     //контейнер для строки таблицы

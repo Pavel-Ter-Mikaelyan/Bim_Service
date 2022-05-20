@@ -27,7 +27,7 @@ namespace Bim_Service.Model
         [NotMapped]
         List<DataProvider> ChildProviders { get; set; }
         [NotMapped]
-        bool bWasGetNodes = false;
+        bool WasGetNodes = false;
         [NotMapped]
         public DataProvider ParentNode { get; set; }
 
@@ -48,14 +48,14 @@ namespace Bim_Service.Model
         //метод для установки Childs и ChildType
         public virtual void SetNodes()
         {
-            foreach (PropertyInfo PI in GetType().GetProperties())
+            foreach (PropertyInfo pi in GetType().GetProperties())
             {
                 //атрибут текущего объекта (false - без родителей)
                 ChildsAttribute ChildsAttribute =
-                    PI.GetCustomAttribute<ChildsAttribute>(false);
+                    pi.GetCustomAttribute<ChildsAttribute>(false);
                 if (ChildsAttribute != null)
                 {
-                    Childs = PI.GetValue(this);
+                    Childs = pi.GetValue(this);
                     ChildType = ChildsAttribute.ChildType;
                     break;
                 }
@@ -64,38 +64,38 @@ namespace Bim_Service.Model
         //получить подузлы
         public List<DataProvider> GetNodes()
         {
-            if (bWasGetNodes) return ChildProviders;
-            bWasGetNodes = true;
+            if (WasGetNodes) return ChildProviders;
+            WasGetNodes = true;
             ChildProviders = new List<DataProvider>();
             SetNodes();
             if (Childs == null) return ChildProviders;
             bool bDbSetType = false;
             if (this is StandartNode)
             {
-                StandartNode SN = (StandartNode)this;
-                bDbSetType = SN.bDbSetType;
+                StandartNode sn = (StandartNode)this;
+                bDbSetType = sn.DbSetType;
             }
             IEnumerator enumerator;
             if (bDbSetType)
             {
-                MethodInfo MI = Childs.GetType().GetMethod("AsQueryable");
-                if (MI == null) return ChildProviders;
-                IQueryable Collection = (IQueryable)MI.Invoke(Childs, null);
-                enumerator = Collection.GetEnumerator();
+                MethodInfo mi = Childs.GetType().GetMethod("AsQueryable");
+                if (mi == null) return ChildProviders;
+                IQueryable collection = (IQueryable)mi.Invoke(Childs, null);
+                enumerator = collection.GetEnumerator();
             }
             else
             {
-                MethodInfo MI = Childs.GetType().GetMethod("GetEnumerator");
-                if (MI == null) return ChildProviders;
-                enumerator = (IEnumerator)MI.Invoke(Childs, null);
+                MethodInfo mi = Childs.GetType().GetMethod("GetEnumerator");
+                if (mi == null) return ChildProviders;
+                enumerator = (IEnumerator)mi.Invoke(Childs, null);
             }
             if (enumerator != null)
             {
                 while (enumerator.MoveNext())
                 {
-                    DataProvider Child = (DataProvider)enumerator.Current;
-                    Child.ParentNode = this;
-                    ChildProviders.Add(Child);
+                    DataProvider child = (DataProvider)enumerator.Current;
+                    child.ParentNode = this;
+                    ChildProviders.Add(child);
                 }
             }
             return ChildProviders;
@@ -104,111 +104,111 @@ namespace Bim_Service.Model
         #region Работа с таблицами
         //установить данные объекта для модификации БД
         public bool SetDataForModify(ApplicationContext db,
-                                     RowContainer RC,
-                                     DataProvider ParentNode)
+                                     RowContainer rc,
+                                     DataProvider parentNode)
         {
             int nSetVal = 0;
-            RC.ValueCellContainer.ForEach(Cell =>
+            rc.ValueCellContainer.ForEach(Cell =>
             {
-                foreach (PropertyInfo PI in GetType().GetProperties())
+                foreach (PropertyInfo pi in GetType().GetProperties())
                 {
                     //перебор атрибутов (false - без родителей)
                     foreach (ColumnAttribute Column in
-                                PI.GetCustomAttributes<ColumnAttribute>(false))
+                                pi.GetCustomAttributes<ColumnAttribute>(false))
                     {
                         //поиск по имени атрибута
-                        if (Column.headerPropName == Cell.CI.headerPropName)
+                        if (Column.HeaderPropName == Cell.CI.headerPropName)
                         {
                             //установить значение свойства
-                            PI.SetValue(this, Cell.value);
+                            pi.SetValue(this, Cell.value);
                             nSetVal++;
                         }
                     }
                 }
             });
-            if (RC.ValueCellContainer.Count != nSetVal) return false;
+            if (rc.ValueCellContainer.Count != nSetVal) return false;
 
             //установить специфические данные для строки таблицы
-            bool bSet = SetSpecificDataForModify(db, ParentNode);
+            bool bSet = SetSpecificDataForModify(db, parentNode);
             if (!bSet) return false;
             return true;
         }
         //установить специфические данные объекта для модификации БД
         public virtual bool SetSpecificDataForModify(ApplicationContext db,
-                                                    DataProvider ParentNode)
+                                                    DataProvider parentNode)
         { return true; }
         //задать значение свойств объекта для вывода информации (TableData) из БД
         public virtual void SetPropertyForGetTableData(ApplicationContext db,
-                                                          DataProvider ParentNode)
+                                                          DataProvider parentNode)
         { }
         //получить коллекцию ячеек для заголовка таблицы
         public List<CellContainer> GetCellContainers()
         {
-            List<CellContainer> CellContainers = new List<CellContainer>();
+            List<CellContainer> cellContainers = new List<CellContainer>();
             //словарь для выпадающего списка
-            var DictCombobox = new Dictionary<string, List<string>>();
-            foreach (PropertyInfo PI in GetType().GetProperties())
+            var dictCombobox = new Dictionary<string, List<string>>();
+            foreach (PropertyInfo pi in GetType().GetProperties())
             {
-                object oVal = PI.GetValue(this);
+                object oVal = pi.GetValue(this);
                 //перебор атрибутов (false - без родителей)
                 //заполнение колекций выпадающий списков
-                foreach (ColumnComboboxDataAttribute ColumnCombobox in
-                            PI.GetCustomAttributes<ColumnComboboxDataAttribute>(false))
+                foreach (ColumnComboboxDataAttribute columnCombobox in
+                            pi.GetCustomAttributes<ColumnComboboxDataAttribute>(false))
                 {
                     if (oVal == null) return null;
-                    List<string> ComboboxVals = (List<string>)oVal;
-                    if (ComboboxVals.Count == 0) return null;
-                    string headerPropName = ColumnCombobox.headerPropName;
-                    if (DictCombobox.ContainsKey(headerPropName)) continue;
-                    DictCombobox.Add(headerPropName, ComboboxVals);
+                    List<string> comboboxVals = (List<string>)oVal;
+                    if (comboboxVals.Count == 0) return null;
+                    string headerPropName = columnCombobox.HeaderPropName;
+                    if (dictCombobox.ContainsKey(headerPropName)) continue;
+                    dictCombobox.Add(headerPropName, comboboxVals);
                 }
             }
-            foreach (PropertyInfo PI in GetType().GetProperties())
+            foreach (PropertyInfo pi in GetType().GetProperties())
             {
-                object oVal = PI.GetValue(this);
+                object oVal = pi.GetValue(this);
                 //перебор атрибутов (false - без родителей)
                 //заполнение коллекции заголовков ячеек таблицы (HeaderCellContainer)
                 foreach (ColumnAttribute Column in
-                            PI.GetCustomAttributes<ColumnAttribute>(false))
+                            pi.GetCustomAttributes<ColumnAttribute>(false))
                 {
-                    CellContainer CC = GetCellContainer(Column, oVal, DictCombobox);
-                    CellContainers.Add(CC);
+                    CellContainer cc = GetCellContainer(Column, oVal, dictCombobox);
+                    cellContainers.Add(cc);
                 }
             }
-            return CellContainers.OrderBy(q => q.CI.columnIndex).ToList();
+            return cellContainers.OrderBy(q => q.CI.columnIndex).ToList();
         }
-        CellContainer GetCellContainer(ColumnAttribute Column,
+        CellContainer GetCellContainer(ColumnAttribute column,
                                        object oVal,
-                                       Dictionary<string, List<string>> DictCombobox)
+                                       Dictionary<string, List<string>> dictCombobox)
         {
             string value = null;
-            CellInfo CI = new CellInfo(Column.headerName,
-                                       Column.headerPropName,
-                                       Column.ColumnType,
-                                       Column.index);
-            if (Column.ColumnType == ControlType.TextBox)
+            CellInfo ci = new CellInfo(column.HeaderName,
+                                       column.HeaderPropName,
+                                       column.ColumnType,
+                                       column.Index);
+            if (column.ColumnType == ControlType.TextBox)
             {
                 value = oVal == null ? "" : oVal.ToString();
             }
-            if (Column.ColumnType == ControlType.ComboBox)
+            if (column.ColumnType == ControlType.ComboBox)
             {
-                if (!DictCombobox.ContainsKey(Column.headerPropName))
+                if (!dictCombobox.ContainsKey(column.HeaderPropName))
                 { return null; }
-                List<string> ComboboxVals = DictCombobox[Column.headerPropName];
-                if (ComboboxVals.Count == 0) return null;
-                CI = new CellInfo(Column.headerName,
-                                  Column.headerPropName,
-                                  Column.ColumnType,
-                                  Column.index,
-                                  ComboboxVals);
-                value = ComboboxVals[0];
+                List<string> comboboxVals = dictCombobox[column.HeaderPropName];
+                if (comboboxVals.Count == 0) return null;
+                ci = new CellInfo(column.HeaderName,
+                                  column.HeaderPropName,
+                                  column.ColumnType,
+                                  column.Index,
+                                  comboboxVals);
+                value = comboboxVals[0];
                 if (oVal != null)
                 {
                     string sVal = oVal.ToString();
                     if (sVal != "") value = sVal;
                 }
             }
-            if (Column.ColumnType == ControlType.CheckBox)
+            if (column.ColumnType == ControlType.CheckBox)
             {
                 value = "false";
                 if (oVal != null)
@@ -217,7 +217,7 @@ namespace Bim_Service.Model
                     if (sVal != "") value = sVal;
                 }
             }
-            return new CellContainer(value, CI);
+            return new CellContainer(value, ci);
         }
         //получить таблицу для текущего выбранного узла
         public virtual TableData_Server GetTableData(ApplicationContext db,
@@ -229,158 +229,158 @@ namespace Bim_Service.Model
                 return GetTableDataForPluginParameters(nodeId);
             }
             if (ChildType == null) return null;
-            object ChildObject = Activator.CreateInstance(ChildType);
-            if (ChildObject == null) return null;
-            DataProvider newChild = (DataProvider)ChildObject;
+            object childObject = Activator.CreateInstance(ChildType);
+            if (childObject == null) return null;
+            DataProvider newChild = (DataProvider)childObject;
             newChild.SetPropertyForGetTableData(db, this);
-            List<CellContainer> HeaderCellContainer = newChild.GetCellContainers();
-            if (HeaderCellContainer == null || HeaderCellContainer.Count == 0) return null;
+            List<CellContainer> headerCellContainer = newChild.GetCellContainers();
+            if (headerCellContainer == null || headerCellContainer.Count == 0) return null;
 
-            List<RowContainer> RowContainers = new List<RowContainer>();
-            foreach (DataProvider Child in GetNodes())
+            List<RowContainer> rowContainers = new List<RowContainer>();
+            foreach (DataProvider child in GetNodes())
             {
-                Child.SetPropertyForGetTableData(db, this);
-                List<CellContainer> ValueCellContainer = Child.GetCellContainers();
-                if (ValueCellContainer == null &&
-                    ValueCellContainer.Count == 0)
+                child.SetPropertyForGetTableData(db, this);
+                List<CellContainer> valueCellContainer = child.GetCellContainers();
+                if (valueCellContainer == null &&
+                    valueCellContainer.Count == 0)
                 {
                     return null;
                 }
-                RowContainer RC = new RowContainer(Child.Id, ValueCellContainer);
-                RowContainers.Add(RC);
+                RowContainer rc = new RowContainer(child.Id, valueCellContainer);
+                rowContainers.Add(rc);
             }
-            string TableName = TreeViewNodeInfos[NodeType].TableName;
-            TableData_Server TDS =
+            string tableName = TreeViewNodeInfos[NodeType].TableName;
+            TableData_Server tds =
                 new TableData_Server(nodeId,
-                                     TableName,
-                                     HeaderCellContainer,
+                                     tableName,
+                                     headerCellContainer,
                                      true,
-                                     RowContainers);
-            return TDS;
+                                     rowContainers);
+            return tds;
         }
         //получить таблицу, если текущий узел - это Настройки или Проверки плагина
         public TableData_Server GetTableDataForPluginParameters(int nodeId)
         {
-            string TableName = TreeViewNodeInfos[NodeType].TableName;
+            string tableName = TreeViewNodeInfos[NodeType].TableName;
             //получить плагин
-            DB_Plugin Plugin = (DB_Plugin)ParentNode;
+            DB_Plugin plugin = (DB_Plugin)ParentNode;
             //получить параметры плагина
-            List<AddInsParameter> ParameterList =
-                            GetParameterList(Plugin.CheckingData,
-                                             Plugin.SettingData);
-            if (ParameterList == null || ParameterList.Count == 0) return null;
+            List<AddInsParameter> parameterList =
+                            GetParameterList(plugin.CheckingData,
+                                             plugin.SettingData);
+            if (parameterList == null || parameterList.Count == 0) return null;
 
             //тип контролов (1 тип - таблица, 2 тип - таблица с одним рядом)
             bool tableType = false;
-            if (ParameterList[0].InTable) tableType = true;
+            if (parameterList[0].InTable) tableType = true;
 
             //если тип контролов - таблица
             if (tableType)
             {
-                return GetTableDataAsTableType(ParameterList, nodeId, TableName);
+                return GetTableDataAsTableType(parameterList, nodeId, tableName);
             }
             else //если тип контролов - таблица с одним рядом
             {
-                return GetTableDataAsNotTableType(ParameterList, nodeId, TableName);
+                return GetTableDataAsNotTableType(parameterList, nodeId, tableName);
             }
         }
         TableData_Server GetTableDataAsTableType(
-                              List<AddInsParameter> ParameterList,
+                              List<AddInsParameter> parameterList,
                               int nodeId,
-                              string TableName)
+                              string tableName)
         {
-            ParameterList = ParameterList.OrderBy(q => q.RowIndex).ToList();
-            int oldRowIndex = ParameterList[0].RowIndex;
-            List<CellContainer> CellContainers = new List<CellContainer>();
-            List<RowContainer> RowContainers = new List<RowContainer>();
-            for (int i = 0; i < ParameterList.Count; i++)
+            parameterList = parameterList.OrderBy(q => q.RowIndex).ToList();
+            int oldRowIndex = parameterList[0].RowIndex;
+            List<CellContainer> cellContainers = new List<CellContainer>();
+            List<RowContainer> rowContainers = new List<RowContainer>();
+            for (int i = 0; i < parameterList.Count; i++)
             {
-                AddInsParameter Parameter = ParameterList[i];
-                int newRowIndex = Parameter.RowIndex;
-                CellContainer CC = GetCellContainer(ParameterList[i],
-                                                    Parameter.ColumnIndex);
+                AddInsParameter parameter = parameterList[i];
+                int newRowIndex = parameter.RowIndex;
+                CellContainer cc = GetCellContainer(parameterList[i],
+                                                    parameter.ColumnIndex);
                 if (oldRowIndex == newRowIndex)
                 {
-                    CellContainers.Add(CC);
+                    cellContainers.Add(cc);
                 }
-                if (oldRowIndex != newRowIndex || i == ParameterList.Count - 1)
+                if (oldRowIndex != newRowIndex || i == parameterList.Count - 1)
                 {
-                    RowContainer RC = new RowContainer(0, CellContainers);
-                    RowContainers.Add(RC);
-                    if (i != ParameterList.Count - 1)
+                    RowContainer rc = new RowContainer(0, cellContainers);
+                    rowContainers.Add(rc);
+                    if (i != parameterList.Count - 1)
                     {
-                        CellContainers = new List<CellContainer>();
-                        CellContainers.Add(CC);
+                        cellContainers = new List<CellContainer>();
+                        cellContainers.Add(cc);
                     }
                 }
                 oldRowIndex = newRowIndex;
             }
             //проверка, что во всех строках равное число столбцов
-            int CellCount = RowContainers[0].ValueCellContainer.Count();
-            bool CellCountValid =
-                RowContainers.Any(q => q.ValueCellContainer.Count != CellCount);
-            if (CellCountValid) return null;
+            int cellCount = rowContainers[0].ValueCellContainer.Count();
+            bool cellCountValid =
+                rowContainers.Any(q => q.ValueCellContainer.Count != cellCount);
+            if (cellCountValid) return null;
 
             return new TableData_Server(nodeId,
-                                        TableName,
-                                        RowContainers[0].ValueCellContainer,
+                                        tableName,
+                                        rowContainers[0].ValueCellContainer,
                                         true,
-                                        RowContainers);
+                                        rowContainers);
         }
         TableData_Server GetTableDataAsNotTableType(
-                              List<AddInsParameter> ParameterList,
+                              List<AddInsParameter> parameterList,
                               int nodeId,
-                              string TableName)
+                              string tableName)
         {
-            List<CellContainer> CellContainers = new List<CellContainer>();
-            for (int i = 0; i < ParameterList.Count; i++)
+            List<CellContainer> cellContainers = new List<CellContainer>();
+            for (int i = 0; i < parameterList.Count; i++)
             {
-                CellContainer CC = GetCellContainer(ParameterList[i], i);
-                CellContainers.Add(CC);
+                CellContainer cc = GetCellContainer(parameterList[i], i);
+                cellContainers.Add(cc);
             }
-            RowContainer RC = new RowContainer(0, CellContainers);
+            RowContainer rc = new RowContainer(0, cellContainers);
             return new TableData_Server(nodeId,
-                                        TableName,
-                                        CellContainers,
+                                        tableName,
+                                        cellContainers,
                                         false,
-                                        new List<RowContainer> { RC });
+                                        new List<RowContainer> { rc });
         }
-        CellContainer GetCellContainer(AddInsParameter Parameter, int columnIndex)
+        CellContainer GetCellContainer(AddInsParameter parameter, int columnIndex)
         {
-            ControlType CDT = Parameter.ControlType;
+            ControlType cdt = parameter.ControlType;
             List<string> comboboxData = null;
-            if (CDT == ControlType.ComboBox)
+            if (cdt == ControlType.ComboBox)
             {
-                comboboxData = Parameter.AvailableValue.ToList();
+                comboboxData = parameter.AvailableValue.ToList();
             }
-            CellInfo CI = new CellInfo(Parameter.VisibleName,
-                                       Parameter.PropertyName,
-                                       CDT,
+            CellInfo ci = new CellInfo(parameter.VisibleName,
+                                       parameter.PropertyName,
+                                       cdt,
                                        columnIndex,
                                        comboboxData);
-            return new CellContainer(Parameter.Value, CI);
+            return new CellContainer(parameter.Value, ci);
         }
-        List<AddInsParameter> GetParameterList(string CheckingData,
-                                               string SettingData)
+        List<AddInsParameter> GetParameterList(string checkingData,
+                                               string settingData)
         {
-            string CurrData = null;
+            string currData = null;
             if (NodeType == TreeViewNodeType.Setting)
             {
-                CurrData = SettingData;
+                currData = settingData;
             }
             else if (NodeType == TreeViewNodeType.Checking)
             {
-                CurrData = CheckingData;
+                currData = checkingData;
             }
-            if (CurrData == null || CurrData == "") return null;
-            List<AddInsParameter> ParameterList = null;
+            if (currData == null || currData == "") return null;
+            List<AddInsParameter> parameterList = null;
             try
             {
-                ParameterList =
-                   JsonConvert.DeserializeObject<List<AddInsParameter>>(CurrData);
+                parameterList =
+                   JsonConvert.DeserializeObject<List<AddInsParameter>>(currData);
             }
             catch { }
-            return ParameterList;
+            return parameterList;
         }
 
         //модификация базы данных
@@ -395,19 +395,19 @@ namespace Bim_Service.Model
             bool bDbSetType = false;
             if (this is StandartNode)
             {
-                StandartNode SN = (StandartNode)this;
-                bDbSetType = SN.bDbSetType;
+                StandartNode sn = (StandartNode)this;
+                bDbSetType = sn.DbSetType;
             }
             //если в новой таблице нет строк
             if (newTD.RowContainers.Count == 0 && !bDbSetType)
             {
                 //удалить все строки
-                MethodInfo MI = Childs.GetType().GetMethod("Clear");
-                MI.Invoke(Childs, null);
+                MethodInfo mi = Childs.GetType().GetMethod("Clear");
+                mi.Invoke(Childs, null);
             }
             else
             {
-                foreach (RowContainer RC in newTD.RowContainers)
+                foreach (RowContainer rc in newTD.RowContainers)
                 {
                     DataProvider changeChild =
                                    GetNodes().FirstOrDefault(q => q.Id == RC.Id);
@@ -416,13 +416,13 @@ namespace Bim_Service.Model
                     {
                         DataProvider newChild =
                             (DataProvider)Activator.CreateInstance(ChildType);
-                        newChild.SetDataForModify(db, RC, this);
+                        newChild.SetDataForModify(db, rc, this);
                         MethodInfo MI = Childs.GetType().GetMethod("Add");
                         MI.Invoke(Childs, new object[] { newChild });
                     }
                     else//изменение строки таблицы
                     {
-                        changeChild.SetDataForModify(db, RC, this);
+                        changeChild.SetDataForModify(db, rc, this);
                         db.Entry(changeChild).State = EntityState.Modified;
                     }
                 }
@@ -432,18 +432,18 @@ namespace Bim_Service.Model
                                                 .Any(w => w.Id == q.Id));
                 foreach (DataProvider delChild in delChilds)
                 {
-                    MethodInfo MI = Childs.GetType().GetMethod("Remove");
-                    MI.Invoke(Childs, new object[] { delChild });
+                    MethodInfo mi = Childs.GetType().GetMethod("Remove");
+                    mi.Invoke(Childs, new object[] { delChild });
                 }
             }
             //если после удаления шаблона остался файл с пустым шаблоном,
             //то удалить этот файл из таблицы шаблонов
             if (NodeType == TreeViewNodeType.Templates)
             {
-                foreach (DB_File File in
+                foreach (DB_File file in
                               db.DB_Files.Where(q => q.DB_Template == null))
                 {
-                    db.DB_Files.Remove(File);
+                    db.DB_Files.Remove(file);
                 }
             }
             return true;
@@ -452,39 +452,39 @@ namespace Bim_Service.Model
         public virtual bool ModifyForPluginParameters(ApplicationContext db,
                                                       TableData_Server newTD)
         {
-            DB_Plugin Plugin = (DB_Plugin)ParentNode;
+            DB_Plugin plugin = (DB_Plugin)ParentNode;
 
-            List<AddInsParameter> AddInsParameters = new List<AddInsParameter>();
-            List<RowContainer> RowContainers = newTD.RowContainers;
-            for (int i = 0; i < RowContainers.Count; i++)
+            List<AddInsParameter> addInsParameters = new List<AddInsParameter>();
+            List<RowContainer> rowContainers = newTD.RowContainers;
+            for (int i = 0; i < rowContainers.Count; i++)
             {
-                RowContainer RC = RowContainers[i];                
-                foreach (CellContainer CC in RC.ValueCellContainer)
+                RowContainer rc = rowContainers[i];                
+                foreach (CellContainer cc in rc.ValueCellContainer)
                 {
                     AddInsParameter Parameter = new AddInsParameter();
-                    Parameter.TableName = newTD.tableName;
-                    Parameter.InTable = newTD.bAddNewRow;
+                    Parameter.TableName = newTD.TableName;
+                    Parameter.InTable = newTD.AddNewRow;
                     Parameter.RowIndex = i;
-                    Parameter.Value = CC.value;
-                    Parameter.VisibleName = CC.CI.headerName;
-                    Parameter.PropertyName = CC.CI.headerPropName;
+                    Parameter.Value = cc.value;
+                    Parameter.VisibleName = cc.CI.headerName;
+                    Parameter.PropertyName = cc.CI.headerPropName;
                     Parameter.ErrorMessage = "";
-                    Parameter.ColumnIndex = CC.CI.columnIndex;
-                    Parameter.ControlType = CC.CI.ColumnType;
-                    Parameter.AvailableValue = CC.CI.comboboxData.ToArray();
-                    AddInsParameters.Add(Parameter);
+                    Parameter.ColumnIndex = cc.CI.columnIndex;
+                    Parameter.ControlType = cc.CI.ColumnType;
+                    Parameter.AvailableValue = cc.CI.comboboxData.ToArray();
+                    addInsParameters.Add(Parameter);
                 }
             }
-            string SerializeValue = JsonConvert.SerializeObject(AddInsParameters);
-            if (SerializeValue == null || SerializeValue == "") return false;
+            string serializeValue = JsonConvert.SerializeObject(addInsParameters);
+            if (serializeValue == null || serializeValue == "") return false;
 
             if (NodeType == TreeViewNodeType.Checking)
             {
-                Plugin.CheckingData = SerializeValue;
+                plugin.CheckingData = serializeValue;
             }
             if (NodeType == TreeViewNodeType.Setting)
             {
-                Plugin.SettingData = SerializeValue;
+                plugin.SettingData = serializeValue;
             }
 
             return true;

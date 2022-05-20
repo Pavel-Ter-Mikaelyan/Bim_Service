@@ -13,21 +13,21 @@ namespace Bim_Service.Model
     {
         public override string Name { get; set; }
         public override TreeViewNodeType NodeType { get; set; }
-        public bool bDbSetType { get; set; }
+        public bool DbSetType { get; set; }
 
         //конструктор
-        public StandartNode(TreeViewNodeType NodeType,
-                            object ChildsParam,
-                            Type ChildTypeParam,
-                            bool bDbSetType = false)
+        public StandartNode(TreeViewNodeType nodeType,
+                            object childsParam,
+                            Type childTypeParam,
+                            bool dbSetType = false)
         {
             //информация по узлу
-            TreeViewNodeInfo NI = TreeViewNodeInfos[NodeType];
-            Name = NI.nodeName;
-            this.bDbSetType = bDbSetType;
-            Childs = ChildsParam;
-            ChildType = ChildTypeParam;
-            this.NodeType = NodeType;
+            TreeViewNodeInfo ni = TreeViewNodeInfos[nodeType];
+            Name = ni.NodeName;
+            DbSetType = dbSetType;
+            Childs = childsParam;
+            ChildType = childTypeParam;
+            NodeType = nodeType;
         }
     }
 }

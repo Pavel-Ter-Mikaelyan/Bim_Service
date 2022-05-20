@@ -38,22 +38,22 @@ namespace Bim_Service.Model
         }     
         //задать значение свойств объекта для вывода информации (TableData) из БД
         public override void SetPropertyForGetTableData(ApplicationContext db,
-                                                        DataProvider ParentNode)
+                                                        DataProvider parentNode)
         {
             //имя шаблона
             TemplateName = DB_Template == null ? "" : DB_Template.Name;
-            DB_Stage Stage = (DB_Stage)ParentNode.ParentNode;
+            DB_Stage stage = (DB_Stage)parentNode.ParentNode;
             //список шаблонов
-            if (Stage.DB_Templates != null && Stage.DB_Templates.Count > 0)
+            if (stage.DB_Templates != null && stage.DB_Templates.Count > 0)
             {
-                TemplateNames = Stage.DB_Templates.Select(q => q.Name).ToList();
+                TemplateNames = stage.DB_Templates.Select(q => q.Name).ToList();
             }
         }
         //установить специфические данные объекта для модификации БД
         public override bool SetSpecificDataForModify(ApplicationContext db,
-                                                     DataProvider ParentNode)
+                                                     DataProvider parentNode)
         {
-            DB_Stage = (DB_Stage)ParentNode.ParentNode;
+            DB_Stage = (DB_Stage)parentNode.ParentNode;
             DB_Template= DB_Stage.DB_Templates
                                  .FirstOrDefault(q => q.Name == 
                                                         TemplateName);

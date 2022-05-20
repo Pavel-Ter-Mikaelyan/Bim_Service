@@ -31,25 +31,25 @@ namespace Bim_Service.Controllers
         [HttpGet("GetTableData/{selectedId:int}")]
         public object Get(int selectedId)
         {
-            TableData_Client TD = null;
+            TableData_Client td = null;
             try
             {
-                TableDataConstructor TDC =
+                TableDataConstructor tdc =
                     new TableDataConstructor(db, selectedId);
-                TD = TDC.GetAllTableData();
+                td = tdc.GetAllTableData();
             }
             catch { }
-            return TD;
+            return td;
         }
 
         [HttpPut("PutTableData")]
-        public bool Put(TableData_Client TD)
+        public bool Put(TableData_Client td)
         {
-            TableDataModifier TDM = new TableDataModifier(db, TD);
+            TableDataModifier tdm = new TableDataModifier(db, td);
             bool bResult = false;
             try
             {
-                bResult = TDM.Modify();
+                bResult = tdm.Modify();
             }
             catch { }
 

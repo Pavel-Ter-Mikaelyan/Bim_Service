@@ -9,41 +9,41 @@ namespace Bim_Service.Model
 {
     public class TreeViewNodeConstructor
     {
-        ApplicationContext db { get; set; }
+        ApplicationContext _db;
         int nodeId = 0;
 
         public TreeViewNodeConstructor(ApplicationContext db)
         {
-            this.db = db;
+            _db = db;
         }
 
         //рекурсивное добавление узлов дерева
-        public void AddTreeViewNodes(TreeViewNode MainNode,
-                                     List<DataProvider> Nodes)
+        public void AddTreeViewNodes(TreeViewNode mainNode,
+                                     List<DataProvider> nodes)
         {           
-            foreach (DataProvider Node in Nodes)
+            foreach (DataProvider node in nodes)
             {         
-                TreeViewNode ChildNode = Node.GetNode(++nodeId);
+                TreeViewNode childNode = node.GetNode(++nodeId);
                 //добавление узла
-                MainNode.children.Add(ChildNode);
+                mainNode.Children.Add(childNode);
                 //добавление подузлов
-                AddTreeViewNodes(ChildNode, Node.GetNodes());
+                AddTreeViewNodes(childNode, node.GetNodes());
             }
         }
         //получить все узлы дерева
         public TreeViewNode GetTreeViewNode()
         {
             //корневой узел Клиенты
-            StandartNode ClientsNode =
+            StandartNode clientsNode =
                 new StandartNode(TreeViewNodeType.Clients,
-                                 db.DB_Clients,
+                                 _db.DB_Clients,
                                  typeof(DB_Client),
                                  true);           
-            TreeViewNode MainNode = ClientsNode.GetNode(++nodeId);        
+            TreeViewNode mainNode = clientsNode.GetNode(++nodeId);        
             //рекурсивное добавление подузлов
-            AddTreeViewNodes(MainNode, ClientsNode.GetNodes());
+            AddTreeViewNodes(mainNode, clientsNode.GetNodes());
 
-            return MainNode;
+            return mainNode;
         }
     }
 }

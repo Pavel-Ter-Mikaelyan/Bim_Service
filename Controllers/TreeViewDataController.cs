@@ -30,14 +30,14 @@ namespace Bim_Service.Controllers
         [HttpGet("GetNodes")]
         public TreeViewNode Get1()
         { 
-            TreeViewNodeConstructor TNC = new TreeViewNodeConstructor(db);
-            TreeViewNode TVN = null;
+            TreeViewNodeConstructor tnc = new TreeViewNodeConstructor(db);
+            TreeViewNode tvn = null;
             try
             {
-                TVN = TNC.GetTreeViewNode();
+                tvn = tnc.GetTreeViewNode();
             }
             catch { }
-            return TVN;
+            return tvn;
         }
         //получить словарь узлов
         [HttpGet("GetTreeDictionary")]

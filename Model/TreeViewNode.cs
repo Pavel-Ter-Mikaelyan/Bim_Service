@@ -10,16 +10,16 @@ namespace Bim_Service.Model
     public class TreeViewNode
     {
         //имя, например "Проектная документация"
-        public string name { get; set; } = "";
+        public string Name { get; set; } = "";
         //системное имя, например "Stage"
-        public string systemName { get; set; } = "";
+        public string SystemName { get; set; } = "";
         //подузлы
-        public List<TreeViewNode> children { get; set; } =
+        public List<TreeViewNode> Children { get; set; } =
                 new List<TreeViewNode>();
         //идентификатор узла в дереве
-        public int nodeId { get; set; }
+        public int NodeId { get; set; }
         //идентификатор узла в базе (при наличии табличного аналога в базе)
-        public int id { get; set; }
+        public int Id { get; set; }
         [NonSerialized] //тип узла 
         public TreeViewNodeType NodeType;
         [NonSerialized] //инфо узла
@@ -30,31 +30,31 @@ namespace Bim_Service.Model
         public TreeViewNode(string name,
                             int nodeId,
                             int id,
-                            DataProvider NodeProvider)
+                            DataProvider nodeProvider)
         {
-            if (name != null) this.name = name;
-            this.nodeId = nodeId;
-            this.id = id;
-            this.NodeProvider = NodeProvider;
-            NodeType = NodeProvider.NodeType;
+            if (name != null) this.Name = name;
+            NodeId = nodeId;
+            Id = id;
+            NodeProvider = nodeProvider;
+            NodeType = nodeProvider.NodeType;
             NodeInfo = TreeViewNodeInfos[NodeType];
-            systemName = NodeInfo.systemNodeName;
+            SystemName = NodeInfo.SystemNodeName;
         }
         //поиск узла
         public static TreeViewNode GetNode(int nodeId,
-                                           TreeViewNode TVN)
+                                           TreeViewNode tvn)
         {
-            if (TVN.nodeId == nodeId)
+            if (tvn.NodeId == nodeId)
             {
-                return TVN;
+                return tvn;
             }
-            else if (TVN.children.Count == 0)
+            else if (tvn.Children.Count == 0)
             {
                 return null;
             }
             else
             {
-                foreach (TreeViewNode child in TVN.children)
+                foreach (TreeViewNode child in tvn.Children)
                 {
                     TreeViewNode childNode = GetNode(nodeId, child);
                     if (childNode != null) return childNode;

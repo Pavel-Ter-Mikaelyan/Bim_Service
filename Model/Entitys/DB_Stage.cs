@@ -38,20 +38,20 @@ namespace Bim_Service.Model
         //метод для установки Childs и ChildType
         public override void SetNodes()
         {
-            StandartNode TemplatesNode =
+            StandartNode templatesNode =
                 new StandartNode(TreeViewNodeType.Templates,
                                  DB_Templates,
                                  typeof(DB_Template));
-            StandartNode FilesNode =
+            StandartNode filesNode =
                 new StandartNode(TreeViewNodeType.Files,
                                  DB_Files,
                                  typeof(DB_File));
-            Childs = new List<DataProvider> { TemplatesNode, FilesNode };
+            Childs = new List<DataProvider> { templatesNode, filesNode };
             ChildType = typeof(DataProvider);
         }
         //задать значение свойств объекта для вывода информации (TableData) из БД
         public override void SetPropertyForGetTableData(ApplicationContext db,
-                                                           DataProvider ParentNode)
+                                                           DataProvider parentNode)
         {
             //имя стадии
             StageName = DB_Stage_const == null ? "" : DB_Stage_const.Name;
@@ -63,9 +63,9 @@ namespace Bim_Service.Model
         }
         //установить специфические данные объекта для модификации БД
         public override bool SetSpecificDataForModify(ApplicationContext db,
-                                                     DataProvider ParentNode)
+                                                     DataProvider parentNode)
         {
-            DB_Object = (DB_Object)ParentNode;
+            DB_Object = (DB_Object)parentNode;
             DB_Stage_const =
                 db.DB_Stage_consts.FirstOrDefault(q => q.Name == StageName);
             if (DB_Stage_const == null) return false;
