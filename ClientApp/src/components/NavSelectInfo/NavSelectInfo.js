@@ -38,6 +38,7 @@ const NavSelectInfo = ({ nodeName }) => {
             <Focus_Icon />
             <p> {'[ ' + selectedName + ' ]'}</p>
         </div>
+
     )
 }
 
@@ -48,7 +49,7 @@ export default connect(mapStateToProps)(NavSelectInfo)
 const GetNodeName = (state) => {
     const SelectedId = state.TreeNodes.SelectedId
     const TreeNodesData = state.TreeNodes.Data
-    const TreeDictionary = state.TreeNodes.TreeDictionary 
+    const TreeDictionary = state.TreeNodes.TreeDictionary
     if (!NullUndefValid([SelectedId, TreeDictionary, TreeNodesData])) {
         return null
     }

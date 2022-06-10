@@ -2,7 +2,6 @@
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { Route } from 'react-router';
-import registerServiceWorker from './registerServiceWorker';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
@@ -18,7 +17,7 @@ const store = createStore(rootReducer)
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter basename={baseUrl}>
-            <MainComponent />          
+            <MainComponent />
             {/*<Switch>
             <Route exact path='/' component={Counter} />
             <Route exact path='/counter' component={Counter} />
@@ -28,5 +27,5 @@ ReactDOM.render(
     </Provider>,
     rootElement);
 
-registerServiceWorker();
+//registerServiceWorker();
 

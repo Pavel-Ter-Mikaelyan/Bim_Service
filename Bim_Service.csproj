@@ -84,6 +84,6 @@
     </ItemGroup>
   </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" clientapp_4package_1json__JsonSchema="" clientapp_4public_4manifest_1json__JsonSchema="https://json.schemastore.org/grunt-copy-task.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" clientapp_4package_1json__JsonSchema="" clientapp_4public_4manifest_1json__JsonSchema="https://json.schemastore.org/grunt-copy-task.json" properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

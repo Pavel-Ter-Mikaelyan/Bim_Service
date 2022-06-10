@@ -31,14 +31,14 @@ namespace Bim_Service
                 options.UseSqlServer(connection));
 
             //чтобы кирилица нормально отображалась
-            services.AddWebEncoders(o =>
-            {
-                o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic, UnicodeRanges.CyrillicExtendedA, UnicodeRanges.CyrillicExtendedB);
-            });
+            //services.AddWebEncoders(o =>
+            //{
+            //    o.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic, UnicodeRanges.CyrillicExtendedA, UnicodeRanges.CyrillicExtendedB);
+            //});
 
             services.AddControllersWithViews();
 
-            // In production, the React files will be served from this directory
+            //// In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
@@ -58,11 +58,7 @@ namespace Bim_Service
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-         
+                   
             app.UseRouting();
            
             app.UseEndpoints(endpoints =>
@@ -71,7 +67,7 @@ namespace Bim_Service
                     name: "default",
                     pattern: "{controller}");
             });
-
+            app.UseSpaStaticFiles();
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
@@ -79,7 +75,7 @@ namespace Bim_Service
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                }          
+                }
             });
         }
     }   

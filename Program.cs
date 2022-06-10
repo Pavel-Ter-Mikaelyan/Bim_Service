@@ -20,6 +20,7 @@ namespace Bim_Service
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls("https://0.0.0.0:5030");
                     webBuilder.UseStartup<Startup>();
                 });
     }
